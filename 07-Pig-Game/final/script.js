@@ -7,9 +7,9 @@ const dice = document.querySelector(".dice")
 const reset = document.querySelector(".btn--new")
 // hold score
 const playerInitialScore = document.querySelector(".current-score")
-// Player 01
+// Player 01 score
 const score01 = document.querySelector("#score--0")
-// Player 02
+// Player 02 score
 const score02 = document.querySelector("#score--1")
 // current score
 const current01 = document.querySelector("#current--0")
@@ -46,12 +46,27 @@ roll.addEventListener("click", function() {
     // example: 1 + 4 = 14 instead of "5" - Why?
     console.log("currentScore" + currentScore);
     // current01.textContent = currentScore
+    // document.getElementById(`player--${activePlayer}`).textContent = currentScore
+    // document.querySelector(`.player--${activePlayer}`).classList.add("player--active") // change background color for current player
+
     document.getElementById(`current--${activePlayer}`).textContent = currentScore
   } else {
     // switch to next player
+    // document.querySelector(`.player--${activePlayer}`).classList.remove("player--active") // change background color for current player
+    document.getElementById(`current--${activePlayer}`).textContent = currentScore
     activePlayer = activePlayer === 0 ? 1 : 0
+    currentScore = 0 // set the "currentScore" back at "0" as the player's turn is over.
+
+    // another way to change the background color of the player is
+    /*
+    const player0 = document.querySelector(".player--0") // declare this variable at the top of the page same with other variables
+    const player1 = document.querySelector(".player--1") // declare this variable at the top of the page same with other variables
+    player0.classList.toggle("player--active")
+    player1.classList.toggle("player--active")
+    */
   }
 })
+
 hold.addEventListener("click", function () {
   
 })
