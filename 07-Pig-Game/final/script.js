@@ -17,6 +17,10 @@ const current02 = document.querySelector("#current--1")
 // HOLD button
 const hold = document.querySelector(".btn--hold")
 
+// Player sections
+const player0 = document.querySelector(".player--0")
+const player1 = document.querySelector(".player--1")
+
 // at the beginning of the game - START
 score01.textContent = 0
 score02.textContent = 0
@@ -47,23 +51,16 @@ roll.addEventListener("click", function() {
     console.log("currentScore" + currentScore);
     // current01.textContent = currentScore
     // document.getElementById(`player--${activePlayer}`).textContent = currentScore
-    // document.querySelector(`.player--${activePlayer}`).classList.add("player--active") // change background color for current player
-
     document.getElementById(`current--${activePlayer}`).textContent = currentScore
   } else {
     // switch to next player
-    // document.querySelector(`.player--${activePlayer}`).classList.remove("player--active") // change background color for current player
     document.getElementById(`current--${activePlayer}`).textContent = currentScore
     activePlayer = activePlayer === 0 ? 1 : 0
     currentScore = 0 // set the "currentScore" back at "0" as the player's turn is over.
 
-    // another way to change the background color of the player is
-    /*
-    const player0 = document.querySelector(".player--0") // declare this variable at the top of the page same with other variables
-    const player1 = document.querySelector(".player--1") // declare this variable at the top of the page same with other variables
+    // change background-color for active player
     player0.classList.toggle("player--active")
     player1.classList.toggle("player--active")
-    */
   }
 })
 
