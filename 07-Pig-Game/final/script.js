@@ -26,12 +26,26 @@ score0.textContent = 0
 score1.textContent = 0
 playerCurrentScore.textContent = 0
 dice.classList.add("hidden")
-
-const scores = [0,0] // array scores for "currentScore" and "activePlayer"
-let currentScore = 0 // current score
-let activePlayer = 0 // current player
-let playing = true // set this in order to stop the entire game when there is a winner.
 // at the beginning of the game - END
+
+let scores, currentScore, activePlayer, playing
+
+const init = function () {
+  scores = [0,0] // array scores for "currentScore" and "activePlayer"
+  currentScore = 0 // current score
+  activePlayer = 0 // current player
+  playing = true // set this in order to stop the entire game when there is a winner.
+
+  score0.textContent = 0
+  score1.textContent = 0
+  current0.textContent = 0
+  current1.textContent = 0
+  player0.classList.add("player--active")
+  player1.classList.remove("player--active")
+  player0.classList.remove("player--winner")
+  player1.classList.remove("player--winner")
+}
+init()
 
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = currentScore
@@ -88,14 +102,4 @@ hold.addEventListener("click", function () {
     }
   }
 })
-reset.addEventListener("click", function() {
-  playing = true
-  score0.textContent = 0
-  score1.textContent = 0
-  current0.textContent = 0
-  current1.textContent = 0
-  player0.classList.add("player--active")
-  player1.classList.remove("player--active")
-  player0.classList.remove("player--winner")
-  player1.classList.remove("player--winner")
-})
+reset.addEventListener("click", init)
