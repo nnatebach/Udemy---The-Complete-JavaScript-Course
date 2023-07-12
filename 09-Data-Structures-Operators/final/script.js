@@ -34,48 +34,141 @@ const restaurant = {
   },
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`The ingredients to make pasta includes ${ing1}, ${ing2}, ${ing3}`);
+  },
+  orderPizza: function(mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
   }
 };
 
-restaurant.orderDelivery({
-  time: "20:30",
-  address: "Via del Sole, 21",
-  mainIndex: 2,
-  starterIndex: 2
-})
+/////////////////////////// NULLISH: null and undefined (NOT 0 or '') - START
+restaurant.numGuests = 0;
+const guests = restaurant.numGuests || 10;
+console.log(guests);
 
-restaurant.orderDelivery({
-  address: "Via del Sole, 21",
-  mainIndex: 1,
-})
+// The latter returns the right-hand side operand if the left operand is any falsy value, not only null or undefined
+const guestCorrect = restaurant.numGuests ?? 10;
+console.log(guestCorrect);
+/////////////////////////// NULLISH: null and undefined (NOT 0 or '') - END
+
+// restaurant.orderDelivery({
+//   time: "20:30",
+//   address: "Via del Sole, 21",
+//   mainIndex: 2,
+//   starterIndex: 2
+// })
+
+// restaurant.orderDelivery({
+//   address: "Via del Sole, 21",
+//   mainIndex: 1,
+// })
+
+/////////////////////////// REST pattern and parameters - START
+// 1. Destructuring
+// SPREAD, because on RIGHT side of "=" sign
+const arr = [1,2,...[3,4]]
+console.log(arr); // => 1 2 3 4 5
+// REST, because on LEFT side of "=" sign
+const [a,b,...others] = [1,2,3,4,5]
+console.log(a,b, others); // 1 2 => 3 4 5
+
+const [pizza, risotto, ...otherFood] = [
+  ...restaurant.mainMenu,
+  ...restaurant.starterMenu
+]
+// mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+// starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+console.log(pizza, risotto, otherFood); // Pizza Pasta => ['Risotto', 'Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad']
+
+// Objects
+const {sat, ...weekdays} = restaurant.openingHours
+console.log(weekdays); // {thu: {…}, fri: {…}}
+// 2. Functions
+// const add = function (...numbers) {
+//   console.log(numbers);
+//   // (2) [2, 3]
+//   // (4) [5, 3, 7, 2]
+//   // (7) [8, 2, 5, 3, 2, 1, 4]
+// }
+
+const add = function (...numbers) {
+  let sum = 0
+  for (let i=0;i<numbers.length;i++) sum += numbers[i]
+  console.log(sum);
+  // 5
+  // 17
+  // 25
+  // add(...x) = 35
+}
+
+add(2, 3);
+add(5, 3, 7, 2);
+add(8, 2, 5, 3, 2, 1, 4);
+
+const x = [23,5,7]
+add(...x)
+
+restaurant.orderPizza("mushrooms", "onion", "olives", "spinach")
+/////////////////////////// REST pattern and parameters - END
+
+/////////////////////////// Short circuiting - START
+// Use ANY data type, return ANY data type, short-circuiting
+console.log(3 || 'Jonas'); // 3
+console.log('' || 'Jonas'); // Jonas
+console.log(true || 0); // true
+console.log(undefined || null); // null
+
+console.log(undefined || 0 || '' || 'Hello' || 23 || null); // Hello
+
+restaurant.numGuests = 23;
+const guests1 = restaurant.numGuests ? restaurant.numGuests : 10
+console.log(guests1);
+
+const guests2 = restaurant.numGuests || 10
+console.log(guests2);
+
+console.log('------ AND ------');
+console.log(0 && 'Jonas');
+console.log(7 && 'Jonas');
+
+console.log('Hello' && 23 && null && 'jonas');
+
+// Practical example
+if (restaurant.orderPizza) {
+  restaurant.orderPizza('mushrooms', 'spinach');
+}
+
+restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach')
+/////////////////////////// Short circuiting - END
+
 /////////////////////////// SPREAD - START
-const arr = [7,8,9]
-console.log(`array "arr" is ${arr}`);
-const badNewArr = [1,2,arr[0], arr[1], arr[2]]
-console.log(badNewArr);
+// const arr = [7,8,9]
+// console.log(`array "arr" is ${arr}`);
+// const badNewArr = [1,2,arr[0], arr[1], arr[2]]
+// console.log(badNewArr);
 
-const newArr = [1,2, ...arr]
-console.log(`array "newArr" using spread is ${newArr}`);
+// const newArr = [1,2, ...arr]
+// console.log(`array "newArr" using spread is ${newArr}`);
 
-console.log(...newArr);
-console.log(1,2,7,8,9);
+// console.log(...newArr);
+// console.log(1,2,7,8,9);
 
-const newMenu = [...restaurant.mainMenu, "Gnocci "]
-console.log(newMenu);
+// const newMenu = [...restaurant.mainMenu, "Gnocci "]
+// console.log(newMenu);
 
 // Copy array
-const mainMenuCopy = [...restaurant.mainMenu]
+// const mainMenuCopy = [...restaurant.mainMenu]
 
 // Join 2 arrays
-const menuCombine = [...restaurant.starterMenu, ...restaurant.mainMenu]
-console.log(menuCombine);
+// const menuCombine = [...restaurant.starterMenu, ...restaurant.mainMenu]
+// console.log(menuCombine);
 
 // Iterables: arrays, ,strings, maps, sets. NOT objects
-const str = 'Jonas'
-// const letters = [...str, "", "S."]
-console.log(str); // Jonas
-const letters = [...str]
-console.log(letters); // "J", "o", "n", "a", "s"
+// const str = 'Jonas'
+// // const letters = [...str, "", "S."]
+// console.log(str); // Jonas
+// const letters = [...str]
+// console.log(letters); // "J", "o", "n", "a", "s"
 
 // Real world example - START
 const ingredients = [
@@ -83,18 +176,18 @@ const ingredients = [
   // prompt("Ingredient 2?"),
   // prompt("Ingredient 3?")
 ]
-console.log(ingredients);
-restaurant.orderPasta(ingredients[0], ingredients[1], ingredients[2])
-restaurant.orderPasta(...ingredients) // copy array "ingredients"
+// console.log(ingredients);
+// restaurant.orderPasta(ingredients[0], ingredients[1], ingredients[2])
+// restaurant.orderPasta(...ingredients) // copy array "ingredients"
 
 // Objects
-const newCoffeeShop = {foundedIn: "2040", ...restaurant, founder: "Bach"}
-console.log(newCoffeeShop);
+// const newCoffeeShop = {foundedIn: "2040", ...restaurant, founder: "Bach"}
+// console.log(newCoffeeShop);
 
-const restaurantCopy = {...restaurant}
-console.log(restaurantCopy);
-restaurantCopy.name = "Bach"
-console.log(restaurantCopy.name);
+// const restaurantCopy = {...restaurant}
+// console.log(restaurantCopy);
+// restaurantCopy.name = "Bach"
+// console.log(restaurantCopy.name);
 /////////////////////////// SPREAD - END
 
 /////////////////////////// DESTRUCTURING ARRAY - START /////////////////
