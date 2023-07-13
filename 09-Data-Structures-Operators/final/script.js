@@ -41,12 +41,45 @@ const restaurant = {
   }
 };
 
+/////////////////////////// Logical Assignment Operators - START
+const rest1 = {
+  name: "Capri",
+  numGuests: 0
+};
+
+const rest2 = {
+  name: "La Piazza",
+  owner: "Giovanni Rossi"
+}
+
+// OR ASSIGNMENT OPERATOR
+// rest1.numGuests = rest1.numGuests || 10;
+// guest2.numGuests = rest2.numGuests || 10;
+// rest1.numGuests ||= 10
+// rest2.numGuests ||= 10
+
+// nullish assignment operator (null or undefined)
+rest1.numGuests ??= 10
+rest2.numGuests ??= 10
+
+// AND assignment operator
+// rest1.owner = rest1.owner && '<ANONYMOUS>';
+// rest2.owner = rest2.owner && '<ANONYMOUS>';
+rest1.owner &&= '<ANONYMOUS>';
+rest2.owner &&= '<ANONYMOUS>';
+
+console.log(rest1);
+console.log(rest2);
+/////////////////////////// Logical Assignment Operators - END
+
 /////////////////////////// NULLISH: null and undefined (NOT 0 or '') - START
 restaurant.numGuests = 0;
 const guests = restaurant.numGuests || 10;
 console.log(guests);
 
 // The latter returns the right-hand side operand if the left operand is any falsy value, not only null or undefined
+// restaurant.numGuests = 0; => guestCorrect = 0
+// restaurant.numGuests = null/undefined; => guestCorrect = 10
 const guestCorrect = restaurant.numGuests ?? 10;
 console.log(guestCorrect);
 /////////////////////////// NULLISH: null and undefined (NOT 0 or '') - END
