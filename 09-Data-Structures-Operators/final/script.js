@@ -41,16 +41,29 @@ const restaurant = {
   }
 };
 
-/////////////////////////// Logical Assignment Operators - START
-const rest1 = {
-  name: "Capri",
-  numGuests: 0
-};
-
-const rest2 = {
-  name: "La Piazza",
-  owner: "Giovanni Rossi"
+/////////////////////////// Looping Arrays The for-of Loop - START
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu]
+console.log(menu);
+for (const item of menu) console.log(item);
+for (const item of menu.entries()) { // entries() method returns a new array iterator object that contains the key/value pairs for each index in the array
+  console.log(item);
+  console.log(`${item[0] + 1}`); // the array key starts from 0 but we want the logged out number to be 1
+  console.log(`${item[1]}`); // this the value of each item in the array
+  console.log(`${item[0] + 1}: ${item[1]}`); // 1: Focaccia
 }
+console.log(menu.entries()); // Array Iterator {}
+/////////////////////////// Looping Arrays The for-of Loop - END
+
+/////////////////////////// Logical Assignment Operators - START
+// const rest1 = {
+//   name: "Capri",
+//   numGuests: 0
+// };
+
+// const rest2 = {
+//   name: "La Piazza",
+//   owner: "Giovanni Rossi"
+// }
 
 // OR ASSIGNMENT OPERATOR
 // rest1.numGuests = rest1.numGuests || 10;
@@ -59,29 +72,29 @@ const rest2 = {
 // rest2.numGuests ||= 10
 
 // nullish assignment operator (null or undefined)
-rest1.numGuests ??= 10
-rest2.numGuests ??= 10
+// rest1.numGuests ??= 10
+// rest2.numGuests ??= 10
 
 // AND assignment operator
 // rest1.owner = rest1.owner && '<ANONYMOUS>';
 // rest2.owner = rest2.owner && '<ANONYMOUS>';
-rest1.owner &&= '<ANONYMOUS>';
-rest2.owner &&= '<ANONYMOUS>';
+// rest1.owner &&= '<ANONYMOUS>';
+// rest2.owner &&= '<ANONYMOUS>';
 
-console.log(rest1);
-console.log(rest2);
+// console.log(rest1);
+// console.log(rest2);
 /////////////////////////// Logical Assignment Operators - END
 
 /////////////////////////// NULLISH: null and undefined (NOT 0 or '') - START
-restaurant.numGuests = 0;
-const guests = restaurant.numGuests || 10;
-console.log(guests);
+// restaurant.numGuests = 0;
+// const guests = restaurant.numGuests || 10;
+// console.log(guests);
 
 // The latter returns the right-hand side operand if the left operand is any falsy value, not only null or undefined
 // restaurant.numGuests = 0; => guestCorrect = 0
 // restaurant.numGuests = null/undefined; => guestCorrect = 10
-const guestCorrect = restaurant.numGuests ?? 10;
-console.log(guestCorrect);
+// const guestCorrect = restaurant.numGuests ?? 10;
+// console.log(guestCorrect);
 /////////////////////////// NULLISH: null and undefined (NOT 0 or '') - END
 
 // restaurant.orderDelivery({
@@ -99,23 +112,23 @@ console.log(guestCorrect);
 /////////////////////////// REST pattern and parameters - START
 // 1. Destructuring
 // SPREAD, because on RIGHT side of "=" sign
-const arr = [1,2,...[3,4]]
-console.log(arr); // => 1 2 3 4 5
+// const arr = [1,2,...[3,4]]
+// console.log(arr); // => 1 2 3 4 5
 // REST, because on LEFT side of "=" sign
 const [a,b,...others] = [1,2,3,4,5]
-console.log(a,b, others); // 1 2 => 3 4 5
+// console.log(a,b, others); // 1 2 => 3 4 5
 
-const [pizza, risotto, ...otherFood] = [
-  ...restaurant.mainMenu,
-  ...restaurant.starterMenu
-]
+// const [pizza, risotto, ...otherFood] = [
+//   ...restaurant.mainMenu,
+//   ...restaurant.starterMenu
+// ]
 // mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 // starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
-console.log(pizza, risotto, otherFood); // Pizza Pasta => ['Risotto', 'Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad']
+// console.log(pizza, risotto, otherFood); // Pizza Pasta => ['Risotto', 'Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad']
 
 // Objects
-const {sat, ...weekdays} = restaurant.openingHours
-console.log(weekdays); // {thu: {…}, fri: {…}}
+// const {sat, ...weekdays} = restaurant.openingHours
+// console.log(weekdays); // {thu: {…}, fri: {…}}
 // 2. Functions
 // const add = function (...numbers) {
 //   console.log(numbers);
@@ -124,54 +137,54 @@ console.log(weekdays); // {thu: {…}, fri: {…}}
 //   // (7) [8, 2, 5, 3, 2, 1, 4]
 // }
 
-const add = function (...numbers) {
-  let sum = 0
-  for (let i=0;i<numbers.length;i++) sum += numbers[i]
-  console.log(sum);
-  // 5
-  // 17
-  // 25
-  // add(...x) = 35
-}
+// const add = function (...numbers) {
+//   let sum = 0
+//   for (let i=0;i<numbers.length;i++) sum += numbers[i]
+//   console.log(sum);
+//   // 5
+//   // 17
+//   // 25
+//   // add(...x) = 35
+// }
 
-add(2, 3);
-add(5, 3, 7, 2);
-add(8, 2, 5, 3, 2, 1, 4);
+// add(2, 3);
+// add(5, 3, 7, 2);
+// add(8, 2, 5, 3, 2, 1, 4);
 
-const x = [23,5,7]
-add(...x)
+// const x = [23,5,7]
+// add(...x)
 
-restaurant.orderPizza("mushrooms", "onion", "olives", "spinach")
+// restaurant.orderPizza("mushrooms", "onion", "olives", "spinach")
 /////////////////////////// REST pattern and parameters - END
 
 /////////////////////////// Short circuiting - START
 // Use ANY data type, return ANY data type, short-circuiting
-console.log(3 || 'Jonas'); // 3
-console.log('' || 'Jonas'); // Jonas
-console.log(true || 0); // true
-console.log(undefined || null); // null
+// console.log(3 || 'Jonas'); // 3
+// console.log('' || 'Jonas'); // Jonas
+// console.log(true || 0); // true
+// console.log(undefined || null); // null
 
-console.log(undefined || 0 || '' || 'Hello' || 23 || null); // Hello
+// console.log(undefined || 0 || '' || 'Hello' || 23 || null); // Hello
 
-restaurant.numGuests = 23;
-const guests1 = restaurant.numGuests ? restaurant.numGuests : 10
-console.log(guests1);
+// restaurant.numGuests = 23;
+// const guests1 = restaurant.numGuests ? restaurant.numGuests : 10
+// console.log(guests1);
 
-const guests2 = restaurant.numGuests || 10
-console.log(guests2);
+// const guests2 = restaurant.numGuests || 10
+// console.log(guests2);
 
-console.log('------ AND ------');
-console.log(0 && 'Jonas');
-console.log(7 && 'Jonas');
+// console.log('------ AND ------');
+// console.log(0 && 'Jonas');
+// console.log(7 && 'Jonas');
 
-console.log('Hello' && 23 && null && 'jonas');
+// console.log('Hello' && 23 && null && 'jonas');
 
-// Practical example
-if (restaurant.orderPizza) {
-  restaurant.orderPizza('mushrooms', 'spinach');
-}
+// // Practical example
+// if (restaurant.orderPizza) {
+//   restaurant.orderPizza('mushrooms', 'spinach');
+// }
 
-restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach')
+// restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach')
 /////////////////////////// Short circuiting - END
 
 /////////////////////////// SPREAD - START
@@ -204,11 +217,11 @@ restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach')
 // console.log(letters); // "J", "o", "n", "a", "s"
 
 // Real world example - START
-const ingredients = [
-  // prompt("Let\'s make pasta! Ingredient 1?"),
-  // prompt("Ingredient 2?"),
-  // prompt("Ingredient 3?")
-]
+// const ingredients = [
+//   // prompt("Let\'s make pasta! Ingredient 1?"),
+//   // prompt("Ingredient 2?"),
+//   // prompt("Ingredient 3?")
+// ]
 // console.log(ingredients);
 // restaurant.orderPasta(ingredients[0], ingredients[1], ingredients[2])
 // restaurant.orderPasta(...ingredients) // copy array "ingredients"
@@ -303,78 +316,80 @@ TEST DATA FOR 6: Use players 'Davies', 'Muller', 'Lewandowski' and 'Kimmich'. Th
 GOOD LUCK 😀
 */
 
-const game = {
-  team1: "Bayern Munich",
-  team2: "Lucas Oliver",
-  players: [
-    [
-      "Tom",
-      "Jerry",
-      "Mickey",
-      "Minnie",
-      "Donald",
-      "Goofy",
-      "Davies",
-      "Muller",
-      "Lewandowski",
-      "Kimmich"
-    ],
-    [
-      "Warren",
-      "Lawrence",
-      "Violet",
-      "Jon",
-      "Jamie",
-      "Harley",
-      "Robbie",
-      "Benjamin",
-      "Jake",
-      "Kyle"
-    ]
-  ],
-  scored: ["Davies", "Muller", "Lewandowski", "Kimmich"], // 4 players => 4 scores
-  odds: {
-    team1: 1.33,
-    x: 3.25,
-    team2: 6.5
-  }
-}
+// const game = {
+//   team1: "Bayern Munich",
+//   team2: "Lucas Oliver",
+//   players: [
+//     [
+//       "Tom",
+//       "Jerry",
+//       "Mickey",
+//       "Minnie",
+//       "Donald",
+//       "Goofy",
+//       "Davies",
+//       "Muller",
+//       "Lewandowski",
+//       "Kimmich"
+//     ],
+//     [
+//       "Warren",
+//       "Lawrence",
+//       "Violet",
+//       "Jon",
+//       "Jamie",
+//       "Harley",
+//       "Robbie",
+//       "Benjamin",
+//       "Jake",
+//       "Kyle"
+//     ]
+//   ],
+//   scored: ["Davies", "Muller", "Lewandowski", "Kimmich"], // 4 players => 4 scores
+//   odds: {
+//     team1: 1.33,
+//     x: 3.25,
+//     team2: 6.5
+//   }
+// }
 
 // 1. Create one player array for each team (variables 'players1' and 'players2')
-const [players1, players2] = game.players
-console.log(`players1: ${players1}`, `players2: ${players2}`);
+// const [players1, players2] = game.players
+// console.log(`players1: ${players1}`, `players2: ${players2}`);
 
 // 2. The first player in any player array is the goalkeeper and the others are field players. For Bayern Munich (team 1) create one variable ('gk') with the goalkeeper's name, and one array ('fieldPlayers') with all the remaining 10 field players
-const [gk, ...fieldPlayers] = players1
-console.log(`gk: ${gk}`);
-console.log(`Team 1's field players: ${fieldPlayers}`);
+// const [gk, ...fieldPlayers] = players1
+// console.log(`gk: ${gk}`);
+// console.log(`Team 1's field players: ${fieldPlayers}`);
 
 // 3. Create an array 'allPlayers' containing all players of both teams (22 players)
-const allPlayers = [...players1, ...players2]
-console.log(`Here are all the players: ${allPlayers}`);
+// const allPlayers = [...players1, ...players2]
+// console.log(`Here are all the players: ${allPlayers}`);
 
 // 4. During the game, Bayern Munich (team 1) used 3 substitute players. So create a new array ('players1Final') containing all the original team1 players plus 'Thiago', 'Coutinho' and 'Perisic'
-const players1Final = [...players1, "Thiago", "Coutinho", "Perisic"]
-console.log(`The total members for Team 1 is ${players1Final.length} players including ${players1.length} from the original team and "Thiago", "Coutinho", "Perisic" making the whole new team including ${players1Final}`);
+// const players1Final = [...players1, "Thiago", "Coutinho", "Perisic"]
+// console.log(`The total members for Team 1 is ${players1Final.length} players including ${players1.length} from the original team and "Thiago", "Coutinho", "Perisic" making the whole new team including ${players1Final}`);
 
 // 5. Based on the game.odds object, create one variable for each odd (called 'team1', 'draw' and 'team2')
-const {odds: {team1, x: draw, team2}} = game
-console.log(team1, draw, team2); // 1.33,3.25,6.5
-console.log(team1, x, team2); // 1.33 => (3) [23, 5, 7] 6.5    WHY THO?
+// const {odds: {team1, x: draw, team2}} = game
+// console.log(team1, draw, team2); // 1.33,3.25,6.5
+// console.log(team1, x, team2); // 1.33 => (3) [23, 5, 7] 6.5    WHY THO?
 
 // 6. Write a function ('printGoals') that receives an arbitrary number of player names (NOT an array) and prints each of them to the console, along with the number of goals that were scored in total (number of player names passed in)
-const printGoals = function (...players) {
-  console.log(players);
-  console.log(`${players.length} goals were scored!`); // the scored goals are counted based on the number goalkeeper
-}
+// const printGoals = function (...players) {
+//   console.log(players);
+//   console.log(`${players.length} goals were scored!`); // the scored goals are counted based on the number goalkeeper
+// }
 
-printGoals("Davies","Muller","Lewandowski","Kimmich")
-printGoals("Davies","Muller")
-printGoals(game.scored) // 1 goals were scored    WHY?
-printGoals(...game.scored) // 4 goals were scored because 'scored: ["Davies", "Muller", "Lewandowski", "Kimmich"]'
+// printGoals("Davies","Muller","Lewandowski","Kimmich")
+// printGoals("Davies","Muller")
+// printGoals(game.scored) // 1 goals were scored    WHY?
+// printGoals(...game.scored) // 4 goals were scored because 'scored: ["Davies", "Muller", "Lewandowski", "Kimmich"]'
 
 // 7. The team with the lower odd is more likely to win. Print to the console which team is more likely to win, WITHOUT using an if/else statement or the ternary operator.
-team1 > team2 && console.log("Team 1 is more likely to win");
-console.log(team1 > team2); // False
-team1 < team2 && console.log("Team 2 is more likely to win");
-console.log(team2 > team1); // True
+// team1 > team2 && console.log("Team 1 is more likely to win");
+// console.log(team1 > team2); // False
+// team1 < team2 && console.log("Team 2 is more likely to win");
+// console.log(team2 > team1); // True
+
+/////////////////////////////////////// Coding Challenge #1 - END
