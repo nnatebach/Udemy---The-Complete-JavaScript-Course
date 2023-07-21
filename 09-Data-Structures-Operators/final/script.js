@@ -48,23 +48,45 @@ const restaurant = {
   }
 };
 
+/////////////////////////// Optional Chaining (.) - START
+console.log(restaurant.openingHours.tue?.open); // undefined => NOT opened on Tuesday
+console.log(restaurant.openingHours.fri?.open); // 12 => opened at 12
+
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+for (const day of days) {
+  const open = restaurant.openingHours[day]?.open ?? "we're closed"
+  console.log(`On ${day} we're opened at ${open}`);
+}
+
+// Methods
+console.log(restaurant.order?.(0, 1) ?? 'Method does not exist');
+console.log(restaurant.orderRisotto?.(0, 1) ?? 'Method does not exist');
+
+// Arrays
+const users = [{ name: 'Bach', email: 'minhnhan.fastcodingvn@gmail.com' }]
+
+console.log(users[0]?.name ?? 'User array empty'); // Bach
+if (users.length > 0) console.log(users[0].name); else console.log('user array empty'); // Bach
+
+/////////////////////////// Optional Chaining (.) - END
+
 /////////////////////////// Looping Arrays The for-of Loop - START
-const menu = [...restaurant.starterMenu, ...restaurant.mainMenu]
-console.log(menu);
-for (const item of menu) console.log(item);
-for (const item of menu.entries()) { // entries() method returns a new array iterator object that contains the key/value pairs for each index in the array
-  // console.log(item); // log the key and value with array format
-  // console.log(`${item[0] + 1}`); // the array key starts from 0 but we want the logged out number to be 1
-  // console.log(`${item[1]}`); // this the value of each item in the array
-  console.log(`${item[0] + 1}: ${item[1]}`); // 1: Focaccia
-}
+// const menu = [...restaurant.starterMenu, ...restaurant.mainMenu]
+// console.log(menu);
+// for (const item of menu) console.log(item);
+// for (const item of menu.entries()) { // entries() method returns a new array iterator object that contains the key/value pairs for each index in the array
+//   // console.log(item); // log the key and value with array format
+//   // console.log(`${item[0] + 1}`); // the array key starts from 0 but we want the logged out number to be 1
+//   // console.log(`${item[1]}`); // this the value of each item in the array
+//   console.log(`${item[0] + 1}: ${item[1]}`); // 1: Focaccia
+// }
 
-// shortened form for "item"
-for (const [i, el] of menu.entries()) {
-  console.log(`${i + 1}: ${el}`); // 1: Focaccia
-}
+// // shortened form for "item"
+// for (const [i, el] of menu.entries()) {
+//   console.log(`${i + 1}: ${el}`); // 1: Focaccia
+// }
 
-console.log(menu.entries()); // Array Iterator {}
+// console.log(menu.entries()); // Array Iterator {}
 /////////////////////////// Looping Arrays The for-of Loop - END
 
 /////////////////////////// Logical Assignment Operators - START
