@@ -46,11 +46,17 @@ const menu = [...restaurant.starterMenu, ...restaurant.mainMenu]
 console.log(menu);
 for (const item of menu) console.log(item);
 for (const item of menu.entries()) { // entries() method returns a new array iterator object that contains the key/value pairs for each index in the array
-  console.log(item);
-  console.log(`${item[0] + 1}`); // the array key starts from 0 but we want the logged out number to be 1
-  console.log(`${item[1]}`); // this the value of each item in the array
+  // console.log(item); // log the key and value with array format
+  // console.log(`${item[0] + 1}`); // the array key starts from 0 but we want the logged out number to be 1
+  // console.log(`${item[1]}`); // this the value of each item in the array
   console.log(`${item[0] + 1}: ${item[1]}`); // 1: Focaccia
 }
+
+// shortened form for "item"
+for (const [i, el] of menu.entries()) {
+  console.log(`${i + 1}: ${el}`); // 1: Focaccia
+}
+
 console.log(menu.entries()); // Array Iterator {}
 /////////////////////////// Looping Arrays The for-of Loop - END
 
