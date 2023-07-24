@@ -48,6 +48,41 @@ const restaurant = {
   }
 };
 
+/////////////////////////// SET - START
+const ordersSet = new Set([
+  'Pasta',
+  'Pizza',
+  'Pizza',
+  'Risotto',
+  'Pasta',
+  'Pizza',
+]);
+console.log(ordersSet); // Set(3) {'Pasta', 'Pizza', 'Risotto'}
+console.log(new Set('Jonas')); // Set(5) {'J', 'o', 'n', 'a', 's'}
+console.log(ordersSet.size); // 3 => duplicated is NOT counted
+console.log(ordersSet.has("Pizza")); // true
+console.log(ordersSet.has("Bread")); // false
+ordersSet.add("Garlic Bread")
+ordersSet.add("Garlic Bread")
+console.log(ordersSet); // Set(4) {'Pasta', 'Pizza', 'Risotto', 'Garlic Bread'} => Duplication "Garlic Bread" is NOT added
+ordersSet.delete("Risotto")
+console.log(ordersSet); // Set(3) {'Pasta', 'Pizza', 'Garlic Bread'}
+console.log(ordersSet[0]); // undefined => unable to access array elements using indices
+// ordersSet.clear() // Set(0) {size: 0}
+console.log(ordersSet);
+for (const order of ordersSet) console.log(order);
+// 'Pasta'
+// 'Pizza'
+// 'Garlic Bread'
+
+// Example
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']
+const staffUnique = [...new Set(staff)]
+console.log(staffUnique); // (3) ['Waiter', 'Chef', 'Manager'] => Duplication is NOT included
+console.log(new Set(['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']).size); // 3 => Duplication is NOT counted
+console.log(new Set('jonasschedtmann').size); // 11 (There are 15 total characters) => only ONE "s", ONE "n" and ONE "a" is counted
+/////////////////////////// SET - END
+
 /////////////////////////// Coding Challenge #2 - START
 
 /* 
@@ -122,17 +157,17 @@ const game = {
 //////////////////////////////// self work - END
 
 // Video solution
-for (const [i, player] of game.scored.entries()) { // method returns a new array iterator object that contains the key/value pairs for each index in the array
-  console.log(`Goal ${i + 1}: ${player}`);
-}
+// for (const [i, player] of game.scored.entries()) { // method returns a new array iterator object that contains the key/value pairs for each index in the array
+//   console.log(`Goal ${i + 1}: ${player}`);
+// }
 
-// 2. Use a loop to calculate the average odd and log it to the console (We already studied how to calculate averages, you can go check if you don't remember)
-const odds = Object.values(game.odds) // "odds" is an Object
-console.log(odds); // (3) [1.33, 3.25, 6.5]
-let average = 0
-for (const odd of odds) average += odd; console.log(`The total odd is ${average}`); // 11.08
-average /= odds.length // average = average / odds.length (3)
-console.log(`The average odd is ${average}`);
+// // 2. Use a loop to calculate the average odd and log it to the console (We already studied how to calculate averages, you can go check if you don't remember)
+// const odds = Object.values(game.odds) // "odds" is an Object
+// console.log(odds); // (3) [1.33, 3.25, 6.5]
+// let average = 0
+// for (const odd of odds) average += odd; console.log(`The total odd is ${average}`); // 11.08
+// average /= odds.length // average = average / odds.length (3)
+// console.log(`The average odd is ${average}`);
 
 // 3. Print the 3 odds to the console, but in a nice formatted way, exaclty like this:
 //       Odd of victory Bayern Munich: 1.33
@@ -150,14 +185,14 @@ console.log(`The average odd is ${average}`);
 //     team2: 6.5
 //   }
 // }
-for (const [team, odd] of Object.entries(game.odds)) {
-  // console.log(team, odd);
-  let teamStr = team === 'x' ? 'draw' : `victory ${game[team]}` // if odds.team === 'x' => change to 'draw', otherwise change to 'victory ${game[team]}'
-  console.log(`Odd of ${teamStr}: ${odd}`);
-  //       Odd of victory Bayern Munich: 1.33
-  //       Odd of draw: 3.25
-  //       Odd of victory Lucas Oliver: 6.5
-}
+// for (const [team, odd] of Object.entries(game.odds)) {
+//   // console.log(team, odd);
+//   let teamStr = team === 'x' ? 'draw' : `victory ${game[team]}` // if odds.team === 'x' => change to 'draw', otherwise change to 'victory ${game[team]}'
+//   console.log(`Odd of ${teamStr}: ${odd}`);
+//   //       Odd of victory Bayern Munich: 1.33
+//   //       Odd of draw: 3.25
+//   //       Odd of victory Lucas Oliver: 6.5
+// }
 
 /////////////////////////// Coding Challenge #2 - END
 
@@ -322,7 +357,7 @@ for (const [team, odd] of Object.entries(game.odds)) {
 // const arr = [1,2,...[3,4]]
 // console.log(arr); // => 1 2 3 4 5
 // REST, because on LEFT side of "=" sign
-const [a,b,...others] = [1,2,3,4,5]
+// const [a,b,...others] = [1,2,3,4,5]
 // console.log(a,b, others); // 1 2 => 3 4 5
 
 // const [pizza, risotto, ...otherFood] = [
