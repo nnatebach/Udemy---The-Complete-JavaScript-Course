@@ -74,21 +74,18 @@ for (const [key, value] of question) {
 
 // const answer = Number(prompt('Your answer is '))
 // console.log(answer);
-// console.log(question.get(question.get('correct') === answer)); // WHY 'question.get' TWICE here?
+// console.log(question.get(question.get('correct') === answer));
+// WHY 'question.get' TWICE here?
+// WHY 'answer' works but NOT number 3?
 
 ////////////////////////////////////// Convert Map to array - START
 
-// console.log('question is an ', typeof question); // Map - object
-// console.log(...question);
-// (2) ['question', 'What is the best programming language in the world?']
-// (2) [1, 'C'] => (2) [2, 'Java'] => (2) [3, 'JavaScript'] 
-// (2) ['correct', 3] => (2) [true, 'Correct 🍾'] 
-// (2) [false, 'Try again!']
+// console.log(typeof question); // Map - object
 
 console.log([...question]); // (7) [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2)]
-// console.log(...question.keys()); // question 1 2 3 correct true false
+
 console.log([...question.keys()]); // (7) ['question', 1, 2, 3, 'correct', true, false]
-// console.log(...question.values()); // What is the best programming language in the world? C Java JavaScript 3 Correct 🍾 Try again!
+
 console.log([...question.values()]); // (7) ['What is the best programming language in the world?', 'C', 'Java', 'JavaScript', 3, 'Correct 🍾', 'Try again!']
 
 
