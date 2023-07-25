@@ -48,39 +48,82 @@ const restaurant = {
   }
 };
 
-/////////////////////////// SET - START
-const ordersSet = new Set([
-  'Pasta',
-  'Pizza',
-  'Pizza',
-  'Risotto',
-  'Pasta',
-  'Pizza',
-]);
-console.log(ordersSet); // Set(3) {'Pasta', 'Pizza', 'Risotto'}
-console.log(new Set('Jonas')); // Set(5) {'J', 'o', 'n', 'a', 's'}
-console.log(ordersSet.size); // 3 => duplicated is NOT counted
-console.log(ordersSet.has("Pizza")); // true
-console.log(ordersSet.has("Bread")); // false
-ordersSet.add("Garlic Bread")
-ordersSet.add("Garlic Bread")
-console.log(ordersSet); // Set(4) {'Pasta', 'Pizza', 'Risotto', 'Garlic Bread'} => Duplication "Garlic Bread" is NOT added
-ordersSet.delete("Risotto")
-console.log(ordersSet); // Set(3) {'Pasta', 'Pizza', 'Garlic Bread'}
-console.log(ordersSet[0]); // undefined => unable to access array elements using indices
-// ordersSet.clear() // Set(0) {size: 0}
-console.log(ordersSet);
-for (const order of ordersSet) console.log(order);
-// 'Pasta'
-// 'Pizza'
-// 'Garlic Bread'
+/////////////////////////// MAPS FUNDAMENTALS - START
+const rest = new Map();
+rest.set('name', 'Classico Italiano');
+rest.set(1, 'Firenze, Italy');
+console.log(rest.set(2, 'Lisbon, Portugal')); // Map(3) {'name' => 'Classico Italiano', 1 => 'Firenze, Italy', 2 => 'Lisbon, Portugal'}
 
-// Example
-const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']
-const staffUnique = [...new Set(staff)]
-console.log(staffUnique); // (3) ['Waiter', 'Chef', 'Manager'] => Duplication is NOT included
-console.log(new Set(['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']).size); // 3 => Duplication is NOT counted
-console.log(new Set('jonasschedtmann').size); // 11 (There are 15 total characters) => only ONE "s", ONE "n" and ONE "a" is counted
+rest
+  .set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+  .set('open', 11)
+  .set('close', 23)
+  .set(true, 'we are opened :D')
+  .set(false, 'we are closed :(((');
+
+console.log(rest.get('name')); // 'Classico Italiano'
+console.log(rest.get(true)); // 'we are opened'
+console.log(rest.get('true')); // undefined
+console.log(rest.get(false)); // 'we are closed'
+console.log(rest.get('false')); // undefined
+console.log(rest.get(1)); // Firenze, Italy
+console.log(rest.get('1')); // Undefined
+
+const time = 21
+console.log(time > rest.get('open') && time < rest.get('close')); // true
+console.log(rest.get(time > rest.get('open') && time < rest.get('close'))); // we are opened :D
+
+console.log(rest.has('categories')); // true
+rest.delete(2) // (2, 'Lisbon Portugal') is removed from the object 'rest'
+console.log(rest); // Map(7) {'name' => 'Classico Italiano', 1 => 'Firenze, Italy', 'categories' => Array(4), 'open' => 11, 'close' => 23, …}
+console.log(rest.size); // 7
+// rest.clear() // The whole object is cleared
+// console.log(rest); // Map(0) {size: 0}
+// console.log(rest.size); // 0
+rest.set([1,2], 'test')
+console.log(rest.get[1,2]); // undefined
+// The reason is the object '[1,2]' in 'rest.get[1,2]' and 'rest.set([1,2]' are NOT the same object in the heap, we are referring the objects in two different locations so we cannot retrieve 'test'
+
+const arr = [1,2]
+rest.set(arr, 'test')
+console.log(rest.get(arr)); // test
+// we are able to retrieve 'test' because we are storing '1,2' in the same array 'arr' and we are referring to the same array for it.
+/////////////////////////// MAPS FUNDAMENTALS - END
+
+
+/////////////////////////// SET - START
+// const ordersSet = new Set([
+//   'Pasta',
+//   'Pizza',
+//   'Pizza',
+//   'Risotto',
+//   'Pasta',
+//   'Pizza',
+// ]);
+// console.log(ordersSet); // Set(3) {'Pasta', 'Pizza', 'Risotto'}
+// console.log(new Set('Jonas')); // Set(5) {'J', 'o', 'n', 'a', 's'}
+// console.log(ordersSet.size); // 3 => duplicated is NOT counted
+// console.log(ordersSet.has("Pizza")); // true
+// console.log(ordersSet.has("Bread")); // false
+// ordersSet.add("Garlic Bread")
+// ordersSet.add("Garlic Bread")
+// console.log(ordersSet); // Set(4) {'Pasta', 'Pizza', 'Risotto', 'Garlic Bread'} => Duplication "Garlic Bread" is NOT added
+// ordersSet.delete("Risotto")
+// console.log(ordersSet); // Set(3) {'Pasta', 'Pizza', 'Garlic Bread'}
+// console.log(ordersSet[0]); // undefined => unable to access array elements using indices
+// // ordersSet.clear() // Set(0) {size: 0}
+// console.log(ordersSet);
+// for (const order of ordersSet) console.log(order);
+// // 'Pasta'
+// // 'Pizza'
+// // 'Garlic Bread'
+
+// // Example
+// const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']
+// const staffUnique = [...new Set(staff)]
+// console.log(staffUnique); // (3) ['Waiter', 'Chef', 'Manager'] => Duplication is NOT included
+// console.log(new Set(['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']).size); // 3 => Duplication is NOT counted
+// console.log(new Set('jonasschedtmann').size); // 11 (There are 15 total characters) => only ONE "s", ONE "n" and ONE "a" is counted
 /////////////////////////// SET - END
 
 /////////////////////////// Coding Challenge #2 - START
