@@ -48,46 +48,93 @@ const restaurant = {
   }
 };
 
+/////////////////////////// MAPS ITERATION - START
+const question = new Map([
+  ['question', 'What is the best programming language in the world?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [true, 'Correct 🍾'],
+  [false, 'Try again!'],
+])
+console.log(question); // Map(7) {'question' => 'What is the best programming language in the world?', 1 => 'C', 2 => 'Java', 3 => 'JavaScript', 'correct' => 3, …}
+
+////////////////////////////////////// Convert object to Map - openingHours - START
+console.log('openingHours is an ', typeof openingHours); // 'openingHours' is an object
+const hoursMap = new Map(Object.entries(openingHours))
+console.log(hoursMap); // Map(3) {'fri' => {…}, 'thu' => {…}, 'sat' => {…}}
+// console.log(new Map(Object.entries(openingHours))); // Map(3) {'fri' => {…}, 'thu' => {…}, 'sat' => {…}}
+
+////////////////////////////////////// Quizz app - START
+console.log(question.get('question')); // What is the best programming language in the world?
+for (const [key, value] of question) {
+  if (typeof key === 'number') console.log(`Answer ${key}: ${value}`)
+}
+
+// const answer = Number(prompt('Your answer is '))
+// console.log(answer);
+// console.log(question.get(question.get('correct') === answer)); // WHY 'question.get' TWICE here?
+
+////////////////////////////////////// Convert Map to array - START
+
+// console.log('question is an ', typeof question); // Map - object
+// console.log(...question);
+// (2) ['question', 'What is the best programming language in the world?']
+// (2) [1, 'C'] => (2) [2, 'Java'] => (2) [3, 'JavaScript'] 
+// (2) ['correct', 3] => (2) [true, 'Correct 🍾'] 
+// (2) [false, 'Try again!']
+
+console.log([...question]); // (7) [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2)]
+// console.log(...question.keys()); // question 1 2 3 correct true false
+console.log([...question.keys()]); // (7) ['question', 1, 2, 3, 'correct', true, false]
+// console.log(...question.values()); // What is the best programming language in the world? C Java JavaScript 3 Correct 🍾 Try again!
+console.log([...question.values()]); // (7) ['What is the best programming language in the world?', 'C', 'Java', 'JavaScript', 3, 'Correct 🍾', 'Try again!']
+
+
+/////////////////////////// MAPS ITERATION - END
+
+
 /////////////////////////// MAPS FUNDAMENTALS - START
-const rest = new Map();
-rest.set('name', 'Classico Italiano');
-rest.set(1, 'Firenze, Italy');
-console.log(rest.set(2, 'Lisbon, Portugal')); // Map(3) {'name' => 'Classico Italiano', 1 => 'Firenze, Italy', 2 => 'Lisbon, Portugal'}
+// const rest = new Map();
+// rest.set('name', 'Classico Italiano');
+// rest.set(1, 'Firenze, Italy');
+// console.log(rest.set(2, 'Lisbon, Portugal')); // Map(3) {'name' => 'Classico Italiano', 1 => 'Firenze, Italy', 2 => 'Lisbon, Portugal'}
 
-rest
-  .set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
-  .set('open', 11)
-  .set('close', 23)
-  .set(true, 'we are opened :D')
-  .set(false, 'we are closed :(((');
+// rest
+//   .set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+//   .set('open', 11)
+//   .set('close', 23)
+//   .set(true, 'we are opened :D')
+//   .set(false, 'we are closed :(((');
 
-console.log(rest.get('name')); // 'Classico Italiano'
-console.log(rest.get(true)); // 'we are opened'
-console.log(rest.get('true')); // undefined
-console.log(rest.get(false)); // 'we are closed'
-console.log(rest.get('false')); // undefined
-console.log(rest.get(1)); // Firenze, Italy
-console.log(rest.get('1')); // Undefined
+// console.log(rest.get('name')); // 'Classico Italiano'
+// console.log(rest.get(true)); // 'we are opened'
+// console.log(rest.get('true')); // undefined
+// console.log(rest.get(false)); // 'we are closed'
+// console.log(rest.get('false')); // undefined
+// console.log(rest.get(1)); // Firenze, Italy
+// console.log(rest.get('1')); // Undefined
 
-const time = 21
-console.log(time > rest.get('open') && time < rest.get('close')); // true
-console.log(rest.get(time > rest.get('open') && time < rest.get('close'))); // we are opened :D
+// const time = 21
+// console.log(time > rest.get('open') && time < rest.get('close')); // true
+// console.log(rest.get(time > rest.get('open') && time < rest.get('close'))); // we are opened :D
 
-console.log(rest.has('categories')); // true
-rest.delete(2) // (2, 'Lisbon Portugal') is removed from the object 'rest'
-console.log(rest); // Map(7) {'name' => 'Classico Italiano', 1 => 'Firenze, Italy', 'categories' => Array(4), 'open' => 11, 'close' => 23, …}
-console.log(rest.size); // 7
-// rest.clear() // The whole object is cleared
-// console.log(rest); // Map(0) {size: 0}
-// console.log(rest.size); // 0
-rest.set([1,2], 'test')
-console.log(rest.get[1,2]); // undefined
-// The reason is the object '[1,2]' in 'rest.get[1,2]' and 'rest.set([1,2]' are NOT the same object in the heap, we are referring the objects in two different locations so we cannot retrieve 'test'
+// console.log(rest.has('categories')); // true
+// rest.delete(2) // (2, 'Lisbon Portugal') is removed from the object 'rest'
+// console.log(rest); // Map(7) {'name' => 'Classico Italiano', 1 => 'Firenze, Italy', 'categories' => Array(4), 'open' => 11, 'close' => 23, …}
+// console.log(rest.size); // 7
+// // rest.clear() // The whole object is cleared
+// // console.log(rest); // Map(0) {size: 0}
+// // console.log(rest.size); // 0
+// rest.set([1,2], 'test')
+// console.log(rest.get[1,2]); // undefined
+// // The reason is the object '[1,2]' in 'rest.get[1,2]' and 'rest.set([1,2]' are NOT the same object in the heap, we are referring the objects in two different locations so we cannot retrieve 'test'
 
-const arr = [1,2]
-rest.set(arr, 'test')
-console.log(rest.get(arr)); // test
-// we are able to retrieve 'test' because we are storing '1,2' in the same array 'arr' and we are referring to the same array for it.
+// const arr = [1,2]
+// rest.set(arr, 'test')
+// console.log(rest.get(arr)); // test
+// // we are able to retrieve 'test' because we are storing '1,2' in the same array 'arr' and we are referring to the same array for it.
 /////////////////////////// MAPS FUNDAMENTALS - END
 
 
