@@ -48,6 +48,167 @@ const restaurant = {
   }
 };
 
+/////////////////////////// WORKING WITH STRINGS - START
+
+////////////// PART 1
+// const airline = 'Tap Air Portugal'
+// const plane = 'A320'
+
+// console.log(plane[0]); // A => string starts at index 0
+// console.log(plane[1]); // 3
+// console.log(plane[2]); // 2
+// console.log('B737'[0]); // B
+
+// console.log(airline.length); // 16
+// console.log('B737'.length); // 4
+
+// console.log(airline.indexOf('r')); // 6
+// console.log(airline.lastIndexOf('r')); // 10
+// console.log(airline.indexOf('portugal')); // -1 => The string does not contain "portugal"
+
+// console.log(airline.slice(4)); // 'Air Portugal'
+// console.log(airline.slice(4, 7)); // 'Air' => include the starting index until BEFORE the ending index (index 4,5,6 and NOT 7)
+
+////////////// PART 2
+// console.log(airline.toLowerCase()); // tap air portugal
+// console.log(airline.toUpperCase()); // TAP AIR PORTUGAL
+
+//// Fix capitalization in name - 'jOnAS' to 'Jonas'
+// const passenger = "jOnAS"
+// const passengerLower = passenger.toLowerCase()
+// console.log(passengerLower); // jonas
+// const passengerCorrect = passengerLower[0].toUpperCase() + passengerLower.slice(1)
+// // console.log(passengerLower[0].toUpperCase()); // J
+// // console.log(passengerLower.slice(1)); // onas
+// console.log(passengerCorrect); // Jonas
+
+//// Comparing emails - true
+// const email = 'hello@jonas.io'
+// const loginEmail = '   Hello@Jonas.Io \n'
+
+// console.log(`Original loginEmail: ${loginEmail}`);
+// const lowerEmail = loginEmail.toLowerCase()
+// console.log(lowerEmail);
+// const trimmedEmail = lowerEmail.trim() // remove all spaces around the string
+// console.log(trimmedEmail);
+
+// const normalizeEmail = loginEmail.toLowerCase().trim()
+// console.log(normalizeEmail);
+// console.log(normalizeEmail === email); // true
+
+//// Replacing
+// const priceGB = '£288,97'
+// const priceUS = priceGB.replace('£', '$').replace(',', '.')
+// console.log(priceUS); // $288.97
+
+// const announcement = "All passengers come to boarding door 23. Boarding door 23."
+// console.log(announcement.replace('door', 'gate')); // All passengers come to boarding 'gate' 23. Boarding 'door' 23.
+// console.log(announcement.replace(/door/g, 'gate')); // All passengers come to boarding 'gate' 23. Boarding 'gate' 23.
+
+
+//// Booleans
+// const plane = 'Airbus A320neo'
+// console.log(plane.includes('A320')); // true
+// console.log(plane.includes('Boeing')); // false
+// console.log(plane.startsWith('Airb')); // true
+
+// if (plane.startsWith('Airbus') && plane.endsWith('neo')) {
+//   console.log('Part of the new Airbus family');
+// }
+
+//// Practice Exercise
+// const checkBaggage = function (items) {
+//   const Baggage = items.toLowerCase() // this line will normalize all words by turning them all lower cases
+//   if (Baggage.includes('gun') || Baggage.includes('knife')) {
+//     console.log('you are NOT allowed onboard!');
+//   } else {
+//     console.log('Welcome aboard!!');
+//   }
+// }
+// checkBaggage('I have a laptop, some Food and a pocket Knife') // you are NOT allowed onboard!
+// checkBaggage('Socks and camera') // Welcome aboard!!
+// checkBaggage('Got some snacks and a gun for protection') // you are NOT allowed onboard!
+
+
+////////////// PART 3
+//// split - turns a string into an array with the string text becoming the element of the array
+console.log('a+very+nice+string'.split('+')); // (4) ['a', 'very', 'nice', 'string']
+console.log('Jonas Schmedtmann'.split(' ')); // (2) ['Jonas', 'Schmedtmann']
+const [firstName, lastName] = 'Jonas Schmedtmann'.split(' ')
+
+// const newName = ['Mr. ', firstName, lastName.toUpperCase()]
+// console.log(newName); // (3) ['Mr. ', 'Jonas', 'SCHMEDTMANN']
+
+// join - returns a new string by concatenating all of the elements in an array (or an array-like object), separated by commas or a specified separator string
+// const newName = ['Mr.', firstName, lastName.toUpperCase()].join('---')
+// console.log(newName); // Mr.---Jonas---SCHMEDTMANN
+const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ')
+console.log(newName); // Mr. Jonas SCHMEDTMANN
+
+//////// PRACTICE - Uppercase for every first letter in a word
+// Examples: jessica ann smith davies => Jessica Ann Smith Davies
+// Examples: nathan bach => Nathan Bach
+const capitalizeName = function (names) {
+  const name = names.split(' ')
+  // console.log(name); // ['nathan', 'bach']
+  const upperCase = []
+
+  for (const n of name) {
+    // console.log(n);
+    // nathan
+    // bach
+    // console.log(n[0].toUpperCase()); // N
+    // console.log(n[0].toUpperCase() + n.slice(1)); // Nathan
+    // console.log(upperCase.push(n[0].toUpperCase() + n.slice(1)));
+    // upperCase.push(n[0].toUpperCase() + n.slice(1))
+
+    upperCase.push(n.replace(n[0], n[0].toUpperCase()))
+  }
+  console.log(upperCase.join(' '));
+  // Jessica Ann Smith Davies
+  // Nathan Bach
+}
+
+capitalizeName('jessica ann smith davies')
+capitalizeName('nathan bach')
+
+//////// Padding
+const message = 'Go to gate 23!'
+console.log(message.padStart(25, '+')); // +++++++++++Go to gate 23!
+// console.log('Jonas'.padStart(23, '+')); // ++++++++++++++++++Jonas => 18 '+' signs = 23 - 5 (letters)
+console.log('Jonas'.padStart(23, '+').padEnd(30, '+')); // Jonas+++++++ => 7 '+' signs = 30 - 23 (padStart(23, '+'))
+
+const maskCreditCard = function (number) {
+  const str = number + ''
+  // converting a number to a string without using method 'String()'
+  // trick: when one of the operand of the plus (+) sign is a string => all the operands will be converted to be a string
+
+  // console.log('932835 is a', typeof number); // 932835 is a number
+  // console.log('932835 is a', typeof str); // 932835 is a string
+  const last = str.slice(-4) // ONLY the last 4 digits remain, the rest are hidden (removed)
+  console.log(last); // 2835
+  return last.padStart(str.length, '*')
+}
+
+console.log(maskCreditCard(932835))
+console.log(maskCreditCard(9378481345))
+console.log(maskCreditCard('182376428347683868274'))
+
+//////// REPEAT
+const message2 = 'BAD WEATHER...ALL DEPARTURES DELAYED...'
+console.log(message2.repeat(5));
+// BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...
+
+const planesInLine = function (n) {
+  console.log(`There are ${n} in line ${'🛩'.repeat(n)}`);
+}
+planesInLine(5)
+planesInLine(7)
+planesInLine(12)
+
+/////////////////////////// WORKING WITH STRINGS - END
+
+
 /////////////////////////// Coding Challenge #3 - START
 
 /* 
@@ -62,46 +223,46 @@ Let's continue with our football betting app! This time, we have a map with a lo
 GOOD LUCK 😀
 */
 
-const gameEvents = new Map([
-  [17, '⚽️ GOAL'],
-  [36, '🔁 Substitution'],
-  [47, '⚽️ GOAL'],
-  [61, '🔁 Substitution'],
-  [64, '🔶 Yellow card'],
-  [69, '🔴 Red card'],
-  [70, '🔁 Substitution'],
-  [72, '🔁 Substitution'],
-  [76, '⚽️ GOAL'],
-  [80, '⚽️ GOAL'],
-  [92, '🔶 Yellow card'],
-]);
+// const gameEvents = new Map([
+//   [17, '⚽️ GOAL'],
+//   [36, '🔁 Substitution'],
+//   [47, '⚽️ GOAL'],
+//   [61, '🔁 Substitution'],
+//   [64, '🔶 Yellow card'],
+//   [69, '🔴 Red card'],
+//   [70, '🔁 Substitution'],
+//   [72, '🔁 Substitution'],
+//   [76, '⚽️ GOAL'],
+//   [80, '⚽️ GOAL'],
+//   [92, '🔶 Yellow card'],
+// ]);
 
 // 1. Create an array 'events' of the different game events that happened (no duplicates)
 // const events = new Set(gameEvents.values())
 // console.log(events); // Set(4) {'⚽️ GOAL', '🔁 Substitution', '🔶 Yellow card', '🔴 Red card'} - Object with NO duplication
-const events = [...new Set(gameEvents.values())]
-console.log(events); // (4) ['⚽️ GOAL', '🔁 Substitution', '🔶 Yellow card', '🔴 Red card'] - Array with NO duplication
+// const events = [...new Set(gameEvents.values())]
+// console.log(events); // (4) ['⚽️ GOAL', '🔁 Substitution', '🔶 Yellow card', '🔴 Red card'] - Array with NO duplication
 
 // 2. After the game has finished, is was found that the yellow card from minute 64 was unfair. So remove this event from the game events log.
-gameEvents.delete(64)
-console.log(gameEvents); // Map(10) {17 => '⚽️ GOAL', 36 => '🔁 Substitution', 47 => '⚽️ GOAL', 61 => '🔁 Substitution', 69 => '🔴 Red card', …}
+// gameEvents.delete(64)
+// console.log(gameEvents); // Map(10) {17 => '⚽️ GOAL', 36 => '🔁 Substitution', 47 => '⚽️ GOAL', 61 => '🔁 Substitution', 69 => '🔴 Red card', …}
 
 // 3. Print the following string to the console: "An event happened, on average, every 9 minutes" (keep in mind that a game has 90 minutes)
-console.log(gameEvents.size); // 10
-console.log(`An event happened, on average, every ${90 / gameEvents.size} minutes`); // An event happened, on average, every 9 minutes
+// console.log(gameEvents.size); // 10
+// console.log(`An event happened, on average, every ${90 / gameEvents.size} minutes`); // An event happened, on average, every 9 minutes
 // Convert Map to array
 // const time = [...gameEvents.keys()]
-const time = [...gameEvents.keys()].pop()
-console.log(time); // 92
-console.log(`An event happened, on average, every ${ time / gameEvents.size } minutes`); // An event happened, on average, every 9.2 minutes
+// const time = [...gameEvents.keys()].pop()
+// console.log(time); // 92
+// console.log(`An event happened, on average, every ${ time / gameEvents.size } minutes`); // An event happened, on average, every 9.2 minutes
 
 // 4. Loop over the events and log them to the console, marking whether it's in the first half or second half (after 45 min) of the game, like this:
 //       [FIRST HALF] 17: ⚽️ GOAL
-console.log(gameEvents); // Map => Object
-for (const [min, event] of gameEvents) { // WHY do not need "entries()" here? => The Object.entries() static method returns an array of a given object's own enumerable string-keyed property key-value pairs.
-  const half = min <= 45 ? 'FIRST' : 'SECOND'
-  console.log(`[${half} HALF]: ${event}`);
-}
+// console.log(gameEvents); // Map => Object
+// for (const [min, event] of gameEvents) { // WHY do not need "entries()" here? => The Object.entries() static method returns an array of a given object's own enumerable string-keyed property key-value pairs.
+//   const half = min <= 45 ? 'FIRST' : 'SECOND'
+//   console.log(`[${half} HALF]: ${event}`);
+// }
 
 /////////////////////////// Coding Challenge #3 - END
 
