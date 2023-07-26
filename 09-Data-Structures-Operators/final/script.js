@@ -97,7 +97,8 @@ console.log(`An event happened, on average, every ${ time / gameEvents.size } mi
 
 // 4. Loop over the events and log them to the console, marking whether it's in the first half or second half (after 45 min) of the game, like this:
 //       [FIRST HALF] 17: ⚽️ GOAL
-for (const [min, event] of gameEvents) { // WHY do not need "entries()" here?
+console.log(gameEvents); // Map => Object
+for (const [min, event] of gameEvents) { // WHY do not need "entries()" here? => The Object.entries() static method returns an array of a given object's own enumerable string-keyed property key-value pairs.
   const half = min <= 45 ? 'FIRST' : 'SECOND'
   console.log(`[${half} HALF]: ${event}`);
 }
