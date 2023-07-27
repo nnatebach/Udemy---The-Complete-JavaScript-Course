@@ -1,8 +1,8 @@
 'use strict';
 
 // Data needed for a later exercise
-const flights =
-  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+// const flights =
+//   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
 
 const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri']
 const weekends = ['sat', 'sun']
@@ -48,6 +48,32 @@ const restaurant = {
   }
 };
 
+/////////////////////////// STRING METHODS PRACTICE - START
+const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+// 🔴 Delayed Departure from FAO to TXL (11h25)
+//              Arrival from BRU to FAO (11h45)
+//   🔴 Delayed Arrival from HEL to FAO (12h05)
+//            Departure from FAO to LIS (12h30)
+
+console.log(flights.split("+")); // "_Delayed_Departure;fao93766109;txl2133758440;11:25" => data are separated by ";"
+
+const getCode = str => str.slice(0, 3).toUpperCase() // use this function instead of repeating '.slice(0, 3).toUpperCase()' for 'from' and 'to'
+
+for (const flight of flights.split("+")) {
+  const [type, from, to, time] = flight.split(";")
+  // const output = `${type} ${from} ${to} (${time})`
+  // console.log(output); // _Delayed_Departure fao93766109 txl2133758440 (11:25)
+
+  const output = `${type.startsWith("_Delayed") ? "🔴" : ""} ${type.replaceAll("_", " ")} from ${getCode(from)} to ${getCode(to)} (${time.replace(":", "h")})`.padStart(45)
+  console.log(output);
+  // 🔴  Delayed Departure from FAO to TXL (11h25)
+  //               Arrival from BRU to FAO (11h45)
+  //   🔴  Delayed Arrival from HEL to FAO (12h05)
+  //             Departure from FAO to LIS (12h30)
+}
+/////////////////////////// STRING METHODS PRACTICE - END
+
 /////////////////////////// Coding Challenge #4 - START
 // Coding Challenge #4
 
@@ -80,29 +106,29 @@ Afterwards, test with your own test data!
 GOOD LUCK 😀
 */
 
-document.body.append(document.createElement('textarea'));
-document.body.append(document.createElement('button'));
+// document.body.append(document.createElement('textarea'));
+// document.body.append(document.createElement('button'));
 
-const text = document.querySelector('textarea').value
+// const text = document.querySelector('textarea').value
 
-// underscore_case => underscoreCase
-document.querySelector('button').addEventListener('click', function () {
-  const text = document.querySelector('textarea').value // 'text' contains the 'string' from textarea
-  const rows = text.split('\n') // remove new line character in string
-  // console.log(rows); // rows is the array containing the 'string' from textarea as the array elements
+// // underscore_case => underscoreCase
+// document.querySelector('button').addEventListener('click', function () {
+//   const text = document.querySelector('textarea').value // 'text' contains the 'string' from textarea
+//   const rows = text.split('\n') // remove new line character in string
+//   // console.log(rows); // rows is the array containing the 'string' from textarea as the array elements
 
-  for (const [i, row] of rows.entries()) {
-    // console.log(row.trim().toLowerCase().trim().split('_')); // underscore_case => (2) ['underscore', 'case']
-    //// split - takes a pattern and divides a String into an ordered list of substrings and puts these substrings into an array, and returns the array.
-    const [first, second] = row.trim().toLowerCase().split('_')
-    const output = `${first}${second.replace(
-      second[0],
-      second[0].toUpperCase()
-    )}`;
-    // console.log(output); // ['underscore', 'case'] => underscoreCase
-    console.log(`${output.padEnd(20)}${'✅'.repeat(i+1)}`);
-  }
-})
+//   for (const [i, row] of rows.entries()) {
+//     // console.log(row.trim().toLowerCase().trim().split('_')); // underscore_case => (2) ['underscore', 'case']
+//     //// split - takes a pattern and divides a String into an ordered list of substrings and puts these substrings into an array, and returns the array.
+//     const [first, second] = row.trim().toLowerCase().split('_')
+//     const output = `${first}${second.replace(
+//       second[0],
+//       second[0].toUpperCase()
+//     )}`;
+//     // console.log(output); // ['underscore', 'case'] => underscoreCase
+//     console.log(`${output.padEnd(20)}${'✅'.repeat(i+1)}`);
+//   }
+// })
 
 /////////////////////////// Coding Challenge #4 - END
 
