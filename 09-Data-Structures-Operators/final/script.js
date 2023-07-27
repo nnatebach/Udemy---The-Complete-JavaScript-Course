@@ -48,6 +48,62 @@ const restaurant = {
   }
 };
 
+/////////////////////////// Coding Challenge #4 - START
+// Coding Challenge #4
+
+/* 
+Write a program that receives a list of variable names written in underscore_case and convert them to camelCase.
+
+The input will come from a textarea inserted into the DOM (see code below), and conversion will happen when the button is pressed.
+
+THIS TEST DATA (pasted to textarea)
+underscore_case
+ first_name
+Some_Variable 
+  calculate_AGE
+delayed_departure
+
+SHOULD PRODUCE THIS OUTPUT (5 separate console.log outputs)
+underscoreCase      ✅
+firstName           ✅✅
+someVariable        ✅✅✅
+calculateAge        ✅✅✅✅
+delayedDeparture    ✅✅✅✅✅
+
+HINT 1: Remember which character defines a new line in the textarea 😉
+HINT 2: The solution only needs to work for a variable made out of 2 words, like a_b
+HINT 3: Start without worrying about the ✅. Tackle that only after you have the variable name conversion working 😉
+HINT 4: This challenge is difficult on purpose, so start watching the solution in case you're stuck. Then pause and continue!
+
+Afterwards, test with your own test data!
+
+GOOD LUCK 😀
+*/
+
+document.body.append(document.createElement('textarea'));
+document.body.append(document.createElement('button'));
+
+const text = document.querySelector('textarea').value
+
+// underscore_case => underscoreCase
+document.querySelector('button').addEventListener('click', function () {
+  const text = document.querySelector('textarea').value // 'text' contains the 'string' from textarea
+  const rows = text.split('\n') // remove new line character in string
+  // console.log(rows); // rows is the array containing the 'string' from textarea as the array elements
+
+  for (const row of rows) {
+    // console.log(row.trim().toLowerCase().trim().split('_')); // underscore_case => (2) ['underscore', 'case']
+    //// split - takes a pattern and divides a String into an ordered list of substrings and puts these substrings into an array, and returns the array.
+    const [first, second] = row.trim().toLowerCase().split('_')
+    const output = `${first}${second.replace(second[0], second[0].toUpperCase())}`
+    // console.log(output); // ['underscore', 'case'] => underscoreCase
+    console.log(`${output.padEnd(20)}✅`); // underscoreCase      ✅
+  }
+})
+
+/////////////////////////// Coding Challenge #4 - END
+
+
 /////////////////////////// WORKING WITH STRINGS - START
 
 ////////////// PART 1
@@ -131,74 +187,75 @@ const restaurant = {
 
 
 ////////////// PART 3
-//// split - turns a string into an array with the string text becoming the element of the array
-console.log('a+very+nice+string'.split('+')); // (4) ['a', 'very', 'nice', 'string']
-console.log('Jonas Schmedtmann'.split(' ')); // (2) ['Jonas', 'Schmedtmann']
-const [firstName, lastName] = 'Jonas Schmedtmann'.split(' ')
+//// split - takes a pattern and divides a String into an ordered list of substrings and puts these substrings into an array, and returns the array.
+// console.log('a+very+nice+string'.split('+')); // (4) ['a', 'very', 'nice', 'string']
+// console.log('Jonas Schmedtmann'.split(' ')); // (2) ['Jonas', 'Schmedtmann']
+// const [firstName, lastName] = 'Jonas Schmedtmann'.split(' ')
+// console.log(firstName, lastName); // Jonas Schmedtmann
 
 // const newName = ['Mr. ', firstName, lastName.toUpperCase()]
 // console.log(newName); // (3) ['Mr. ', 'Jonas', 'SCHMEDTMANN']
 
 // join - returns a new string by concatenating all of the elements in an array (or an array-like object), separated by commas or a specified separator string
-// const newName = ['Mr.', firstName, lastName.toUpperCase()].join('---')
-// console.log(newName); // Mr.---Jonas---SCHMEDTMANN
-const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ')
-console.log(newName); // Mr. Jonas SCHMEDTMANN
+// const newName1 = ['Mr.', firstName, lastName.toUpperCase()].join('---')
+// console.log(newName1); // Mr.---Jonas---SCHMEDTMANN
+// const newName2 = ['Mr.', firstName, lastName.toUpperCase()].join(' ')
+// console.log(newName2); // Mr. Jonas SCHMEDTMANN
 
 //////// PRACTICE - Uppercase for every first letter in a word
 // Examples: jessica ann smith davies => Jessica Ann Smith Davies
 // Examples: nathan bach => Nathan Bach
-const capitalizeName = function (names) {
-  const name = names.split(' ')
-  // console.log(name); // ['nathan', 'bach']
-  const upperCase = []
+// const capitalizeName = function (names) {
+//   const name = names.split(' ')
+//   // console.log(name); // ['nathan', 'bach']
+//   const upperCase = []
 
-  for (const n of name) {
-    // upperCase.push(n[0].toUpperCase() + n.slice(1))
-    upperCase.push(n.replace(n[0], n[0].toUpperCase()))
-  }
-  console.log(upperCase.join(' '));
-  // Jessica Ann Smith Davies
-  // Nathan Bach
-}
+//   for (const n of name) {
+//     // upperCase.push(n[0].toUpperCase() + n.slice(1))
+//     upperCase.push(n.replace(n[0], n[0].toUpperCase()))
+//   }
+//   console.log(upperCase.join(' '));
+//   // Jessica Ann Smith Davies
+//   // Nathan Bach
+// }
 
-capitalizeName('jessica ann smith davies')
-capitalizeName('nathan bach')
+// capitalizeName('jessica ann smith davies')
+// capitalizeName('nathan bach')
 
 //////// Padding
-const message = 'Go to gate 23!'
-console.log(message.padStart(25, '+')); // +++++++++++Go to gate 23!
-// console.log('Jonas'.padStart(23, '+')); // ++++++++++++++++++Jonas => 18 '+' signs = 23 - 5 (letters)
-console.log('Jonas'.padEnd(30, '+')); // Jonas+++++++++++++++++++++++++ => 25 '+' signs = 30 - 5
-console.log('Jonas'.padStart(23, '+').padEnd(30, '+')); 
-// ++++++++++++++++++Jonas+++++++ => 18 '+' signs BEFORE = 23 - 5 AND 7 '+' signs AFTER = 30 - 23
+// const message = 'Go to gate 23!'
+// console.log(message.padStart(25, '+')); // +++++++++++Go to gate 23! => 11 '+' signs
+// // console.log('Jonas'.padStart(23, '+')); // ++++++++++++++++++Jonas => 18 '+' signs = 23 - 5 (letters)
+// console.log('Jonas'.padEnd(30, '+')); // Jonas+++++++++++++++++++++++++ => 25 '+' signs = 30 - 5
+// console.log('Jonas'.padStart(23, '+').padEnd(30, '+'));
+// // ++++++++++++++++++Jonas+++++++ => 18 '+' signs BEFORE = 23 - 5 AND 7 '+' signs AFTER = 30 - 23
 
-const maskCreditCard = function (number) {
-  const str = number + ''
-  // converting a number to a string by concatenating a number and an empty string " "
+// const maskCreditCard = function (number) {
+//   const str = number + ''
+//   // converting a number to a string by concatenating a number and an empty string " "
 
-  // console.log('932835 is a', typeof number); // 932835 is a number
-  // console.log('932835 is a', typeof str); // 932835 is a string
-  const last = str.slice(-4) // ONLY the last 4 digits remain, the rest are hidden (removed)
-  console.log(last); // 2835
-  return last.padStart(str.length, '*')
-}
+//   // console.log('932835 is a', typeof number); // 932835 is a number
+//   // console.log('932835 is a', typeof str); // 932835 is a string
+//   const last = str.slice(-4) // ONLY the last 4 digits remain, the rest are hidden (removed)
+//   console.log(last); // 2835
+//   return last.padStart(str.length, '*')
+// }
 
-console.log(maskCreditCard(932835))
-console.log(maskCreditCard(9378481345))
-console.log(maskCreditCard('182376428347683868274'))
+// console.log(maskCreditCard(932835))
+// console.log(maskCreditCard(9378481345))
+// console.log(maskCreditCard('182376428347683868274'))
 
 //////// REPEAT
-const message2 = 'BAD WEATHER...ALL DEPARTURES DELAYED...'
-console.log(message2.repeat(5));
-// BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...
+// const message2 = 'BAD WEATHER...ALL DEPARTURES DELAYED...'
+// console.log(message2.repeat(5));
+// // BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...BAD WEATHER...ALL DEPARTURES DELAYED...
 
-const planesInLine = function (n) {
-  console.log(`There are ${n} in line ${'🛩'.repeat(n)}`);
-}
-planesInLine(5)
-planesInLine(7)
-planesInLine(12)
+// const planesInLine = function (n) {
+//   console.log(`There are ${n} in line ${'🛩'.repeat(n)}`);
+// }
+// planesInLine(5)
+// planesInLine(7)
+// planesInLine(12)
 
 /////////////////////////// WORKING WITH STRINGS - END
 
