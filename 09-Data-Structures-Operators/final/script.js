@@ -154,14 +154,7 @@ const capitalizeName = function (names) {
   const upperCase = []
 
   for (const n of name) {
-    // console.log(n);
-    // nathan
-    // bach
-    // console.log(n[0].toUpperCase()); // N
-    // console.log(n[0].toUpperCase() + n.slice(1)); // Nathan
-    // console.log(upperCase.push(n[0].toUpperCase() + n.slice(1)));
     // upperCase.push(n[0].toUpperCase() + n.slice(1))
-
     upperCase.push(n.replace(n[0], n[0].toUpperCase()))
   }
   console.log(upperCase.join(' '));
@@ -176,12 +169,13 @@ capitalizeName('nathan bach')
 const message = 'Go to gate 23!'
 console.log(message.padStart(25, '+')); // +++++++++++Go to gate 23!
 // console.log('Jonas'.padStart(23, '+')); // ++++++++++++++++++Jonas => 18 '+' signs = 23 - 5 (letters)
-console.log('Jonas'.padStart(23, '+').padEnd(30, '+')); // Jonas+++++++ => 7 '+' signs = 30 - 23 (padStart(23, '+'))
+console.log('Jonas'.padEnd(30, '+')); // Jonas+++++++++++++++++++++++++ => 25 '+' signs = 30 - 5
+console.log('Jonas'.padStart(23, '+').padEnd(30, '+')); 
+// ++++++++++++++++++Jonas+++++++ => 18 '+' signs BEFORE = 23 - 5 AND 7 '+' signs AFTER = 30 - 23
 
 const maskCreditCard = function (number) {
   const str = number + ''
-  // converting a number to a string without using method 'String()'
-  // trick: when one of the operand of the plus (+) sign is a string => all the operands will be converted to be a string
+  // converting a number to a string by concatenating a number and an empty string " "
 
   // console.log('932835 is a', typeof number); // 932835 is a number
   // console.log('932835 is a', typeof str); // 932835 is a string
