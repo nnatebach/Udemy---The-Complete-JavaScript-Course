@@ -91,13 +91,16 @@ document.querySelector('button').addEventListener('click', function () {
   const rows = text.split('\n') // remove new line character in string
   // console.log(rows); // rows is the array containing the 'string' from textarea as the array elements
 
-  for (const row of rows) {
+  for (const [i, row] of rows.entries()) {
     // console.log(row.trim().toLowerCase().trim().split('_')); // underscore_case => (2) ['underscore', 'case']
     //// split - takes a pattern and divides a String into an ordered list of substrings and puts these substrings into an array, and returns the array.
     const [first, second] = row.trim().toLowerCase().split('_')
-    const output = `${first}${second.replace(second[0], second[0].toUpperCase())}`
+    const output = `${first}${second.replace(
+      second[0],
+      second[0].toUpperCase()
+    )}`;
     // console.log(output); // ['underscore', 'case'] => underscoreCase
-    console.log(`${output.padEnd(20)}✅`); // underscoreCase      ✅
+    console.log(`${output.padEnd(20)}${'✅'.repeat(i+1)}`);
   }
 })
 
