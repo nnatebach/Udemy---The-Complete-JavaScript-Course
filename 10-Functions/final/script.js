@@ -1,6 +1,6 @@
 'use strict';
 
-///////////////////////////////////////// Default Parameters - START
+////////////////////// Default Parameters - START
 // const bookings = []
 
 // const createBooking = function (flightNum, numPassengers=1, price=199) {
@@ -22,26 +22,26 @@
 // createBooking('LH123') // {flightNum: 'LH123', numPassengers: 1, price: 199}
 // createBooking('LH123', undefined, 200) // {flightNum: 'LH123', numPassengers: 1, price: 200} => set 'undefined' for the value of the parameter you want to skip.
 // createBooking('LH123', 300, 200) // {flightNum: 'LH123', numPassengers: 300, price: 200}
-///////////////////////////////////////// Default Parameters - END
+////////////////////// Default Parameters - END
 
 
-///////////////////////////////////////// How Passing Arguments Works Value vs. Reference - START
-const flight = 'LH234'
-const jonas = {
-  name: 'Jonas Schmedtmann',
-  passport: 24739479284
-}
+////////////////////// How Passing Arguments Works Value vs. Reference - START
+// const flight = 'LH234'
+// const jonas = {
+//   name: 'Jonas Schmedtmann',
+//   passport: 24739479284
+// }
 
-const checkIn = function (flightNum, passenger) {
-  flightNum = 'LH999'
-  passenger.name = 'Mr. ' + passenger.name
+// const checkIn = function (flightNum, passenger) {
+//   flightNum = 'LH999'
+//   passenger.name = 'Mr. ' + passenger.name
 
-  if (passenger.passport === 24739479284) {
-    alert('Checked in')
-  } else {
-    alert('Wrong passport!')
-  }
-}
+//   if (passenger.passport === 24739479284) {
+//     alert('Checked in')
+//   } else {
+//     alert('Wrong passport!')
+//   }
+// }
 
 // checkIn(flight, jonas);
 // console.log(flight); // LH234
@@ -51,14 +51,45 @@ const checkIn = function (flightNum, passenger) {
 // const flightNum = flight;
 // const passenger = jonas;
 
-const newPassport = function (person) {
-  person.passport = Math.trunc(Math.random() * 10000000000)
-}
+// const newPassport = function (person) {
+//   person.passport = Math.trunc(Math.random() * 10000000000)
+// }
 
-newPassport(jonas);
-checkIn(flight, jonas);
+// newPassport(jonas);
+// checkIn(flight, jonas);
 
 
 // We are having two functions manipulating the same object
 // Pass-by-reference is NOT available in JavaScript, ONLY pass-by-value
-///////////////////////////////////////// How Passing Arguments Works Value vs. Reference - END
+////////////////////// How Passing Arguments Works Value vs. Reference - END
+
+
+////////////////////// Functions Returning Functions - START
+const greet = function (greeting) {
+  return function (name) {
+    console.log(`${greeting} ${name}`);
+  }
+}
+console.log(greet);
+// ƒ (greeting) {
+//   return function (name) {
+//     console.log(`${greeting} ${name}`);
+//   }
+// }
+const greeterHey = greet('Hey')
+console.log(greeterHey);
+// ƒ (name) {
+//   console.log(`${greeting} ${name}`);
+// }
+greeterHey('Jonas') // Hey Jonas
+greeterHey('Steven') // Hey Steven
+greet('Hello')('Jonas') // Hello Jonas
+
+
+////// Challenge - Change keyword 'function' to using arrow function
+
+const greetArr = greeting => name => console.log(`${greeting} ${name}`); // Hi Jonas
+
+greetArr('Hi')('Jonas')
+
+////////////////////// Functions Returning Functions - END
