@@ -167,7 +167,6 @@ const eurowings = {
 const book = lufthansa.book // storing the value of 'lufthansa.book' function in the 'book' variable which is also a function
 
 // book(23, 'Sarah Williams') // does NOT work
-// console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`)
 // Problem: Uncaught TypeError: Cannot read properties of undefined (reading 'airline')
 // Reason: The 'book' function is now a regular function call => the 'this' keyword points to 'undefined' (in 'strict' mode)
 // Question: Why 'book' is a regular function and NOT the method of 'lufthansa' object??
@@ -178,10 +177,10 @@ const book = lufthansa.book // storing the value of 'lufthansa.book' function in
 // use 'call', 'apply' and 'bind' function methods
 
 ////// call
-book.call(eurowings, 23, 'Sarah Williams') // book (flightNum, name)
+book.call(eurowings, 23, 'Sarah Williams') // 'this' keyword points to 'eurowings' => Sarah Williams booked a seat on Airline Eurowings flight EW23
 console.log(eurowings); // {name: 'Eurowings', iataCode: 'EW', bookings: Array(1)}
 
-book.call(lufthansa, 239, 'Mary Cooper') // book (flightNum, name)
+book.call(lufthansa, 239, 'Mary Cooper') // 'this' keyword points to 'lufthansa' => Mary Cooper booked a seat on Airline Lufthansa flight LH239
 console.log(lufthansa); // {airline: 'Lufthansa', iataCode: 'LH', bookings: Array(3), book: ƒ}
 
 const swiss = {
@@ -200,13 +199,84 @@ console.log(swiss); // {airline: 'Swiss Air Lines', iataCode: 'LX', bookings: Ar
 // console.log(`${name} booked a seat on Airline ${this.airline} flight ${this.iataCode}${flightNum}`)
 // George Cooper booked a seat on Airline Swiss Air Lines flight LX37
 
-book.call(swiss, ...flightData)
+book.call(swiss, ...flightData) // George Cooper booked a seat on Airline Swiss Air Lines flight LX37
 console.log(swiss);
-// console.log(`${name} booked a seat on Airline ${this.airline} flight ${this.iataCode}${flightNum}`)
-// George Cooper booked a seat on Airline Swiss Air Lines flight LX37
 
 // book.apply(swiss, flightData) === book.call(swiss, ...flightData)
 
 ////////////////////// The call and apply Methods - END
 
+////////////////////// bind - START
+// The bind() method creates a new function that, when called, has its 'this' keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
+const bookLH = book.bind(lufthansa)
+const bookEW = book.bind(eurowings)
+const bookLX = book.bind(swiss)
 
+bookLH(23, 'Steven Williams') // Steven Williams booked a seat on Airline Eurowings flight EW23
+
+// Same flight number for all guests
+const bookLH23 = book.bind(lufthansa, 23) // add the second parameter for the 'bind' method
+bookLH23('Michael Jordan') // Michael Jordan booked a seat on Airline Lufthansa flight LH23
+bookLH23('Stephen Curry') // Stephen Curry booked a seat on Airline Lufthansa flight LH23
+
+////////// With Event Listeners - IMPORTANT
+lufthansa.planes = 300
+lufthansa.buyPlane = function () {
+  console.log(this); // <button class="buy">Buy new plane 🛩</button>
+
+  this.planes++;
+  console.log(this.planes);
+}
+// document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane)
+// Problem: the console currently logs out 'NaN'
+// Reason: the 'this' keyword points to the element that is attached to the 'addEventListener' method
+// the element <button class="buy">Buy new plane 🛩</button> is currently attached to the 'addEventListener' method which is NOT a number
+// Solution: we need the 'this' to point to the 'lufthansa' object => We need to manually define the 'this' keyword here.
+// How? use 'bind'
+// Why? We need to pass in a function in "document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane)"
+document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane.bind(lufthansa))
+// console.log(this); // {airline: 'Lufthansa', iataCode: 'LH', bookings: Array(6), planes: 300, book: ƒ, …}
+// console.log(this.planes); // 301
+
+
+////////// Partial Application - IMPORTANT
+const addTax = (rate, value) => value + value * rate
+console.log(addTax(.1, 200)); // 220 = 200 + 20 = 200 + (200 * .1)
+
+// Say the VAT here is 23%
+// use the 'bind' on the 'addTax' function and preset the 'rate' to always be 23%
+// the first argument of 'bind' is the 'this' keyword
+// we use 'null' for the 'this' keyword since in this case we don't care about the 'this' keyword at all => WHY???
+// 'null' is the standard for the 'this' keyword in this case when the value of 'this' can be any other value, nothing will happen with it.
+const addVAT = addTax.bind(null, .23)
+// addVAT = value => value + value * .23
+// The order of the arguments here is important.
+// If you want to preset the 'rate' then it MUST be the first argument, it will NOT work otherwise
+
+console.log(addVAT(100)); // 123 = 100 + 23 = 100 + (100 * .23)
+console.log(addVAT(23)); // 28.29 = 23 + 5.29 = 23 + (23 * .23)
+
+////////// Challenge - Partial Application using 'One Function returning Another Function'
+
+const addTaxRate = function (rate) {
+  return function (value) {
+    return value + value * rate
+  }
+}
+// we need the 'rate' and the 'value'
+// the first function is the one that needs the 'rate'
+// the result function is the one that takes in the 'value'
+
+const addVAT2 = addTaxRate(.23)
+console.log(addVAT2(100)); // 123
+console.log(addVAT2(23)); // 28.29
+
+// 'addVAT' and 'addVAT2' are the same function which gives the same result
+
+////////////////////// bind - END
+
+// In Summary of 'call', 'bind' and 'apply'
+// Orders of importance and priority: 'call' and 'bind' are more important than 'apply'.
+// 'apply' is old and not as popular for the modern day.
+// use 'bind' for 'Event Listeners'. Reason: the 'this' keyword points to the element that is attached to the 'addEventListener' method which results in the console logs out 'NaN' when the element is NOT a number.
+// use 'call' to reuse a method from an object for other objects where the method is not available. 'call' helps us to not repeat ourselves.
