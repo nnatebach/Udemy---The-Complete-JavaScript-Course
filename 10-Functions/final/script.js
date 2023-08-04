@@ -283,8 +283,7 @@
 // use 'call' to reuse a method from an object for other objects where the method is not available. 'call' helps us to not repeat ourselves.
 
 
-////////////////////// 010 Coding Challenge #1 - START
-///////////////////////////////////////
+/////////////////////////////////////// 010 Coding Challenge #1 - START
 // Coding Challenge #1
 
 /* 
@@ -318,43 +317,43 @@ BONUS TEST DATA 2: [1, 5, 3, 9, 6, 1]
 GOOD LUCK 😀
 */
 
-//////////////////////// 1
-const poll = {
-  question: 'What is your favorite programming language?',
-  option: [
-    '0: JavaScript',
-    '1: Python',
-    '2: Rust',
-    '3: C++'
-  ],
-  // this generates [0,0,0,0]. More in the next section.
-  answers: new Array(4).fill(0),
-  registerNewAnswer () {
-    // Get answer
-    const answer = Number(
-      prompt(
-        `${this.question}\n${this.option.join('\n')}\n(Write option number)`
-      )
-    );
-    console.log(answer); // Without 'Number()', 'answer' is a string
+//////////////////////// 1 - Create a method called 'registerNewAnswer' on the 'poll' object
+// const poll = {
+//   question: 'What is your favorite programming language?',
+//   option: [
+//     '0: JavaScript',
+//     '1: Python',
+//     '2: Rust',
+//     '3: C++'
+//   ],
+//   // this generates [0,0,0,0]. More in the next section.
+//   answers: new Array(4).fill(0),
+//   registerNewAnswer () {
+//     // Get answer
+//     const answer = Number(
+//       prompt(
+//         `${this.question}\n${this.option.join('\n')}\n(Write option number)`
+//       )
+//     );
+//     console.log(answer); // Without 'Number()', 'answer' is a string
 
-    // Register answer
-    typeof answer === 'number' && answer < this.answers.length && this.answers[answer]++
-    // console.log(this.answers);
+//     // Register answer
+//     typeof answer === 'number' && answer < this.answers.length && this.answers[answer]++
+//     // console.log(this.answers);
 
-    this.displayResults()
-    this.displayResults('string')
-  },
+//     this.displayResults()
+//     this.displayResults('string')
+//   },
 
-//////////////////////// 3. Create a method 'displayResults' which displays the poll results. The method takes a string as an input (called 'type'), which can be either 'string' or 'array'. If type is 'array', simply display the results array as it is, using console.log(). This should be the default option. If type is 'string', display a string like "Poll results are 13, 2, 4, 1".
-  displayResults(type = 'array') {
-    if (type === 'array') {
-      console.log(this.answers);
-    } else if (type === 'string') {
-      console.log(`Poll results are ${this.answers.join(', ')}`);
-    }
-  }
-}
+//   //////////////////////// 3. Create a method 'displayResults' which displays the poll results. The method takes a string as an input (called 'type'), which can be either 'string' or 'array'. If type is 'array', simply display the results array as it is, using console.log(). This should be the default option. If type is 'string', display a string like "Poll results are 13, 2, 4, 1".
+//   displayResults(type = 'array') {
+//     if (type === 'array') {
+//       console.log(this.answers);
+//     } else if (type === 'string') {
+//       console.log(`Poll results are ${this.answers.join(', ')}`);
+//     }
+//   }
+// }
 
 // Why do we need to convert the array 'poll.option' to a string??
 // Reason: 'poll.option' is originally an array, we want to show every element inside as a string
@@ -362,11 +361,55 @@ const poll = {
 // console.log(poll.option.join()); // 0: JavaScript,1: Python,2: Rust,3: C++
 
 //////////////////////// 2. Call 'registerNewAnswer' method whenever the user clicks the "Answer poll" button.
-document.querySelector('.poll').addEventListener('click', poll.registerNewAnswer.bind(poll))
+// document.querySelector('.poll').addEventListener('click', poll.registerNewAnswer.bind(poll))
 // WHY do we use 'bind' here???
 
 //////////////////////// 4. Run the 'displayResults' method at the end of each 'registerNewAnswer' method call.
-poll.displayResults.call({answers: [5,2,3]}, 'string')
-poll.displayResults.call({answers: [1, 5, 3, 9, 6, 1]}, 'string')
+// poll.displayResults.call({answers: [5,2,3]}, 'string')
+// poll.displayResults.call({answers: [1, 5, 3, 9, 6, 1]}, 'string')
 
-////////////////////// 010 Coding Challenge #1 - END
+/////////////////////////////////////// 010 Coding Challenge #1 - END
+
+
+/////////////////////////////////////// 011 Immediately Invoked Function Expressions (IIFE) - START
+
+// function() {
+//   console.log('This will never run again!');
+// }()
+// Problem: Uncaught SyntaxError: Function statements require a function name
+// Solution: Trick JavaScript by turning that function statement into a function expression by wrapping that whole function statement in parenthesis ()
+
+// IIFE
+// This is the first option to create an IIFE - Making a function expression from a function statement
+(function() {
+  console.log('This will never run again!');
+  // const isPrivate = 23 // this is the encapsulated data that canNOT be accessed from outside of the scope
+})();
+
+// console.log(isPrivate); // Uncaught ReferenceError: isPrivate is not defined
+
+// The second option to create an IIFE function is with arrow function
+(() => console.log('This arrow function will never run again!'))();
+
+////////// NOTE: ALWAYS have the semicolon ';' EITHER at the end OR at the beginning of the IIFE, otherwise the function will not work
+
+// Reason for IIFE function:
+// To protect by hiding the private data with data encapsulation
+// It is important to hide variable using scope (data encapsulation) as global variable sometimes can be accidentally overwritten by other part of the code.
+// ======> This will be talked more in OOP
+
+// variables declared with 'let' or 'const' create their own scope inside a block
+{
+  const isPrivate = 23 // declared with 'const' NOT accessible from outside the block
+  var notPrivate = 46 // declared with 'var' IS accessible from outside the block as it does complete the block
+}
+
+// console.log(isPrivate); // Uncaught ReferenceError: isPrivate is not defined
+console.log(notPrivate); // 46
+
+// Different usages
+// Scope for data privacy => create a block
+// If you want to execute a function IMMEDIATELY just ONCE => IIFE
+
+/////////////////////////////////////// 011 Immediately Invoked Function Expressions (IIFE) - END
+
