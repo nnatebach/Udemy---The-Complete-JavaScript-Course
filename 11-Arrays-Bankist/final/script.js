@@ -216,10 +216,10 @@ displayMovements(account1.movements)
 // 2: function(400)
 // ....
 
-// Difference between 'forEach' and 'for (const ... of .....)' is that
-// We cannot break out of the 'forEach' loop => 'continue' and 'break' method does NOT work in the 'forEach' loop at all
-// 'forEach' will loop over the entire array
-// While the names of the parameters are not important YET the orders of the parameters ARE important.
+//***** */ The difference between 'forEach' and 'for ( ... of .....)' is that
+// 1. We cannot break out of the 'forEach' loop => 'continue' and 'break' method does NOT work in the 'forEach' loop at all
+// 2. 'forEach' will loop over the entire array
+// 3. forEach: While the names of the parameters are not important YET the orders of the parameters ARE important.
 
 // What is the need for the parameter 'arr'???
 // Reason: If your callback function were declared elsewhere then it has no idea what array it's being used for
@@ -265,3 +265,59 @@ displayMovements(account1.movements)
 
 ////////////////////////// 006 forEach With Maps and Sets - END
 
+
+////////////////////////// Coding Challenge #1 - START
+
+/* 
+Julia and Kate are doing a study on dogs. So each of them asked 5 dog owners about their dog's age, and stored the data into an array (one array for each). For now, they are just interested in knowing whether a dog is an adult or a puppy. A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years old.
+
+Create a function 'checkDogs', which accepts 2 arrays of dog's ages ('dogsJulia' and 'dogsKate'), and does the following things:
+
+1. Julia found out that the owners of the FIRST and the LAST TWO dogs actually have cats, not dogs! So create a shallow copy of Julia's array, and remove the cat ages from that copied array (because it's a bad practice to mutate function parameters)
+2. Create an array with both Julia's (corrected) and Kate's data
+3. For each remaining dog, log to the console whether it's an adult ("Dog number 1 is an adult, and is 5 years old") or a puppy ("Dog number 2 is still a puppy 🐶")
+4. Run the function for both test datasets
+
+HINT: Use tools from all lectures in this section so far 😉
+
+TEST DATA 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3]
+TEST DATA 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
+
+GOOD LUCK 😀
+*/
+
+// const dogsJulia = [3, 5, 2, 12, 7]
+// const dogsKate = [4, 1, 15, 8, 3]
+
+const checkDogs = function (dogsJulia, dogsKate) {
+  // create a shallow of the dog array
+  const dogsJuliaCheck = dogsJulia.slice();
+
+  ////// 1. Julia found out that the owners of the FIRST and the LAST TWO dogs actually have cats, not dogs! => the FIRST and the LAST TWO animals are cats
+  // Removing the FIRST and the LAST TWO animals
+  dogsJuliaCheck.splice(0, 1)
+  // console.log(dogsJuliaCheck); // (4) [5, 2, 12, 7]
+  dogsJuliaCheck.splice(-2)
+  // console.log(dogsJuliaCheck); // (2) [5, 2]
+
+  ////// 2. Create an array with both Julia's (corrected) and Kate's data
+  const dogs = dogsJuliaCheck.concat(dogsKate)
+  // console.log(dogs); // (7) [5, 2, 4, 1, 15, 8, 3]
+
+  ////// 3. For each remaining dog, log to the console whether it's an adult ("Dog number 1 is an adult, and is 5 years old") or a puppy ("Dog number 2 is still a puppy
+  // A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years old.
+  dogs.forEach(function(dog, i, arr) {
+    if (dog > 3 || dog === 3) {
+      console.log(`Dog number ${i+1} is ${dog} years old so it is an adult dog.`);
+    } else {
+      console.log(`Dog number ${i+1} is ${dog} years old so it is a puppy.`);
+    }
+  })
+}
+
+// TEST DATA 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3]
+// TEST DATA 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
+
+// checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3])
+checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4])
+////////////////////////// Coding Challenge #1 - END
