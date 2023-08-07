@@ -227,8 +227,8 @@ currencies.forEach(function (value, key, map) {
 const currenciesUnique = new Set(['USD', 'GBP', 'USD', 'EUR', 'EUR'])
 // console.log(currenciesUnique); // Set(3) {'USD', 'GBP', 'EUR'}
 
-currenciesUnique.forEach(function (value, key, map) {
-  console.log(`${key}: ${value}`);
+currenciesUnique.forEach(function (value, _, map) {
+  console.log(`${value}: ${value}`);
   // USD: USD
   // GBP: GBP
   // EUR: EUR
