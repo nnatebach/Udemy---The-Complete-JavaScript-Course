@@ -61,6 +61,31 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const displayMovements = function (movements) {
+  // remove old data in order to add new data
+  containerMovements.innerHTML = '' // containerMovements.textContent = 0
+
+  // add new data to the 'movements' HTML element
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    // movements__type--deposit
+    // movements__type--withdrawal
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
+        <div class="movements__value">${mov}</div>
+      </div>
+    `
+    // insertAdjacentHTML(position, text)
+    // containerMovements = '.movements'
+    containerMovements.insertAdjacentHTML('afterbegin', html)
+    // afterbegin: new child element will appear before the existing child element
+  })
+}
+displayMovements(account1.movements)
+
+// console.log(containerMovements.innerHTML); // double check that old data has been erased by logging the content to the console.
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -205,38 +230,38 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 ////////////////////////// 006 forEach With Maps and Sets - START
 ///////////// MAP
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+// const currencies = new Map([
+//   ['USD', 'United States dollar'],
+//   ['EUR', 'Euro'],
+//   ['GBP', 'Pound sterling'],
+// ]);
 
-// USD: United States dollar
-// The first argument is the 'current value' in the 'current iteration'
-// The second argument is the 'key'
-// The third argument is the entire map that is looped over
-currencies.forEach(function (value, key, map) {
-  console.log(`${key}: ${value}`);
-  // USD: United States dollar
-  // EUR: Euro
-  // GBP: Pound sterling
-})
+// // USD: United States dollar
+// // The first argument is the 'current value' in the 'current iteration'
+// // The second argument is the 'key'
+// // The third argument is the entire map that is looped over
+// currencies.forEach(function (value, key, map) {
+//   console.log(`${key}: ${value}`);
+//   // USD: United States dollar
+//   // EUR: Euro
+//   // GBP: Pound sterling
+// })
 // Question: Why there is the difference between the orders of 'key' and 'value' between the parameters and when logging them out from the console?
 
 ///////////// SET
-const currenciesUnique = new Set(['USD', 'GBP', 'USD', 'EUR', 'EUR'])
-// console.log(currenciesUnique); // Set(3) {'USD', 'GBP', 'EUR'}
+// const currenciesUnique = new Set(['USD', 'GBP', 'USD', 'EUR', 'EUR'])
+// // console.log(currenciesUnique); // Set(3) {'USD', 'GBP', 'EUR'}
 
-currenciesUnique.forEach(function (value, _, map) {
-  console.log(`${value}: ${value}`);
-  // USD: USD
-  // GBP: GBP
-  // EUR: EUR
+// currenciesUnique.forEach(function (value, _, map) {
+//   console.log(`${value}: ${value}`);
+//   // USD: USD
+//   // GBP: GBP
+//   // EUR: EUR
 
-  // Reason: SET does NOT have neither the 'key' nor the 'indices' => NO value would make sense for the 'key'
-  // Solution: Replace the 'key' with the underscore '_' which is a throw away variable, a convention in JavaScript
-  // Read more: https://stackoverflow.com/questions/11406823/underscore-as-a-javascript-variable
-})
+//   // Reason: SET does NOT have neither the 'key' nor the 'indices' => NO value would make sense for the 'key'
+//   // Solution: Replace the 'key' with the underscore '_' which is a throw away variable, a convention in JavaScript
+//   // Read more: https://stackoverflow.com/questions/11406823/underscore-as-a-javascript-variable
+// })
 
 ////////////////////////// 006 forEach With Maps and Sets - END
 
