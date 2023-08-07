@@ -144,3 +144,58 @@ console.log('bach'.slice(-1)[0]); // h
 console.log('bach'.at(-1)); // h
 console.log('bach'.at(0)); // b
 ////////////////////////// 004 The new 'at' method - END
+
+
+////////////////////////// 005 Looping Arrays forEach - START
+
+const transactions = [200,450,-400,3000,-650,-130,70,1300]
+
+// for (const transaction of transactions) {
+for (const [i, transaction] of transactions.entries()) {
+  // console.log(transaction);
+  if (transaction > 0) {
+    console.log(`Transaction ${i+1}: You deposited ${transaction}`);
+  } else {
+    console.log(`Transaction ${i+1}: You withdrew ${Math.abs(transaction)}`);
+  }
+}
+
+// The absolute value of a number 'x'. If x is negative (including -0), returns -x. Otherwise, returns x. The result is therefore always a positive number or 0.
+
+////////////// forEach
+console.log('----------------- forEach -----------------');
+// transactions.forEach( function (transaction) {
+//   if (transaction > 0) {
+//     console.log(`You deposited ${transaction}`);
+//   } else {
+//     console.log(`You withdrew ${Math.abs(transaction)}`);
+//   }
+// })
+
+// Orders of the parameters
+// First value: current element
+// Second value: index
+// Third value: the entire array that we are looping
+transactions.forEach(function(transaction, i, arr){
+  if (transaction > 0) {
+    console.log(`Transaction ${i+1}: You deposited ${transaction}`);
+  } else {
+    console.log(`Transaction ${i+1}: You withdrew ${Math.abs(transaction)}`);
+  }
+})
+
+// 0: function(200)
+// 1: function(450)
+// 2: function(400)
+// ....
+
+// Difference between 'forEach' and 'for (const ... of .....)' is that
+// We cannot break out of the 'forEach' loop => 'continue' and 'break' method does NOT work in the 'forEach' loop at all
+// 'forEach' will loop over the entire array
+// While the names of the parameters are not important YET the orders of the parameters ARE important.
+
+// What is the need for the parameter 'arr'???
+// Reason: This a sample showing that we can use all 3 parameters here
+
+////////////////////////// 005 Looping Arrays forEach - END
+
