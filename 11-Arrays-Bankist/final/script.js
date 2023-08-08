@@ -176,7 +176,7 @@ displayMovements(account1.movements)
 
 ////////////////////////// 005 Looping Arrays forEach - START
 
-const transactions = [200,450,-400,3000,-650,-130,70,1300]
+// const transactions = [200,450,-400,3000,-650,-130,70,1300]
 
 // for (const transaction of transactions) {
 // for (const [i, transaction] of transactions.entries()) {
@@ -192,13 +192,13 @@ const transactions = [200,450,-400,3000,-650,-130,70,1300]
 
 ////////////// forEach
 // console.log('----------------- forEach -----------------');
-transactions.forEach( function (transaction) {
-  if (transaction > 0) {
-    console.log(`You deposited ${transaction}`);
-  } else {
-    console.log(`You withdrew ${Math.abs(transaction)}`);
-  }
-})
+// transactions.forEach( function (transaction) {
+//   if (transaction > 0) {
+//     console.log(`You deposited ${transaction}`);
+//   } else {
+//     console.log(`You withdrew ${Math.abs(transaction)}`);
+//   }
+// })
 
 // Orders of the parameters
 // First value: current element
@@ -325,8 +325,8 @@ GOOD LUCK 😀
 
 
 ////////////////////////// 011 The map Method - START
-const eurToUsd = 1.1;
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
+// const eurToUsd = 1.1;
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
 
 // Below are two different paradigms - different ways or styles in which a given program or programming language can be organized
 // 'map' method - use a function to solve the problem of creating a new array
@@ -337,53 +337,84 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
 // });
 
 // Replacing the callback function with an arrow function
-const movementsUsd = movements.map(mov => mov * eurToUsd);
-// console.log(movements);
-// (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
-console.log(movementsUsd);
+// const movementsUsd = movements.map(mov => mov * eurToUsd);
+// // console.log(movements);
+// // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// console.log(movementsUsd);
 // (8) [220.00000000000003, 495.00000000000006, -440.00000000000006, 3300.0000000000005, -715.0000000000001, -143, 77, 1430.0000000000002]
 
 // loop over one array and manually creating a new array
-const movementsUSDfor = [];
-for (const mov of movements) movementsUSDfor.push(mov * eurToUsd)
-console.log(movementsUSDfor);
+// const movementsUSDfor = [];
+// for (const mov of movements) movementsUSDfor.push(mov * eurToUsd)
+// console.log(movementsUSDfor);
 // (8) [220.00000000000003, 495.00000000000006, -440.00000000000006, 3300.0000000000005, -715.0000000000001, -143, 77, 1430.0000000000002]
 
 
 //////////////// Use the 'map' method to loop over the 'transactions' array - START
 
-console.log("------ Use the 'map' method to loop over array 'transactions' ------");
 // (originally the 'movements' array). We did this before using 'forEach'
 // 005 Looping Arrays forEach exercise
 // const transactions = [200,450,-400,3000,-650,-130,70,1300]
-const bankTransaction = transactions.map(function (value, i, arr) {
-  if (value > 0) {
-    console.log(`Transaction ${i+1}: You deposited ${value}`);
-  } else {
-    console.log(`Transaction ${i+1}: You withdrew ${Math.abs(value)}`);
-  }
-})
+// console.log("------ Use the 'map' method to loop over array 'transactions' ------");
+// const bankTransaction = transactions.map(function (value, i, arr) {
+//   if (value > 0) {
+//     console.log(`Transaction ${i+1}: You deposited ${value}`);
+//   } else {
+//     console.log(`Transaction ${i+1}: You withdrew ${Math.abs(value)}`);
+//   }
+// })
 
 // Use the arrow function and ternary operator with the 'map' method - Self-solution
-console.log("------ Use the arrow function and ternary operator with the 'map' method - Self-solution ------");
+// console.log("------ Use the arrow function and ternary operator with the 'map' method - Self-solution ------");
 
-const bankTransaction1 = transactions.map((value, i, arr) =>
-  value > 0
-    ? console.log(`Transaction ${i + 1}: You deposited ${value}`)
-    : console.log(`Transaction ${i + 1}: You withdrew ${Math.abs(value)}`)
-);
+// const bankTransaction1 = transactions.map((value, i, arr) =>
+//   value > 0
+//     ? console.log(`Transaction ${i + 1}: You deposited ${value}`)
+//     : console.log(`Transaction ${i + 1}: You withdrew ${Math.abs(value)}`)
+// );
 
 // Use the arrow function with the 'map' method - Video solution
-console.log("------ Use the arrow function and ternary operator with the 'map' method - video solution ------");
-const bankTransaction2 = transactions.map(
-  (value, i) =>
-    `Transaction ${i + 1}: You ${
-      value > 0 ? 'deposited' : 'withdrew'
-    } ${Math.abs(value)}`
-);
-console.log(bankTransaction2);
+// console.log("------ Use the arrow function and ternary operator with the 'map' method - video solution ------");
+// const bankTransaction2 = transactions.map(
+//   (value, i) =>
+//     `Transaction ${i + 1}: You ${
+//       value > 0 ? 'deposited' : 'withdrew'
+//     } ${Math.abs(value)}`
+// );
+// console.log(bankTransaction2);
 // (8) ['Transaction 1: You deposited 200', 'Transaction 2: You deposited 450', 'Transaction 3: You withdrew 400', 'Transaction 4: You deposited 3000', 'Transaction 5: You withdrew 650', 'Transaction 6: You withdrew 130', 'Transaction 7: You deposited 70', 'Transaction 8: You deposited 1300']
 
 //////////////// Use the 'map' method to loop over the 'transactions' array - END
 
 ////////////////////////// 011 The map Method - END
+
+
+////////////////////////// 012 Computing Usernames - START
+// take the initial name => s t w
+const user = 'Steven Thomas Williams'
+// Normal callback function
+// const userName = user
+//   .toLowerCase()
+//   .split(' ')
+//   .map(function (name) {
+//     return name[0];
+//   })
+//   .join('');
+
+// Arrow function
+const userName = user
+  .toLowerCase()
+  .split(' ')
+  .map(name => name[0])
+  .join('');
+//The split() method takes a pattern and divides a String into an ordered list of substrings
+
+console.log(user.toLowerCase().split(' '));
+// (3) ['steven', 'thomas', 'williams']
+console.log(user.toLowerCase().split(' ').map(function (name) {return name[0]}));
+// (3) ['s', 't', 'w']
+console.log(user.toLowerCase().split(' ').map(function (name) {return name[0]}).join(''));
+// stw
+
+
+////////////////////////// 012 Computing Usernames - END
