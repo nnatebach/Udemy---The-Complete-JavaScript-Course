@@ -62,6 +62,7 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 const displayMovements = function (movements) {
+  // Replace the old data with the new data at the same HTML position
   // remove old data in order to add new data
   containerMovements.innerHTML = '' // containerMovements.textContent = 0
 
@@ -175,7 +176,7 @@ displayMovements(account1.movements)
 
 ////////////////////////// 005 Looping Arrays forEach - START
 
-// const transactions = [200,450,-400,3000,-650,-130,70,1300]
+const transactions = [200,450,-400,3000,-650,-130,70,1300]
 
 // for (const transaction of transactions) {
 // for (const [i, transaction] of transactions.entries()) {
@@ -191,13 +192,13 @@ displayMovements(account1.movements)
 
 ////////////// forEach
 // console.log('----------------- forEach -----------------');
-// transactions.forEach( function (transaction) {
-//   if (transaction > 0) {
-//     console.log(`You deposited ${transaction}`);
-//   } else {
-//     console.log(`You withdrew ${Math.abs(transaction)}`);
-//   }
-// })
+transactions.forEach( function (transaction) {
+  if (transaction > 0) {
+    console.log(`You deposited ${transaction}`);
+  } else {
+    console.log(`You withdrew ${Math.abs(transaction)}`);
+  }
+})
 
 // Orders of the parameters
 // First value: current element
@@ -289,35 +290,100 @@ GOOD LUCK 😀
 // const dogsJulia = [3, 5, 2, 12, 7]
 // const dogsKate = [4, 1, 15, 8, 3]
 
-const checkDogs = function (dogsJulia, dogsKate) {
-  // create a shallow of the dog array
-  const dogsJuliaCheck = dogsJulia.slice();
+// const checkDogs = function (dogsJulia, dogsKate) {
+//   // create a shallow of the dog array
+//   const dogsJuliaCheck = dogsJulia.slice();
 
-  ////// 1. Julia found out that the owners of the FIRST and the LAST TWO dogs actually have cats, not dogs! => the FIRST and the LAST TWO animals are cats
-  // Removing the FIRST and the LAST TWO animals
-  dogsJuliaCheck.splice(0, 1)
-  // console.log(dogsJuliaCheck); // (4) [5, 2, 12, 7]
-  dogsJuliaCheck.splice(-2)
-  // console.log(dogsJuliaCheck); // (2) [5, 2]
+//   ////// 1. Julia found out that the owners of the FIRST and the LAST TWO dogs actually have cats, not dogs! => the FIRST and the LAST TWO animals are cats
+//   // Removing the FIRST and the LAST TWO animals
+//   dogsJuliaCheck.splice(0, 1)
+//   // console.log(dogsJuliaCheck); // (4) [5, 2, 12, 7]
+//   dogsJuliaCheck.splice(-2)
+//   // console.log(dogsJuliaCheck); // (2) [5, 2]
 
-  ////// 2. Create an array with both Julia's (corrected) and Kate's data
-  const dogs = dogsJuliaCheck.concat(dogsKate)
-  // console.log(dogs); // (7) [5, 2, 4, 1, 15, 8, 3]
+//   ////// 2. Create an array with both Julia's (corrected) and Kate's data
+//   // const dogs = dogsJuliaCheck.concat(dogsKate)
+//   // console.log(dogs); // (7) [5, 2, 4, 1, 15, 8, 3]
 
-  ////// 3. For each remaining dog, log to the console whether it's an adult ("Dog number 1 is an adult, and is 5 years old") or a puppy ("Dog number 2 is still a puppy
-  // A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years old.
-  dogs.forEach(function(dog, i, arr) {
-    if (dog > 3 || dog === 3) {
-      console.log(`Dog number ${i+1} is ${dog} years old so it is an adult dog.`);
-    } else {
-      console.log(`Dog number ${i+1} is ${dog} years old so it is a puppy.`);
-    }
-  })
-}
+//   ////// 3. For each remaining dog, log to the console whether it's an adult ("Dog number 1 is an adult, and is 5 years old") or a puppy ("Dog number 2 is still a puppy
+//   // A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years old.
+//   dogs.forEach(function(dog, i, arr) {
+//     if (dog > 3 || dog === 3) {
+//       console.log(`Dog number ${i+1} is ${dog} years old so it is an adult dog.`);
+//     } else {
+//       console.log(`Dog number ${i+1} is ${dog} years old so it is a puppy.`);
+//     }
+//   })
+// }
 
 // TEST DATA 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3]
 // TEST DATA 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
 
 // checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3])
-checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4])
+// checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4])
 ////////////////////////// Coding Challenge #1 - END
+
+
+////////////////////////// 011 The map Method - START
+const eurToUsd = 1.1;
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
+
+// Below are two different paradigms - different ways or styles in which a given program or programming language can be organized
+// 'map' method - use a function to solve the problem of creating a new array
+// Functional programming style
+// The modern way in programming is to use 'method' together with 'callback' function
+// const movementsUsd = movements.map(function (mov) {
+//   return mov * eurToUsd
+// });
+
+// Replacing the callback function with an arrow function
+const movementsUsd = movements.map(mov => mov * eurToUsd);
+// console.log(movements);
+// (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+console.log(movementsUsd);
+// (8) [220.00000000000003, 495.00000000000006, -440.00000000000006, 3300.0000000000005, -715.0000000000001, -143, 77, 1430.0000000000002]
+
+// loop over one array and manually creating a new array
+const movementsUSDfor = [];
+for (const mov of movements) movementsUSDfor.push(mov * eurToUsd)
+console.log(movementsUSDfor);
+// (8) [220.00000000000003, 495.00000000000006, -440.00000000000006, 3300.0000000000005, -715.0000000000001, -143, 77, 1430.0000000000002]
+
+
+//////////////// Use the 'map' method to loop over the 'transactions' array - START
+
+console.log("------ Use the 'map' method to loop over array 'transactions' ------");
+// (originally the 'movements' array). We did this before using 'forEach'
+// 005 Looping Arrays forEach exercise
+// const transactions = [200,450,-400,3000,-650,-130,70,1300]
+const bankTransaction = transactions.map(function (value, i, arr) {
+  if (value > 0) {
+    console.log(`Transaction ${i+1}: You deposited ${value}`);
+  } else {
+    console.log(`Transaction ${i+1}: You withdrew ${Math.abs(value)}`);
+  }
+})
+
+// Use the arrow function and ternary operator with the 'map' method - Self-solution
+console.log("------ Use the arrow function and ternary operator with the 'map' method - Self-solution ------");
+
+const bankTransaction1 = transactions.map((value, i, arr) =>
+  value > 0
+    ? console.log(`Transaction ${i + 1}: You deposited ${value}`)
+    : console.log(`Transaction ${i + 1}: You withdrew ${Math.abs(value)}`)
+);
+
+// Use the arrow function with the 'map' method - Video solution
+console.log("------ Use the arrow function and ternary operator with the 'map' method - video solution ------");
+const bankTransaction2 = transactions.map(
+  (value, i) =>
+    `Transaction ${i + 1}: You ${
+      value > 0 ? 'deposited' : 'withdrew'
+    } ${Math.abs(value)}`
+);
+console.log(bankTransaction2);
+// (8) ['Transaction 1: You deposited 200', 'Transaction 2: You deposited 450', 'Transaction 3: You withdrew 400', 'Transaction 4: You deposited 3000', 'Transaction 5: You withdrew 650', 'Transaction 6: You withdrew 130', 'Transaction 7: You deposited 70', 'Transaction 8: You deposited 1300']
+
+//////////////// Use the 'map' method to loop over the 'transactions' array - END
+
+////////////////////////// 011 The map Method - END
