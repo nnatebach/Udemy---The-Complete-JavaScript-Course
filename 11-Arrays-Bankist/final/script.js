@@ -407,7 +407,8 @@ const userName = user
   .split(' ')
   .map(name => name[0])
   .join('');
-//The split() method takes a pattern and divides a String into an ordered list of substrings
+// split() method takes a pattern and divides a String into an ordered list of substrings
+// split() method returns the Array of substrings
 
 console.log(user.toLowerCase().split(' '));
 // (3) ['steven', 'thomas', 'williams']
