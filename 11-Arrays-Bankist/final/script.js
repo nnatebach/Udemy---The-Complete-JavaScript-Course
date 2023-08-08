@@ -391,7 +391,7 @@ GOOD LUCK 😀
 
 ////////////////////////// 012 Computing Usernames - START
 // take the initial name => s t w
-const user = 'Steven Thomas Williams'
+// const user = 'Steven Thomas Williams'
 // Normal callback function
 // const userName = user
 //   .toLowerCase()
@@ -402,20 +402,43 @@ const user = 'Steven Thomas Williams'
 //   .join('');
 
 // Arrow function
-const userName = user
-  .toLowerCase()
-  .split(' ')
-  .map(name => name[0])
-  .join('');
+// const createUserName = function (user) {
+//   const userName = user
+//   .toLowerCase()
+//   .split(' ')
+//   .map(name => name[0])
+//   .join('');
+//   return userName
+// }
+// console.log(createUserName("Wolfgang Amadeus Mozart"));
 // split() method takes a pattern and divides a String into an ordered list of substrings
 // split() method returns the Array of substrings
 
-console.log(user.toLowerCase().split(' '));
-// (3) ['steven', 'thomas', 'williams']
-console.log(user.toLowerCase().split(' ').map(function (name) {return name[0]}));
-// (3) ['s', 't', 'w']
-console.log(user.toLowerCase().split(' ').map(function (name) {return name[0]}).join(''));
-// stw
+// console.log(user.toLowerCase().split(' '));
+// // (3) ['steven', 'thomas', 'williams']
+// console.log(user.toLowerCase().split(' ').map(function (name) {return name[0]}));
+// // (3) ['s', 't', 'w']
+// console.log(user.toLowerCase().split(' ').map(function (name) {return name[0]}).join(''));
+// // stw
 
+
+///////////// Compute one username for each of the account holder in the account array
+// what we want to do is to modify the object so the existing elements in the "accounts" array
+// we do not want to create a new array in this situation
+// const accounts = [account1, account2, account3, account4];
+// we want to loop over this array "accounts" and then do something with it
+// we use "forEach" for this array
+const createUserName = function(accs) {
+  accs.forEach(function(acc) {
+    acc.username = acc.owner.toLowerCase().split(' ').map(name => name[0]).join('')
+  });
+};
+createUserName(accounts)
+console.log(accounts);
+// (4) [{…}, {…}, {…}, {…}]
+// {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
+// {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222, username: 'jd'}
+// {owner: 'Steven Thomas Williams', movements: Array(8), interestRate: 0.7, pin: 3333, username: 'stw'}
+// {owner: 'Sarah Smith', movements: Array(5), interestRate: 1, pin: 4444}
 
 ////////////////////////// 012 Computing Usernames - END
