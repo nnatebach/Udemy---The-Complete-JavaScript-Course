@@ -97,9 +97,7 @@ displayMovements(account1.movements)
 //   ['GBP', 'Pound sterling'],
 // ]);
 
-// 'movements' is changed to 'transactions' for the exercise in '005 Looping Arrays forEach'
-// Reason: I found 'transactions' was a better word and also I did not know this array information would be actually used for that exercise
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
@@ -176,15 +174,15 @@ displayMovements(account1.movements)
 
 ////////////////////////// 005 Looping Arrays forEach - START
 
-// const transactions = [200,450,-400,3000,-650,-130,70,1300]
+// const movements = [200,450,-400,3000,-650,-130,70,1300]
 
-// for (const transaction of transactions) {
-// for (const [i, transaction] of transactions.entries()) {
-//   // console.log(transaction);
-//   if (transaction > 0) {
-//     console.log(`Transaction ${i+1}: You deposited ${transaction}`);
+// for (const movement of movements) {
+// for (const [i, movement] of movements.entries()) {
+//   // console.log(movement);
+//   if (movement > 0) {
+//     console.log(`movement ${i+1}: You deposited ${movement}`);
 //   } else {
-//     console.log(`Transaction ${i+1}: You withdrew ${Math.abs(transaction)}`);
+//     console.log(`movement ${i+1}: You withdrew ${Math.abs(movement)}`);
 //   }
 // }
 
@@ -192,11 +190,11 @@ displayMovements(account1.movements)
 
 ////////////// forEach
 // console.log('----------------- forEach -----------------');
-// transactions.forEach( function (transaction) {
-//   if (transaction > 0) {
-//     console.log(`You deposited ${transaction}`);
+// movements.forEach( function (movement) {
+//   if (movement > 0) {
+//     console.log(`You deposited ${movement}`);
 //   } else {
-//     console.log(`You withdrew ${Math.abs(transaction)}`);
+//     console.log(`You withdrew ${Math.abs(movement)}`);
 //   }
 // })
 
@@ -204,11 +202,11 @@ displayMovements(account1.movements)
 // First value: current element
 // Second value: index
 // Third value: the entire array that we are looping
-// transactions.forEach(function(transaction, i, arr){
-//   if (transaction > 0) {
-//     console.log(`Transaction ${i+1}: You deposited ${transaction}`);
+// movements.forEach(function(movement, i, arr){
+//   if (movement > 0) {
+//     console.log(`movement ${i+1}: You deposited ${movement}`);
 //   } else {
-//     console.log(`Transaction ${i+1}: You withdrew ${Math.abs(transaction)}`);
+//     console.log(`movement ${i+1}: You withdrew ${Math.abs(movement)}`);
 //   }
 // })
 
@@ -350,41 +348,41 @@ GOOD LUCK 😀
 // (8) [220.00000000000003, 495.00000000000006, -440.00000000000006, 3300.0000000000005, -715.0000000000001, -143, 77, 1430.0000000000002]
 
 
-//////////////// Use the 'map' method to loop over the 'transactions' array - START
+//////////////// Use the 'map' method to loop over the 'movements' array - START
 
 // (originally the 'movements' array). We did this before using 'forEach'
 // 005 Looping Arrays forEach exercise
-// const transactions = [200,450,-400,3000,-650,-130,70,1300]
-// console.log("------ Use the 'map' method to loop over array 'transactions' ------");
-// const bankTransaction = transactions.map(function (value, i, arr) {
+// const movements = [200,450,-400,3000,-650,-130,70,1300]
+// console.log("------ Use the 'map' method to loop over array 'movements' ------");
+// const bankTransaction = movements.map(function (value, i, arr) {
 //   if (value > 0) {
-//     console.log(`Transaction ${i+1}: You deposited ${value}`);
+//     console.log(`movement ${i+1}: You deposited ${value}`);
 //   } else {
-//     console.log(`Transaction ${i+1}: You withdrew ${Math.abs(value)}`);
+//     console.log(`movement ${i+1}: You withdrew ${Math.abs(value)}`);
 //   }
 // })
 
 // Use the arrow function and ternary operator with the 'map' method - Self-solution
 // console.log("------ Use the arrow function and ternary operator with the 'map' method - Self-solution ------");
 
-// const bankTransaction1 = transactions.map((value, i, arr) =>
+// const bankTransaction1 = movements.map((value, i, arr) =>
 //   value > 0
-//     ? console.log(`Transaction ${i + 1}: You deposited ${value}`)
-//     : console.log(`Transaction ${i + 1}: You withdrew ${Math.abs(value)}`)
+//     ? console.log(`movement ${i + 1}: You deposited ${value}`)
+//     : console.log(`movement ${i + 1}: You withdrew ${Math.abs(value)}`)
 // );
 
 // Use the arrow function with the 'map' method - Video solution
 // console.log("------ Use the arrow function and ternary operator with the 'map' method - video solution ------");
-// const bankTransaction2 = transactions.map(
+// const bankTransaction2 = movements.map(
 //   (value, i) =>
-//     `Transaction ${i + 1}: You ${
+//     `movement ${i + 1}: You ${
 //       value > 0 ? 'deposited' : 'withdrew'
 //     } ${Math.abs(value)}`
 // );
 // console.log(bankTransaction2);
-// (8) ['Transaction 1: You deposited 200', 'Transaction 2: You deposited 450', 'Transaction 3: You withdrew 400', 'Transaction 4: You deposited 3000', 'Transaction 5: You withdrew 650', 'Transaction 6: You withdrew 130', 'Transaction 7: You deposited 70', 'Transaction 8: You deposited 1300']
+// (8) ['movement 1: You deposited 200', 'movement 2: You deposited 450', 'movement 3: You withdrew 400', 'movement 4: You deposited 3000', 'movement 5: You withdrew 650', 'movement 6: You withdrew 130', 'movement 7: You deposited 70', 'movement 8: You deposited 1300']
 
-//////////////// Use the 'map' method to loop over the 'transactions' array - END
+//////////////// Use the 'map' method to loop over the 'movements' array - END
 
 ////////////////////////// 011 The map Method - END
 
@@ -428,13 +426,13 @@ GOOD LUCK 😀
 // const accounts = [account1, account2, account3, account4];
 // we want to loop over this array "accounts" and then do something with it
 // we use "forEach" for this array
-const createUserName = function(accs) {
-  accs.forEach(function(acc) {
-    acc.username = acc.owner.toLowerCase().split(' ').map(name => name[0]).join('')
-  });
-};
-createUserName(accounts)
-console.log(accounts);
+// const createUserName = function(accs) {
+//   accs.forEach(function(acc) {
+//     acc.username = acc.owner.toLowerCase().split(' ').map(name => name[0]).join('')
+//   });
+// };
+// createUserName(accounts)
+// console.log(accounts);
 // (4) [{…}, {…}, {…}, {…}]
 // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
 // {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222, username: 'jd'}
@@ -442,3 +440,44 @@ console.log(accounts);
 // {owner: 'Sarah Smith', movements: Array(5), interestRate: 1, pin: 4444}
 
 ////////////////////////// 012 Computing Usernames - END
+
+
+////////////////////////// 013 The filter Method - START
+// filter() - creates a shallow copy filtered down to just the elements from the given array that pass the test implemented
+const deposits = movements.filter(function (mov) {
+  return mov > 0
+})
+console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+console.log(deposits); // (5) [200, 450, 3000, 70, 1300]
+
+const depositFor = []
+for (const mov of movements) {
+  // console.log(mov);
+  if (mov > 0) {
+    depositFor.push(mov)
+  }
+}
+console.log(depositFor); // (5) [200, 450, 3000, 70, 1300]
+
+// Function expression
+// const withdrawals = movements.filter(function (mov) {
+//   return mov < 0
+// })
+
+// filter with arrow function
+const withdrawals = movements.filter(mov => mov < 0)
+console.log(withdrawals); // (3) [-400, -650, -130]
+
+// Summary
+// with the 'for' loop, you will then need to 
+// - declare a new array
+// - check every element from the original array
+// - push the elements that are satisfied with the condition in a new array
+// - log out the results.
+
+// with the 'filter' method
+// - you declare a new variable
+// - assign the original array with the 'filter' method applied to that new variable
+// - return the new array which contains the qualified array element for the condition.
+
+////////////////////////// 013 The filter Method - END
