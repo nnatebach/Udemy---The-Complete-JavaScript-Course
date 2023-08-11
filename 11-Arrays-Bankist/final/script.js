@@ -700,12 +700,27 @@ TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
 GOOD LUCK 😀
 */
 
-const calcAverageHumanAge = ages => ages.map(age => age <= 2 ? 2 * age : 16 + age * 4).filter(age => age >= 18).reduce((acc, age, i , arr) => acc + age / arr.length)
+// const calcAverageHumanAge = ages => ages.map(age => age <= 2 ? 2 * age : 16 + age * 4).filter(age => age >= 18).reduce((acc, age, i , arr) => acc + age / arr.length)
 
-// 4. Run the function for both test datasets
-const average1 = calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3])
-const average2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4])
-console.log(average1, average2);
+// // Run the function for both test datasets
+// const average1 = calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3])
+// const average2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4])
+// console.log(average1, average2);
 // 72.79999999999998
 // 114
 ///////////////////////////////////////// Coding Challenge #3 - END
+
+
+///////////////////////////////////////// 018 The find Method - START
+const firstWithdrawal = movements.find(mov => mov < 0)
+console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+console.log(firstWithdrawal); // -400
+
+console.log(accounts);
+// {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111}
+// {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222}
+// {owner: 'Steven Thomas Williams', movements: Array(8), interestRate: 0.7, pin: 3333}
+// {owner: 'Sarah Smith', movements: Array(5), interestRate: 1, pin: 4444}
+const account = accounts.find(acc => acc.owner === 'Jessica Davis')
+console.log(account); // {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222}
+///////////////////////////////////////// 018 The find Method - END
