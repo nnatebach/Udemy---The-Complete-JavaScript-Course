@@ -86,6 +86,17 @@ const displayMovements = function (movements) {
 }
 displayMovements(account1.movements)
 
+////////////////////////// 014 The reduce Method - START
+
+// const labelBalance = document.querySelector('.balance__value');
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0)
+  labelBalance.textContent = `${balance} EUR`
+}
+calcDisplayBalance(account1.movements)
+
+////////////////////////// 014 The reduce Method - END
+
 // console.log(containerMovements.innerHTML); // double check that old data has been erased by logging the content to the console.
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -444,20 +455,20 @@ GOOD LUCK 😀
 
 ////////////////////////// 013 The filter Method - START
 // filter() - creates a shallow copy filtered down to just the elements from the given array that pass the test implemented
-const deposits = movements.filter(function (mov) {
-  return mov > 0
-})
-console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
-console.log(deposits); // (5) [200, 450, 3000, 70, 1300]
+// const deposits = movements.filter(function (mov) {
+//   return mov > 0
+// })
+// console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// console.log(deposits); // (5) [200, 450, 3000, 70, 1300]
 
-const depositFor = []
-for (const mov of movements) {
-  // console.log(mov);
-  if (mov > 0) {
-    depositFor.push(mov)
-  }
-}
-console.log(depositFor); // (5) [200, 450, 3000, 70, 1300]
+// const depositFor = []
+// for (const mov of movements) {
+//   // console.log(mov);
+//   if (mov > 0) {
+//     depositFor.push(mov)
+//   }
+// }
+// console.log(depositFor); // (5) [200, 450, 3000, 70, 1300]
 
 // Function expression
 // const withdrawals = movements.filter(function (mov) {
@@ -465,11 +476,11 @@ console.log(depositFor); // (5) [200, 450, 3000, 70, 1300]
 // })
 
 // filter with arrow function
-const withdrawals = movements.filter(mov => mov < 0)
-console.log(withdrawals); // (3) [-400, -650, -130]
+// const withdrawals = movements.filter(mov => mov < 0)
+// console.log(withdrawals); // (3) [-400, -650, -130]
 
 // Summary
-// with the 'for' loop, you will then need to 
+// with the 'for' loop, you will then need to
 // - declare a new array
 // - check every element from the original array
 // - push the elements that are satisfied with the condition in a new array
@@ -481,3 +492,41 @@ console.log(withdrawals); // (3) [-400, -650, -130]
 // - return the new array which contains the qualified array element for the condition.
 
 ////////////////////////// 013 The filter Method - END
+
+
+////////////////////////// 014 The reduce Method - START
+
+console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+
+// accumulator => SNOWBALL
+// acc - accumulator
+// cur - currentValue
+// i - currentIndex
+// arr - array
+// const balance = movements.reduce(function(acc, cur, i, arr) {
+//   console.log(`Iteration ${i}: ${acc}`);
+//   return acc + cur
+// }, 0);
+// console.log(balance); // 3840 = 200 + 450 - 400 + 3000 - 650 - 130 + 70 + 1300 (+ 0)
+
+// arrow function
+// remove unnecessary parameters
+const balance = movements.reduce((acc, cur) => acc + cur, 0);
+console.log(balance); // 3840 = 200 + 450 - 400 + 3000 - 650 - 130 + 70 + 1300 (+ 0)
+
+let balance2 = 0
+for (const mov of movements) balance2 += mov
+console.log(balance2); // 3840
+
+// Maximum value
+const maximumValue = movements.reduce(function (acc, mov) {
+  if (acc > mov) {
+    return acc
+  } else {
+    return mov
+  }
+}, movements[0])
+
+console.log(maximumValue); // 3000
+
+////////////////////////// 014 The reduce Method - END
