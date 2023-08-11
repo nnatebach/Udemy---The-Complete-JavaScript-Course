@@ -123,7 +123,7 @@ const calcSummaryDisplay = function(movements) {
     // The interest is only paid if it at least 1 EUR
     // Only then it will be added to the total
     .filter((int, i , arr) => { // we do not need the 'i' but we would still have it there, anyway
-      console.log(arr);
+      // console.log(arr);
       // (5) [2.4, 5.4, 36, 0.84, 15.6]
       // (5) [2.4, 5.4, 36, 0.84, 15.6]
       // (5) [2.4, 5.4, 36, 0.84, 15.6]
@@ -540,7 +540,7 @@ GOOD LUCK 😀
 // - reduces an array of values down to just one value
 // - it runs a reducer function on each element of the array to get the output value
 
-console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
 
 // accumulator => SNOWBALL
 // acc - accumulator
@@ -556,11 +556,11 @@ console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
 // arrow function
 // remove unnecessary parameters
 const balance = movements.reduce((acc, cur) => acc + cur, 0);
-console.log(balance); // 3840 = 200 + 450 - 400 + 3000 - 650 - 130 + 70 + 1300 (+ 0)
+// console.log(balance); // 3840 = 200 + 450 - 400 + 3000 - 650 - 130 + 70 + 1300 (+ 0)
 
 let balance2 = 0
 for (const mov of movements) balance2 += mov
-console.log(balance2); // 3840
+// console.log(balance2); // 3840
 
 //////////// Maximum value
 // const maximumValue = movements.reduce(function (acc, mov) {
@@ -572,8 +572,7 @@ console.log(balance2); // 3840
 // }, movements[0])
 
 const maximumValue = movements.reduce((acc, mov) => (acc > mov) ? acc : mov, movements[0])
-
-console.log(maximumValue); // 3000
+// console.log(maximumValue); // 3000
 
 ////////////////////////// 014 The reduce Method - END
 
@@ -634,15 +633,14 @@ GOOD LUCK 😀
 //   return average;
 // }
 
-// // 1. Calculate the dog age in human years using the following formula: if the dog is <= 2 years old, humanAge = 2 * dogAge. If the dog is > 2 years old, humanAge = 16 + dogAge * 4.
 // calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3])
 
 // // 4. Run the function for both test datasets
 // const average1 = calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3])
 // const average2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4])
 // console.log(average1, average2);
-// // 44
-// // 47.333333333333336
+// // 72.79999999999998
+// // 114
 
 ////////////////////////// 015 Coding Challenge #2 - END
 
@@ -656,7 +654,7 @@ GOOD LUCK 😀
 // Case 2: It is a BAD JS practice to chain methods that mutate the original array e.g. splice or reverse methods (It is ok for small application as the bankist app)
 // Solution 2: Avoid mutating array
 
-const eurToUsd = 1.1
+// const eurToUsd = 1.1
 
 // This function does not work => WHY??
 // const totalDepositsUSD = movements.filter(function (mov) {
@@ -674,20 +672,40 @@ const eurToUsd = 1.1
 //   .reduce((acc, mov) => acc + mov, 0);
 
 // PIPELINE
-const totalDepositsUSD = movements
-  .filter(mov => mov > 0)
-  .map((mov, i, arr) => {
-    console.log(arr);
-    // (5) [200, 450, 3000, 70, 1300]
-    // (5) [200, 450, 3000, 70, 1300]
-    // (5) [200, 450, 3000, 70, 1300]
-    // (5) [200, 450, 3000, 70, 1300]
-    // (5) [200, 450, 3000, 70, 1300]
-    return mov * eurToUsd;
-  })
-  // .map(mov => mov * eurToUsd)
-  .reduce((acc, mov) => acc + mov, 0);
-console.log(totalDepositsUSD); // 5522.000000000001
+// const totalDepositsUSD = movements
+//   .filter(mov => mov > 0)
+//   .map((mov, i, arr) => {
+//     console.log(arr);
+//     // (5) [200, 450, 3000, 70, 1300]
+//     // (5) [200, 450, 3000, 70, 1300]
+//     // (5) [200, 450, 3000, 70, 1300]
+//     // (5) [200, 450, 3000, 70, 1300]
+//     // (5) [200, 450, 3000, 70, 1300]
+//     return mov * eurToUsd;
+//   })
+//   // .map(mov => mov * eurToUsd)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(totalDepositsUSD); // 5522.000000000001
 ////////////////////////// 016 The Magic of Chaining Methods - END
 
 
+///////////////////////////////////////// Coding Challenge #3 - START
+
+/* 
+Rewrite the 'calcAverageHumanAge' function from the previous challenge, but this time as an arrow function, and using chaining!
+
+TEST DATA 1: [5, 2, 4, 1, 15, 8, 3]
+TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
+
+GOOD LUCK 😀
+*/
+
+const calcAverageHumanAge = ages => ages.map(age => age <= 2 ? 2 * age : 16 + age * 4).filter(age => age >= 18).reduce((acc, age, i , arr) => acc + age / arr.length)
+
+// 4. Run the function for both test datasets
+const average1 = calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3])
+const average2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4])
+console.log(average1, average2);
+// 72.79999999999998
+// 114
+///////////////////////////////////////// Coding Challenge #3 - END
