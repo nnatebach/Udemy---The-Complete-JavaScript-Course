@@ -84,7 +84,6 @@ const displayMovements = function (movements) {
     // afterbegin: new child element will appear before the existing child element
   })
 }
-displayMovements(account1.movements)
 
 ////////////////////////// 014 The reduce Method - START
 
@@ -93,33 +92,30 @@ const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0)
   labelBalance.textContent = `${balance}€`
 }
-calcDisplayBalance(account1.movements)
 
 ////////////////////////// 014 The reduce Method - END
 
 
 ////////////////////////// 016 The Magic of Chaining Methods - START
-const calcSummaryDisplay = function(movements) {
+const calcSummaryDisplay = function(acc) {
 
-  const incomes = movements
-    .filter(mov => mov > 0)
-    .reduce((acc, mov) => acc + mov, 0);
+  const incomes = acc.movements.filter(mov => mov > 0).reduce((acc, mov) => acc + mov, 0);
   // const labelSumIn = document.querySelector('.summary__value--in');
   labelSumIn.textContent = `${incomes}€`
 
-  const out = movements
+  const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   // const labelSumOut = document.querySelector('.summary__value--out');
   labelSumOut.textContent = `${Math.abs(out)}€` // "Math.abs()" gives a positive number
 
   // The interest is paid on each deposit
-  const interest = movements
+  const interest = acc.movements
     // 'deposit' MUST always be a POSITIVE number AND a non-zero value => it MUST be greater than 0
     .filter(mov => mov > 0)
     // On each of a deposit we will receive 1.2%
     // Create a new array containing all the interests and then add them together at the end
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * acc.interestRate) / 100)
     // The interest is only paid if it at least 1 EUR
     // Only then it will be added to the total
     .filter((int, i , arr) => { // we do not need the 'i' but we would still have it there, anyway
@@ -136,7 +132,6 @@ const calcSummaryDisplay = function(movements) {
   // const labelSumInterest = document.querySelector('.summary__value--interest');
   labelSumInterest.textContent = `${interest}€`
 }
-calcSummaryDisplay(account1.movements)
 ////////////////////////// 016 The Magic of Chaining Methods - END
 
 
@@ -479,12 +474,12 @@ GOOD LUCK 😀
 // const accounts = [account1, account2, account3, account4];
 // we want to loop over this array "accounts" and then do something with it
 // we use "forEach" for this array
-// const createUserName = function(accs) {
-//   accs.forEach(function(acc) {
-//     acc.username = acc.owner.toLowerCase().split(' ').map(name => name[0]).join('')
-//   });
-// };
-// createUserName(accounts)
+const createUserName = function(accs) {
+  accs.forEach(function(acc) {
+    acc.username = acc.owner.toLowerCase().split(' ').map(name => name[0]).join('')
+  });
+};
+createUserName(accounts)
 // console.log(accounts);
 // (4) [{…}, {…}, {…}, {…}]
 // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
@@ -493,6 +488,58 @@ GOOD LUCK 😀
 // {owner: 'Sarah Smith', movements: Array(5), interestRate: 1, pin: 4444}
 
 ////////////////////////// 012 Computing Usernames - END
+
+
+///////////////////////////////////////// 019 Implementing Login - START
+{/* <form class="login">
+  <input
+    type="text"
+    placeholder="user"
+    class="login__input login__input--user"
+  />
+  <!-- In practice, use type="password" -->
+  <input
+    type="text"
+    placeholder="PIN"
+    maxlength="4"
+    class="login__input login__input--pin"
+  />
+  <button class="login__btn">&rarr;</button>
+</form> */}
+// const btnLogin = document.querySelector('.login__btn');
+
+let currentAccount
+
+// Event handler
+btnLogin.addEventListener('click', function(e) {
+  // Prevent form from submitting
+  e.preventDefault()
+
+  console.log('button clicked!');
+  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value)
+  console.log(currentAccount); // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
+
+  // currentAccount?.pin => both the owner account and the pin MUST be correct
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    //// Display UI and message
+    // <p class="welcome">Log in to get started</p>
+    // const labelWelcome = document.querySelector('.welcome');
+    labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ')[0]}`
+    // const containerApp = document.querySelector('.app');
+    containerApp.style.opacity = 100
+
+    //// Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = ''
+    inputLoginPin.blur()
+    //// Display movements
+    displayMovements(currentAccount.movements)
+    //// Display balance
+    calcDisplayBalance(currentAccount.movements)
+    //// Display summary
+    calcSummaryDisplay(currentAccount)
+  }
+})
+///////////////////////////////////////// 019 Implementing Login - END
 
 
 ////////////////////////// 013 The filter Method - START
@@ -712,15 +759,17 @@ GOOD LUCK 😀
 
 
 ///////////////////////////////////////// 018 The find Method - START
-const firstWithdrawal = movements.find(mov => mov < 0)
-console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
-console.log(firstWithdrawal); // -400
 
-console.log(accounts);
-// {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111}
-// {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222}
-// {owner: 'Steven Thomas Williams', movements: Array(8), interestRate: 0.7, pin: 3333}
-// {owner: 'Sarah Smith', movements: Array(5), interestRate: 1, pin: 4444}
-const account = accounts.find(acc => acc.owner === 'Jessica Davis')
-console.log(account); // {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222}
+// const firstWithdrawal = movements.find(mov => mov < 0)
+// console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// console.log(firstWithdrawal); // -400
+
+// console.log(accounts);
+// // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111}
+// // {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222}
+// // {owner: 'Steven Thomas Williams', movements: Array(8), interestRate: 0.7, pin: 3333}
+// // {owner: 'Sarah Smith', movements: Array(5), interestRate: 1, pin: 4444}
+// const account = accounts.find(acc => acc.owner === 'Jessica Davis')
+// console.log(account); // {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222}
+
 ///////////////////////////////////////// 018 The find Method - END
