@@ -87,11 +87,28 @@ const displayMovements = function (movements) {
 
 ////////////////////////// 014 The reduce Method - START
 
-// const labelBalance = document.querySelector('.balance__value');
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0)
-  labelBalance.textContent = `${balance}€`
+// // const labelBalance = document.querySelector('.balance__value');
+// // this will only show the account balance to the interface
+// const calcDisplayBalance = function (movements) {
+//   const balance = movements.reduce((acc, mov) => acc + mov, 0)
+//   labelBalance.textContent = `${balance}€`
+// }
+
+//////// 020 Implementing Transfers - START
+
+// What we need to do: Add negative 'movement' to current 'user' and positive 'movement' to recipient
+// Reason: Say if the current user transfers 100 eur to a recipient then
+// - that 100 eur should be DEDUCTED from the current user (NEGATIVE movement)
+// - and ADDED to the recipient (POSITIVE movement)
+// Problem: The balance is not stored anywhere. We need to have the balance stored somewhere in order to check whether the current user has enough of the money he wants to transfer to the recipient (by comparing the balance with the amount the current user want to transfer )
+// Solution: We need to change 'movements' parameter to 'acc' parameter => We can do that by passing in the entire account 'acc' just like what we did in 'calcSummaryDisplay'
+// by passing in the 'acc' we'll be able to create the new properly on that account with the balance.
+const calcDisplayBalance = function (acc) {
+  console.log(acc);
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0)
+  labelBalance.textContent = `${acc.balance}€`
 }
+//////// 020 Implementing Transfers - END
 
 ////////////////////////// 014 The reduce Method - END
 
@@ -489,6 +506,18 @@ createUserName(accounts)
 
 ////////////////////////// 012 Computing Usernames - END
 
+///////////////////////////////////////// 020 Implementing Transfers - START
+
+const updateUI = function (acc) {
+  //// Display movements
+  displayMovements(acc.movements)
+  //// Display balance
+  calcDisplayBalance(acc) // 020 Implementing Transfers
+  //// Display summary
+  calcSummaryDisplay(acc)
+}
+
+///////////////////////////////////////// 020 Implementing Transfers - END
 
 ///////////////////////////////////////// 019 Implementing Login - START
 {/* <form class="login">
@@ -515,9 +544,13 @@ btnLogin.addEventListener('click', function(e) {
   // Prevent form from submitting
   e.preventDefault()
 
-  console.log('button clicked!');
+  // 'currentAccount' is a variable that points to one of the original objects of the array 'accounts' in the memory heap (account1, account2, account3, account4)
+  // 'currentAccount' is NOT the copy of the original object
   currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value)
-  console.log(currentAccount); // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
+  console.log(currentAccount);
+  // UI user: js
+  // UI PIN: 1111
+  // console: {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
 
   // currentAccount?.pin => both the owner account and the pin MUST be correct
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
@@ -531,15 +564,54 @@ btnLogin.addEventListener('click', function(e) {
     //// Clear input fields
     inputLoginUsername.value = inputLoginPin.value = ''
     inputLoginPin.blur()
-    //// Display movements
-    displayMovements(currentAccount.movements)
-    //// Display balance
-    calcDisplayBalance(currentAccount.movements)
-    //// Display summary
-    calcSummaryDisplay(currentAccount)
+    
+    updateUI(currentAccount)
   }
 })
 ///////////////////////////////////////// 019 Implementing Login - END
+
+
+///////////////////////////////////////// 020 Implementing Transfers - START
+
+// const btnTransfer = document.querySelector('.form__btn--transfer');
+btnTransfer.addEventListener('click', function (e){
+  e.preventDefault()
+  //// What is the transfer amount??
+  // const inputTransferAmount = document.querySelector('.form__input--amount');
+  const amount = Number(inputTransferAmount.value)
+  //// Who to transfer to??
+  // const inputTransferTo = document.querySelector('.form__input--to');
+  const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value)
+  console.log(amount, receiverAcc);
+  // 123 {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
+
+  // Empty the inputs after the transfer has been done (either success or failure)
+  inputTransferAmount.value = inputTransferTo.value = ''
+
+  // Condition for transferring
+  // 1. The amount MUST be a non-zero value
+  // 2. The current account MUST have enough money for the transfer
+  // 3. The current account CANNOT transfer to itself
+  // 4. The recipient MUST be an existing account
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    // Doing the transfer
+    currentAccount.movements.push(-amount)
+    receiverAcc.movements.push(amount)
+  }
+
+  // Updating UI
+  updateUI(currentAccount)
+
+})
+console.log(Number(inputTransferAmount.value)); // 0
+// console.log(accounts.find(acc => acc.username)); // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
+
+///////////////////////////////////////// 020 Implementing Transfers - END
 
 
 ////////////////////////// 013 The filter Method - START
@@ -759,6 +831,10 @@ GOOD LUCK 😀
 
 
 ///////////////////////////////////////// 018 The find Method - START
+
+// The find() method of Array instances
+// returns the FIRST ELEMENT in the provided array that satisfies the provided testing function.
+// If NO VALUES SATISFY the testing function, UNDEFINED is returned.
 
 // const firstWithdrawal = movements.find(mov => mov < 0)
 // console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
