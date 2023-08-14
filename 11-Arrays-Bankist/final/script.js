@@ -614,6 +614,39 @@ console.log(Number(inputTransferAmount.value)); // 0
 ///////////////////////////////////////// 020 Implementing Transfers - END
 
 
+///////////////////////////////////////// 021 The findIndex Method - START
+
+/////// The findIndex() method of Array instances
+//// - returns the index of the first element in an array that satisfies the provided testing function.
+//// - If no elements satisfy the testing function, -1 is returned.
+
+// const btnClose = document.querySelector('.form__btn--close');
+btnClose.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  // const inputCloseUsername = document.querySelector('.form__input--user');
+  // const inputClosePin = document.querySelector('.form__input--pin');
+  if (inputCloseUsername.value === currentAccount.username && Number(inputClosePin.value) === currentAccount.pin) {
+    const index = accounts.findIndex(acc => acc.username === currentAccount.username)
+    console.log(index);
+
+    // Delete account
+    accounts.splice(index, 1)
+
+    // Hide UI
+    containerApp.style.opacity = 0
+  }
+  inputCloseUsername.value = inputClosePin.value = ''
+  // console.log(currentAccount); // undefined
+
+  ////////// NOTES
+  // Both the 'find' and 'findIndex' methods get access to the current index and the current array
+  // Both the 'find' and 'findIndex' methods are ONLY available in ES6 => They will NOT work in browsers that are too old!
+})
+
+///////////////////////////////////////// 021 The findIndex Method - END
+
+
 ////////////////////////// 013 The filter Method - START
 // filter() - creates a shallow copy filtered down to just the elements from the given array that pass the test implemented
 // const deposits = movements.filter(function (mov) {
