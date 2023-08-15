@@ -688,6 +688,8 @@ let sorted = false
 btnSort.addEventListener('click', function(e) {
   e.preventDefault()
   displayMovements(currentAccount.movements, !sorted)
+  // if the array is NOT sorted, we want to have the function to sort the array here
+  // however, if the array is ALREADY sorted, we want to have the function to unsort the array here.
   sorted = !sorted
 })
 
