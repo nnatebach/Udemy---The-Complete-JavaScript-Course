@@ -61,13 +61,20 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+// const displayMovements = function (movements) {
+///////////////////////////////////////// 024 Sorting Arrays - START
+const displayMovements = function (movements, sort = false) {
   // Replace the old data with the new data at the same HTML position
   // remove old data in order to add new data
   containerMovements.innerHTML = '' // containerMovements.textContent = 0
 
+  // slice - returns a shallow copy of a portion of an array into a new array object
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements
+
   // add new data to the 'movements' HTML element
-  movements.forEach(function (mov, i) {
+  // movements.forEach(function (mov, i) {
+  movs.forEach(function (mov, i) {
+///////////////////////////////////////// 024 Sorting Arrays - END
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     // movements__type--deposit
@@ -673,6 +680,20 @@ btnClose.addEventListener('click', function(e) {
 ///////////////////////////////////////// 021 The findIndex Method - END
 
 
+///////////////////////////////////////// 024 Sorting Arrays - START
+
+let sorted = false
+
+// const btnSort = document.querySelector('.btn--sort');
+btnSort.addEventListener('click', function(e) {
+  e.preventDefault()
+  displayMovements(currentAccount.movements, !sorted)
+  sorted = !sorted
+})
+
+///////////////////////////////////////// 024 Sorting Arrays - END
+
+
 ////////////////////////// 013 The filter Method - START
 // filter() - creates a shallow copy filtered down to just the elements from the given array that pass the test implemented
 // const deposits = movements.filter(function (mov) {
@@ -982,3 +1003,52 @@ const overallBalance2 = accounts
 console.log('overallBalance2: flatMap, reduce', overallBalance2); // 17840
 
 ///////////////////////////////////////// 023 flat and flatMap - END
+
+
+///////////////////////////////////////// 024 Sorting Arrays - START
+
+// Strings
+const owners = ['Jonas', 'Adam', 'Steven', 'Martha']
+console.log(owners.sort()); // (4) ['Adam', 'Jonas', 'Martha', 'Steven'] => Alphabetical sort
+
+// Numbers
+console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+console.log(movements.sort()); // (8) [-130, -400, -650, 1300, 200, 3000, 450, 70] => first number sort (e.g. -1 < 1 < 2 < 3 < ...)
+
+// return < 0, A, B (keep order)
+// return > 0, B, A (switch order)
+// movements.sort((a, b) => {
+//   if (a > b) {
+//     return 1
+//   } else if (a < b) {
+//     return -1
+//   }
+// })
+
+//////////// Sorting Numbers - START
+
+// Ascending
+// movements.sort((a, b) => {
+//   if (a > b) return 1
+//   if (a < b) return -1
+// })
+// console.log(movements); // (8) [-650, -400, -130, 70, 200, 450, 1300, 3000]
+
+movements.sort((a, b) => a - b)
+console.log(movements); // (8) [-650, -400, -130, 70, 200, 450, 1300, 3000]
+
+// Descending
+// movements.sort((a, b) => {
+//   if (a > b) return -1
+//   if (a < b) return 1
+// })
+// console.log(movements); // (8) [3000, 1300, 450, 200, 70, -130, -400, -650]
+
+movements.sort((a, b) => b - a)
+console.log(movements); // (8) [3000, 1300, 450, 200, 70, -130, -400, -650]
+
+//////////// Sorting Numbers - END
+
+///////////////////////////////////////// 024 Sorting Arrays - END
+
+
