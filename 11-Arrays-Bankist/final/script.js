@@ -950,6 +950,7 @@ GOOD LUCK 😀
 // console.log(arrDeep.flat()); // (6) [Array(2), 3, 4, Array(2), 7, 8]
 // console.log(arrDeep.flat(2)); // (8) [1, 2, 3, 4, 5, 6, 7, 8]
 
+//////////////////// separate map, flat, reduce
 // const accountMovements = accounts.map(acc => acc.movements)
 // console.log(accountMovements);
 // // (4) [Array(8), Array(8), Array(8), Array(5)]
@@ -962,7 +963,7 @@ GOOD LUCK 😀
 // // (29) [200, 450, -400, 3000, -650, -130, 70, 1300, 5000, 3400, -150, -790, -3210, -1000, 8500, -30, 200, -200, 340, -300, -20, 50, 400, -460, 430, 1000, 700, 50, 90]
 // const overallBalance = allMovements.reduce((acc, mov) => acc + mov, 0)
 // console.log(overallBalance); // 17840
-
+//////////////////// separate map, flat, reduce
 
 console.log('accounts', accounts);
 const overallBalance1 = accounts
