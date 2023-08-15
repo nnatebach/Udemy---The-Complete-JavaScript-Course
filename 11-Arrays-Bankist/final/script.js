@@ -942,7 +942,7 @@ GOOD LUCK 😀
 
 ///////////////////////////////////////// 023 flat and flatMap - START
 
-// flat - creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+//// flat - creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
 // const arr = [[1 ,2 , 3], [4, 5, 6], 7, 8]
 // console.log(arr.flat()); // (8) [1, 2, 3, 4, 5, 6, 7, 8]
 
