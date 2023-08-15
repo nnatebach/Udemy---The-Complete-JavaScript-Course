@@ -104,7 +104,7 @@ const displayMovements = function (movements) {
 // Solution: We need to change 'movements' parameter to 'acc' parameter => We can do that by passing in the entire account 'acc' just like what we did in 'calcSummaryDisplay'
 // by passing in the 'acc' we'll be able to create the new properly on that account with the balance.
 const calcDisplayBalance = function (acc) {
-  console.log(acc);
+  // console.log(acc); // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0)
   labelBalance.textContent = `${acc.balance}€`
 }
@@ -388,6 +388,9 @@ GOOD LUCK 😀
 
 
 ////////////////////////// 011 The map Method - START
+
+// map - creates a new array populated with the results of calling a provided function on every element in the calling array.
+
 // const eurToUsd = 1.1;
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
 
@@ -608,10 +611,33 @@ btnTransfer.addEventListener('click', function (e){
   updateUI(currentAccount)
 
 })
-console.log(Number(inputTransferAmount.value)); // 0
+// console.log(Number(inputTransferAmount.value)); // 0
 // console.log(accounts.find(acc => acc.username)); // {owner: 'Jonas Schmedtmann', movements: Array(8), interestRate: 1.2, pin: 1111, username: 'js'}
 
 ///////////////////////////////////////// 020 Implementing Transfers - END
+
+
+///////////////////////////////////////// 022 some and every - START
+
+// const btnLoan = document.querySelector('.form__btn--loan');
+btnLoan.addEventListener('click', function(e){
+  e.preventDefault()
+  // const inputLoanAmount = document.querySelector('.form__input--loan-amount');
+  const amount = Number(inputLoanAmount.value)
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * .1)) {
+    // Add movement
+    // The loan is ONLY granted if there is any deposit in the current account that is at least 10% of the requested loan.
+    currentAccount.movements.push(amount)
+    // console.log(currentAccount.movements.push(amount)); // Request loan: 1000 => console logs 10. What is this number?
+
+    // UPdate UI
+    updateUI(currentAccount)
+  }
+  inputLoanAmount.value = ''
+})
+
+///////////////////////////////////////// 022 some and every - END
 
 
 ///////////////////////////////////////// 021 The findIndex Method - START
@@ -882,3 +908,76 @@ GOOD LUCK 😀
 // console.log(account); // {owner: 'Jessica Davis', movements: Array(8), interestRate: 1.5, pin: 2222}
 
 ///////////////////////////////////////// 018 The find Method - END
+
+
+///////////////////////////////////////// 022 some and every - START
+
+// EQUALITY
+////// INCLUDES - determines whether an array includes a certain value among its entries, returning true or false as appropriate.
+// console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// console.log(movements.includes(-130)); // true
+
+// CONDITION
+////// SOME - tests whether at least one element in the array passes the test implemented by the provided function
+// - returns true if, in the array, it finds an element for which the provided function; otherwise it returns false
+// - It doesn't modify the array.
+// console.log(movements.some(mov => mov === -130)); // true
+// const anyDeposits = movements.some(mov => mov > 0)
+// console.log(anyDeposits); // true
+
+////// EVERY - tests whether all elements in the array pass the test implemented by the provided function.
+// It returns a Boolean value.
+// console.log(movements.every(mov => mov > 0)); // false
+// console.log(account4.movements.every(mov => mov > 0)); // true
+
+////// SEPARATE CALLBACK
+// const deposit = mov => mov > 0
+// console.log(movements.deposit);
+// console.log(movements.some(deposit)); // true
+// console.log(movements.every(deposit)); // false
+// console.log(movements.filter(deposit)); // (5) [200, 450, 3000, 70, 1300]
+
+///////////////////////////////////////// 022 some and every - END
+
+
+///////////////////////////////////////// 023 flat and flatMap - START
+
+// flat - creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+// const arr = [[1 ,2 , 3], [4, 5, 6], 7, 8]
+// console.log(arr.flat()); // (8) [1, 2, 3, 4, 5, 6, 7, 8]
+
+// const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8]
+// console.log(arrDeep.flat()); // (6) [Array(2), 3, 4, Array(2), 7, 8]
+// console.log(arrDeep.flat(2)); // (8) [1, 2, 3, 4, 5, 6, 7, 8]
+
+// const accountMovements = accounts.map(acc => acc.movements)
+// console.log(accountMovements);
+// // (4) [Array(8), Array(8), Array(8), Array(5)]
+// // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// // (8) [5000, 3400, -150, -790, -3210, -1000, 8500, -30]
+// // (8) [200, -200, 340, -300, -20, 50, 400, -460]
+// // (5) [430, 1000, 700, 50, 90]
+// const allMovements = accountMovements.flat()
+// console.log(allMovements);
+// // (29) [200, 450, -400, 3000, -650, -130, 70, 1300, 5000, 3400, -150, -790, -3210, -1000, 8500, -30, 200, -200, 340, -300, -20, 50, 400, -460, 430, 1000, 700, 50, 90]
+// const overallBalance = allMovements.reduce((acc, mov) => acc + mov, 0)
+// console.log(overallBalance); // 17840
+
+
+console.log('accounts', accounts);
+const overallBalance1 = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov, 0);
+console.log('overallBalance1: map, flat, reduce', overallBalance1); // 17840
+
+//// flatMap
+// - returns a NEW ARRAY formed by applying a given callback function to each element of the array
+// - flattening the result by one level
+// - slightly more efficient than '(arr.map(...args).flat())' (flat() of depth 1)
+const overallBalance2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log('overallBalance2: flatMap, reduce', overallBalance2); // 17840
+
+///////////////////////////////////////// 023 flat and flatMap - END
