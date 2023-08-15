@@ -988,21 +988,21 @@ GOOD LUCK 😀
 // console.log(overallBalance); // 17840
 //////////////////// separate map, flat, reduce
 
-console.log('accounts', accounts);
-const overallBalance1 = accounts
-  .map(acc => acc.movements)
-  .flat()
-  .reduce((acc, mov) => acc + mov, 0);
-console.log('overallBalance1: map, flat, reduce', overallBalance1); // 17840
+// console.log('accounts', accounts);
+// const overallBalance1 = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log('overallBalance1: map, flat, reduce', overallBalance1); // 17840
 
 //// flatMap
 // - returns a NEW ARRAY formed by applying a given callback function to each element of the array
 // - flattening the result by one level
 // - slightly more efficient than '(arr.map(...args).flat())' (flat() of depth 1)
-const overallBalance2 = accounts
-  .flatMap(acc => acc.movements)
-  .reduce((acc, mov) => acc + mov, 0);
-console.log('overallBalance2: flatMap, reduce', overallBalance2); // 17840
+// const overallBalance2 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log('overallBalance2: flatMap, reduce', overallBalance2); // 17840
 
 ///////////////////////////////////////// 023 flat and flatMap - END
 
@@ -1010,12 +1010,12 @@ console.log('overallBalance2: flatMap, reduce', overallBalance2); // 17840
 ///////////////////////////////////////// 024 Sorting Arrays - START
 
 // Strings
-const owners = ['Jonas', 'Adam', 'Steven', 'Martha']
-console.log(owners.sort()); // (4) ['Adam', 'Jonas', 'Martha', 'Steven'] => Alphabetical sort
+// const owners = ['Jonas', 'Adam', 'Steven', 'Martha']
+// console.log(owners.sort()); // (4) ['Adam', 'Jonas', 'Martha', 'Steven'] => Alphabetical sort
 
 // Numbers
-console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
-console.log(movements.sort()); // (8) [-130, -400, -650, 1300, 200, 3000, 450, 70] => first number sort (e.g. -1 < 1 < 2 < 3 < ...)
+// console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// console.log(movements.sort()); // (8) [-130, -400, -650, 1300, 200, 3000, 450, 70] => first number sort (e.g. -1 < 1 < 2 < 3 < ...)
 
 // return < 0, A, B (keep order)
 // return > 0, B, A (switch order)
@@ -1036,8 +1036,8 @@ console.log(movements.sort()); // (8) [-130, -400, -650, 1300, 200, 3000, 450, 
 // })
 // console.log(movements); // (8) [-650, -400, -130, 70, 200, 450, 1300, 3000]
 
-movements.sort((a, b) => a - b)
-console.log(movements); // (8) [-650, -400, -130, 70, 200, 450, 1300, 3000]
+// movements.sort((a, b) => a - b)
+// console.log(movements); // (8) [-650, -400, -130, 70, 200, 450, 1300, 3000]
 
 // Descending
 // movements.sort((a, b) => {
@@ -1046,11 +1046,67 @@ console.log(movements); // (8) [-650, -400, -130, 70, 200, 450, 1300, 3000]
 // })
 // console.log(movements); // (8) [3000, 1300, 450, 200, 70, -130, -400, -650]
 
-movements.sort((a, b) => b - a)
-console.log(movements); // (8) [3000, 1300, 450, 200, 70, -130, -400, -650]
+// movements.sort((a, b) => b - a)
+// console.log(movements); // (8) [3000, 1300, 450, 200, 70, -130, -400, -650]
 
 //////////// Sorting Numbers - END
 
 ///////////////////////////////////////// 024 Sorting Arrays - END
+
+
+///////////////////////////////////////// 025 More Ways of Creating and Filling Arrays - START
+
+const arr = [1,2,3,4,5,6,7]
+
+console.log([1,2,3,4,5,6,7]); // (7) [1, 2, 3, 4, 5, 6, 7]
+console.log(new Array(1,2,3,4,5,6,7)); // (7) [1, 2, 3, 4, 5, 6, 7]
+
+//////// Empty array + fill method
+// The 'new Array' here is a special Constructor function
+// we canNOT use the 'x' array for anything else (e.g. we canNOT call the 'map' method on it)
+const x = new Array(7) // (7) [empty × 7]
+// console.log(x.map(() => 5)); // (7) [empty × 7] => the 'map' method does NOT work => the original array is returned.
+
+//// fill
+// - changes all elements within a range of indices in an array to a static value
+// - returns the modified array.
+// - the start index in the array will be included but the end index will NOT be
+
+// x.fill(1) // (7) [1, 1, 1, 1, 1, 1, 1]
+x.fill(1, 3, 5) // (7) [empty × 3, 1, 1, empty × 2] => ONLY fill the array with value '1' starting at index 3 and end at index 4
+console.log(x);
+
+// arr.fill(23, 4, 6) // (7) [1, 2, 3, 4, 23, 23, 7]
+
+arr.fill(23, 2, 6) // (7) [1, 2, 23, 23, 23, 23, 7]
+
+//// Array.from - creates a new, shallow-copied Array instance from an iterable or array-like object.
+const y = Array.from({ length: 7 }, () => 1) // (7) [1, 1, 1, 1, 1, 1, 1]
+
+// const z = Array.from({ length: 7 }, (cur, i) => i + 1) // (7) [1, 2, 3, 4, 5, 6, 7]
+const z = Array.from({ length: 7 }, (_, i) => i + 1) // since we are not using 'cur' here, we can as well set it to '_'
+// console.log(z); // (7) [1, 2, 3, 4, 5, 6, 7]
+
+//// Assume we ONLY have the "movements" (deposits and withdrawals) in the UI but we do NOT have them in the code => We do NOT have an array containing those values
+// Task: We need to calculate their sum
+
+// const labelBalance = document.querySelector('.balance__value');
+labelBalance.addEventListener('click', function() {
+  const movementsUI = Array.from(document.querySelectorAll('.movements__value')).map(el => el.textContent.replace('€', ''))
+  {/* <div class="movements__row">
+    <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
+    <div class="movements__value">${mov}€</div>
+  </div> */}
+  // console.log(movementsUI); // (2) [div.movements__value, div.movements__value]
+  console.log(movementsUI); // after logged in => (8) ['1300', '70', '-130', '-650', '3000', '-400', '450', '200']
+
+  // Another way to convert 'document.querySelectorAll('.movements__value')' to an array
+  // const movementsUI2 = [...document.querySelectorAll('.movements__value')]
+  // Question: Why not use the 'spread' operator to convert '.movements__value' to an array instead?
+  // Reason: Because then we will have to do the 'map' separately
+  // Solution: 'Array.from()' is a better solution here.
+})
+
+///////////////////////////////////////// 025 More Ways of Creating and Filling Arrays - END
 
 
