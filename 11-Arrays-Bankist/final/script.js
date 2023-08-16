@@ -396,7 +396,7 @@ GOOD LUCK 😀
 
 ////////////////////////// 011 The map Method - START
 
-// map - creates a new array populated with the results of calling a provided function on every element in the calling array.
+// map() - creates a new array populated with the results of calling a provided function on every element in the calling array.
 
 // const eurToUsd = 1.1;
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
@@ -682,6 +682,7 @@ btnClose.addEventListener('click', function(e) {
 
 ///////////////////////////////////////// 024 Sorting Arrays - START
 
+//// sort() - sorts the elements of an array in place and returns the reference to the same array, now sorted.
 let sorted = false
 
 // const btnSort = document.querySelector('.btn--sort');
@@ -936,19 +937,19 @@ GOOD LUCK 😀
 ///////////////////////////////////////// 022 some and every - START
 
 // EQUALITY
-////// INCLUDES - determines whether an array includes a certain value among its entries, returning true or false as appropriate.
+////// includes() - determines whether an array includes a certain value among its entries, returning true or false as appropriate.
 // console.log(movements); // (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
 // console.log(movements.includes(-130)); // true
 
 // CONDITION
-////// SOME - tests whether at least one element in the array passes the test implemented by the provided function
+////// some() - tests whether at least one element in the array passes the test implemented by the provided function
 // - returns true if, in the array, it finds an element for which the provided function; otherwise it returns false
 // - It doesn't modify the array.
 // console.log(movements.some(mov => mov === -130)); // true
 // const anyDeposits = movements.some(mov => mov > 0)
 // console.log(anyDeposits); // true
 
-////// EVERY - tests whether all elements in the array pass the test implemented by the provided function.
+////// every() - tests whether all elements in the array pass the test implemented by the provided function.
 // It returns a Boolean value.
 // console.log(movements.every(mov => mov > 0)); // false
 // console.log(account4.movements.every(mov => mov > 0)); // true
@@ -965,7 +966,7 @@ GOOD LUCK 😀
 
 ///////////////////////////////////////// 023 flat and flatMap - START
 
-//// flat - creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+//// flat() - creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
 // const arr = [[1 ,2 , 3], [4, 5, 6], 7, 8]
 // console.log(arr.flat()); // (8) [1, 2, 3, 4, 5, 6, 7, 8]
 
@@ -995,7 +996,7 @@ GOOD LUCK 😀
 //   .reduce((acc, mov) => acc + mov, 0);
 // console.log('overallBalance1: map, flat, reduce', overallBalance1); // 17840
 
-//// flatMap
+//// flatMap()
 // - returns a NEW ARRAY formed by applying a given callback function to each element of the array
 // - flattening the result by one level
 // - slightly more efficient than '(arr.map(...args).flat())' (flat() of depth 1)
@@ -1108,5 +1109,42 @@ labelBalance.addEventListener('click', function() {
 })
 
 ///////////////////////////////////////// 025 More Ways of Creating and Filling Arrays - END
+
+
+///////////////////////////////////////// 027 Array Methods Practice - START
+
+////// Practice 1 - Sum up all the deposited amounts from all the 'movements' arrays
+//// 1.1. Log out all the accounts
+// Whenever we want to create a new array with the same length out of the previous/original array => use the 'map' method
+// console.log(accounts.map(acc => acc.movements));
+// (8) [200, 450, -400, 3000, -650, -130, 70, 1300]
+// (8) [5000, 3400, -150, -790, -3210, -1000, 8500, -30]
+// (8) [200, -200, 340, -300, -20, 50, 400, -460]
+// (5) [430, 1000, 700, 50, 90]
+
+//// 1.2. Concatenating all the 'account' arrays into one array => use 'flatMap' method
+// 8 + 8 + 8 + 5 = 8 * 3 + 5 = 29 array elements in total
+console.log(accounts.flatMap(acc => acc.movements));
+// (29) [200, 450, -400, 3000, -650, -130, 70, 1300, 5000, 3400, -150, -790, -3210, -1000, 8500, -30, 200, -200, 340, -300, -20, 50, 400, -460, 430, 1000, 700, 50, 90]
+
+//// 1.3. Filter out ONLY the deposited amount
+console.log(accounts.flatMap(acc => acc.movements).filter(mov => mov > 0));
+// [200, 450, 3000, 70, 1300, 5000, 3400, 8500, 200, 340, 50, 400, 430, 1000, 700, 50, 90]
+
+//// 1.4. Sum up all the deposited amount
+// console.log(accounts.flatMap(acc => acc.movements).filter(mov => mov > 0).reduce((sum, cur) => sum + cur, 0));
+// 25180
+
+
+////// Practice 2 - Count the number of deposits that are at least 1,000 in the bank
+//// 2.1.
+// const numDeposit1000 = accounts.flatMap(acc => acc.movements).filter(mov => mov >= 1000).length
+// console.log(numDeposit1000); // 6
+
+//// 2.2. Better alternative solution for 2.1.
+console.log(accounts.flatMap(acc => acc.movements).reduce((count, cur) => (cur >= 1000 ? count++ : count)), 0);
+
+
+///////////////////////////////////////// 027 Array Methods Practice - END
 
 
