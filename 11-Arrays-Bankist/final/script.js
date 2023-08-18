@@ -1142,8 +1142,54 @@ console.log(accounts.flatMap(acc => acc.movements).filter(mov => mov > 0));
 // console.log(numDeposit1000); // 6
 
 //// 2.2. Better alternative solution for 2.1.
-console.log(accounts.flatMap(acc => acc.movements).reduce((count, cur) => (cur >= 1000 ? count++ : count)), 0);
+console.log(accounts.flatMap(acc => acc.movements).reduce((count, cur) => (cur >= 1000 ? count++ : count), 0)); // 0
 
+// Prefixed ++ operator
+let a = 10
+console.log(a++); // 10
+console.log(++a); // 12
+console.log(a); // 12
+
+//// 3. Create an object that contains the sums of the 'deposits' and the 'withdrawal'
+// 3.1. Full object
+// const sums = accounts.flatMap(acc => acc.movements).reduce((sums, cur) => {
+//   cur > 0 ? (sums.deposits += cur) : (sums.withdrawals += cur)
+//   return sums
+// }, {
+//   // Initialization - Start with 0 for deposits and 0 for withdrawal
+//   deposits: 0, withdrawals: 0
+// })
+// // NOTE: In an arrow function the value is ONLY implicitly returned when we don't have a function body with curly braces
+// // however, we do have have a function body with curly braces here
+// // Solution: We need to manually/explicitly return the 'accumulator' from the function
+// // How the 'reduce' function works: We ALWAYS need to return the 'accumulator' from each iteration.
+// console.log(sums); // {deposits: 25180, withdrawals: -7340}
+
+// 3.2. Object destructuring
+const { deposits, withdrawals } = accounts.flatMap(acc => acc.movements).reduce((sums, cur) => {
+  // Replace the duplication (sums.deposits += cur) and  (sums.withdrawals += cur) with the condition
+  sums[cur > 0 ? 'deposits' : 'withdrawals'] += cur
+  return sums
+}, {
+  // Initialization - Start with 0 for deposits and 0 for withdrawal
+  deposits: 0, withdrawals: 0
+})
+console.log(deposits, withdrawals); // {deposits: 25180, withdrawals: -7340}
+
+
+//// 4. this is a nice title => This Is a Nice Title
+const convertTitle = function(title) {
+  const capitalize = str => str[0].toUpperCase() + str.slice(1)
+
+  const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in', 'with']
+
+  const titleCase = title.toLowerCase().split(' ').map(word => (exceptions.includes(word)) ? word : capitalize(word)).join(' ')
+  return capitalize(titleCase)
+};
+console.log(convertTitle('this is a nice title'));
+console.log(convertTitle('this is a LONG title but not too long'));
+console.log(convertTitle('this is a nice title'));
+console.log(convertTitle('and here is another title with an example'));
 
 ///////////////////////////////////////// 027 Array Methods Practice - END
 
