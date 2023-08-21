@@ -1057,15 +1057,15 @@ GOOD LUCK 😀
 
 ///////////////////////////////////////// 025 More Ways of Creating and Filling Arrays - START
 
-const arr = [1,2,3,4,5,6,7]
+// const arr = [1,2,3,4,5,6,7]
 
-console.log([1,2,3,4,5,6,7]); // (7) [1, 2, 3, 4, 5, 6, 7]
-console.log(new Array(1,2,3,4,5,6,7)); // (7) [1, 2, 3, 4, 5, 6, 7]
+// console.log([1,2,3,4,5,6,7]); // (7) [1, 2, 3, 4, 5, 6, 7]
+// console.log(new Array(1,2,3,4,5,6,7)); // (7) [1, 2, 3, 4, 5, 6, 7]
 
 //////// Empty array + fill method
 // The 'new Array' here is a special Constructor function
 // we canNOT use the 'x' array for anything else (e.g. we canNOT call the 'map' method on it)
-const x = new Array(7) // (7) [empty × 7]
+// const x = new Array(7) // (7) [empty × 7]
 // console.log(x.map(() => 5)); // (7) [empty × 7] => the 'map' method does NOT work => the original array is returned.
 
 //// fill
@@ -1074,39 +1074,39 @@ const x = new Array(7) // (7) [empty × 7]
 // - the start index in the array will be included but the end index will NOT be
 
 // x.fill(1) // (7) [1, 1, 1, 1, 1, 1, 1]
-x.fill(1, 3, 5) // (7) [empty × 3, 1, 1, empty × 2] => ONLY fill the array with value '1' starting at index 3 and end at index 4
-console.log(x);
+// x.fill(1, 3, 5) // (7) [empty × 3, 1, 1, empty × 2] => ONLY fill the array with value '1' starting at index 3 and end at index 4
+// console.log(x);
 
 // arr.fill(23, 4, 6) // (7) [1, 2, 3, 4, 23, 23, 7]
 
-arr.fill(23, 2, 6) // (7) [1, 2, 23, 23, 23, 23, 7]
+// arr.fill(23, 2, 6) // (7) [1, 2, 23, 23, 23, 23, 7]
 
 //// Array.from - creates a new, shallow-copied Array instance from an iterable or array-like object.
-const y = Array.from({ length: 7 }, () => 1) // (7) [1, 1, 1, 1, 1, 1, 1]
+// const y = Array.from({ length: 7 }, () => 1) // (7) [1, 1, 1, 1, 1, 1, 1]
 
 // const z = Array.from({ length: 7 }, (cur, i) => i + 1) // (7) [1, 2, 3, 4, 5, 6, 7]
-const z = Array.from({ length: 7 }, (_, i) => i + 1) // since we are not using 'cur' here, we can as well set it to '_'
+// const z = Array.from({ length: 7 }, (_, i) => i + 1) // since we are not using 'cur' here, we can as well set it to '_'
 // console.log(z); // (7) [1, 2, 3, 4, 5, 6, 7]
 
 //// Assume we ONLY have the "movements" (deposits and withdrawals) in the UI but we do NOT have them in the code => We do NOT have an array containing those values
 // Task: We need to calculate their sum
 
 // const labelBalance = document.querySelector('.balance__value');
-labelBalance.addEventListener('click', function() {
-  const movementsUI = Array.from(document.querySelectorAll('.movements__value')).map(el => el.textContent.replace('€', ''))
-  {/* <div class="movements__row">
-    <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
-    <div class="movements__value">${mov}€</div>
-  </div> */}
-  // console.log(movementsUI); // (2) [div.movements__value, div.movements__value]
-  console.log(movementsUI); // after logged in => (8) ['1300', '70', '-130', '-650', '3000', '-400', '450', '200']
+// labelBalance.addEventListener('click', function() {
+//   const movementsUI = Array.from(document.querySelectorAll('.movements__value')).map(el => el.textContent.replace('€', ''))
+//   {/* <div class="movements__row">
+//     <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
+//     <div class="movements__value">${mov}€</div>
+//   </div> */}
+//   // console.log(movementsUI); // (2) [div.movements__value, div.movements__value]
+//   console.log(movementsUI); // after logged in => (8) ['1300', '70', '-130', '-650', '3000', '-400', '450', '200']
 
-  // Another way to convert 'document.querySelectorAll('.movements__value')' to an array
-  // const movementsUI2 = [...document.querySelectorAll('.movements__value')]
-  // Question: Why not use the 'spread' operator to convert '.movements__value' to an array instead?
-  // Reason: Because then we will have to do the 'map' separately
-  // Solution: 'Array.from()' is a better solution here.
-})
+//   // Another way to convert 'document.querySelectorAll('.movements__value')' to an array
+//   // const movementsUI2 = [...document.querySelectorAll('.movements__value')]
+//   // Question: Why not use the 'spread' operator to convert '.movements__value' to an array instead?
+//   // Reason: Because then we will have to do the 'map' separately
+//   // Solution: 'Array.from()' is a better solution here.
+// })
 
 ///////////////////////////////////////// 025 More Ways of Creating and Filling Arrays - END
 
@@ -1142,13 +1142,13 @@ console.log(accounts.flatMap(acc => acc.movements).filter(mov => mov > 0));
 // console.log(numDeposit1000); // 6
 
 //// 2.2. Better alternative solution for 2.1.
-console.log(accounts.flatMap(acc => acc.movements).reduce((count, cur) => (cur >= 1000 ? count++ : count), 0)); // 0
+// console.log(accounts.flatMap(acc => acc.movements).reduce((count, cur) => (cur >= 1000 ? count++ : count), 0)); // 0
 
 // Prefixed ++ operator
-let a = 10
-console.log(a++); // 10
-console.log(++a); // 12
-console.log(a); // 12
+// let a = 10
+// console.log(a++); // 10
+// console.log(++a); // 12
+// console.log(a); // 12
 
 //// 3. Create an object that contains the sums of the 'deposits' and the 'withdrawal'
 // 3.1. Full object
@@ -1166,31 +1166,145 @@ console.log(a); // 12
 // console.log(sums); // {deposits: 25180, withdrawals: -7340}
 
 // 3.2. Object destructuring
-const { deposits, withdrawals } = accounts.flatMap(acc => acc.movements).reduce((sums, cur) => {
-  // Replace the duplication (sums.deposits += cur) and  (sums.withdrawals += cur) with the condition
-  sums[cur > 0 ? 'deposits' : 'withdrawals'] += cur
-  return sums
-}, {
-  // Initialization - Start with 0 for deposits and 0 for withdrawal
-  deposits: 0, withdrawals: 0
-})
-console.log(deposits, withdrawals); // {deposits: 25180, withdrawals: -7340}
+// const { deposits, withdrawals } = accounts.flatMap(acc => acc.movements).reduce((sums, cur) => {
+//   // Replace the duplication (sums.deposits += cur) and  (sums.withdrawals += cur) with the condition
+//   sums[cur > 0 ? 'deposits' : 'withdrawals'] += cur
+//   return sums
+// }, {
+//   // Initialization - Start with 0 for deposits and 0 for withdrawal
+//   deposits: 0, withdrawals: 0
+// })
+// console.log(deposits, withdrawals); // {deposits: 25180, withdrawals: -7340}
 
 
 //// 4. this is a nice title => This Is a Nice Title
-const convertTitle = function(title) {
-  const capitalize = str => str[0].toUpperCase() + str.slice(1)
+// const convertTitle = function(title) {
+//   const capitalize = str => str[0].toUpperCase() + str.slice(1)
 
-  const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in', 'with']
+//   const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in', 'with']
 
-  const titleCase = title.toLowerCase().split(' ').map(word => (exceptions.includes(word)) ? word : capitalize(word)).join(' ')
-  return capitalize(titleCase)
-};
-console.log(convertTitle('this is a nice title'));
-console.log(convertTitle('this is a LONG title but not too long'));
-console.log(convertTitle('this is a nice title'));
-console.log(convertTitle('and here is another title with an example'));
+//   const titleCase = title.toLowerCase().split(' ').map(word => (exceptions.includes(word)) ? word : capitalize(word)).join(' ')
+//   return capitalize(titleCase)
+// };
+// console.log(convertTitle('this is a nice title'));
+// console.log(convertTitle('this is a LONG title but not too long'));
+// console.log(convertTitle('this is a nice title'));
+// console.log(convertTitle('and here is another title with an example'));
 
 ///////////////////////////////////////// 027 Array Methods Practice - END
+
+
+///////////////////////////////////////// 028 Coding Challenge #4 - START
+
+/* 
+Julia and Kate are still studying dogs, and this time they are studying if dogs are eating too much or too little.
+Eating too much means the dog's current food portion is larger than the recommended portion, and eating too little is the opposite.
+Eating an okay amount means the dog's current food portion is within a range 10% above and 10% below the recommended portion (see hint).
+
+1. Loop over the array containing dog objects, and for each dog, calculate the recommended food portion and add it to the object as a new property. Do NOT create a new array, simply loop over the array. Forumla: recommendedFood = weight ** 0.75 * 28. (The result is in grams of food, and the weight needs to be in kg)
+2. Find Sarah's dog and log to the console whether it's eating too much or too little. HINT: Some dogs have multiple owners, so you first need to find Sarah in the owners array, and so this one is a bit tricky (on purpose) 🤓
+3. Create an array containing all owners of dogs who eat too much ('ownersEatTooMuch') and an array with all owners of dogs who eat too little ('ownersEatTooLittle').
+4. Log a string to the console for each array created in 3., like this: "Matilda and Alice and Bob's dogs eat too much!" and "Sarah and John and Michael's dogs eat too little!"
+5. Log to the console whether there is any dog eating EXACTLY the amount of food that is recommended (just true or false)
+6. Log to the console whether there is any dog eating an OKAY amount of food (just true or false)
+7. Create an array containing the dogs that are eating an OKAY amount of food (try to reuse the condition used in 6.)
+8. Create a shallow copy of the dogs array and sort it by recommended food portion in an ascending order (keep in mind that the portions are inside the array's objects)
+
+HINT 1: Use many different tools to solve these challenges, you can use the summary lecture to choose between them 😉
+HINT 2: Being within a range 10% above and below the recommended portion means: current > (recommended * 0.90) && current < (recommended * 1.10). Basically, the current portion should be between 90% and 110% of the recommended portion.
+
+TEST DATA:
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] }
+];
+
+GOOD LUCK 😀
+*/
+
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] }
+];
+
+//// 1. Loop over the array containing dog objects, and for each dog, calculate the recommended food portion and add it to the object as a new property. Do NOT create a new array, simply loop over the array. Forumla: recommendedFood = weight ** 0.75 * 28. (The result is in grams of food, and the weight needs to be in kg)
+
+// for (const [key, i] of dogs.entries()) {
+//   console.log(`${key + 1}: weight is ${i.weight} kg, curFood is ${i.curFood} and recommendedFood is ${i.weight ** .75 * 28} grams`);
+// }
+
+// Math.trunc() - returns the integer part of a number by removing any fractional digits.
+dogs.forEach(dog => (dog.recFood = Math.trunc(dog.weight ** 0.75 * 28)))
+console.log(dogs);
+
+
+//// 2. Find Sarah's dog and log to the console whether it's eating too much or too little. HINT: Some dogs have multiple owners, so you first need to find Sarah in the owners array, and so this one is a bit tricky (on purpose) 🤓
+
+const sarahDog = dogs.find(dog => dog.owners.includes('Sarah'))
+console.log(sarahDog); // {weight: 13, curFood: 275, owners: Array(2), recFood: 191}
+
+// Eating too much means the dog's current food portion is larger than the recommended portion, and eating too little is the opposite.
+
+const recFood = Math.trunc(dogs.weight ** 0.75 * 28)
+console.log(`Sarah's dog is eating too ${dogs.curFood > sarahDog.recFood ? 'much' : 'little'}`);
+
+
+//// 3. Create an array containing all owners of dogs who eat too much ('ownersEatTooMuch') and an array with all owners of dogs who eat too little ('ownersEatTooLittle').
+
+const ownersEatTooMuch = dogs.filter(dog => (dog.curFood > dog.recFood)).flatMap(dog => dog.owners)
+console.log('Owners of dogs that eat too much', ownersEatTooMuch);
+// Owners of dogs that eat too much (3) ['Matilda', 'Sarah', 'John']
+
+const ownersEatTooLittle = dogs.filter(dog => (dog.curFood < dog.recFood)).flatMap(dog => dog.owners)
+console.log('Owners of dogs that eat too little', ownersEatTooLittle);
+// Owners of dogs that eat too little (3) ['Alice', 'Bob', 'Michael']
+
+
+//// 4. Log a string to the console for each array created in 3., like this: "Matilda and Alice and Bob's dogs eat too much!" and "Sarah and John and Michael's dogs eat too little!"
+const str1 = ownersEatTooMuch.join(' and ')
+console.log(`${str1}'s dogs eat too much`); // Matilda and Sarah and John's dogs eat too much
+
+const str2 = ownersEatTooLittle.join(' and ')
+console.log(`${str2}'s dogs eat too little`); // Alice and Bob and Michael's dogs eat too little
+
+
+//// 5. Log to the console whether there is any dog eating EXACTLY the amount of food that is recommended (just true or false)
+console.log('There is any dog eating EXACTLY the amount of food that is recommended ', dogs.some(dog => dog.curFood === dog.recFood)); // false
+
+
+//// 6. Log to the console whether there is any dog eating an OKAY amount of food (just true or false)
+// Eating an okay amount means the dog's current food portion is within a range 10% above and 10% below the recommended portion (see hint).
+
+// dog.curFood > dog.recFood * .9 && dog.curFood < dog.recFood * 1.1 - Condition from the video lesson
+const checkEatingOk = dog => dog.curFood > dog.recFood * .9 && dog.curFood < dog.recFood * 1.1
+console.log(dogs.some(checkEatingOk)); // true
+
+
+// 7. Create an array containing the dogs that are eating an OKAY amount of food (try to reuse the condition used in 6.)
+const dogsEatingOk = dogs.filter(checkEatingOk)
+console.log(dogsEatingOk);
+
+
+// 8. Create a shallow copy of the dogs array and sort it by recommended food portion in an ascending order (keep in mind that the portions are inside the array's objects)
+// const recFoodSort = dogs.slice().sort((a, b) => {
+//   return a.recFood - b.recFood
+// })
+const recFoodSort = dogs.slice().sort((a, b) => a.recFood - b.recFood)
+console.log(dogs);
+// {weight: 22, curFood: 250, owners: Array(2), recFood: 284}
+// {weight: 8, curFood: 200, owners: Array(1), recFood: 133}
+// {weight: 13, curFood: 275, owners: Array(2), recFood: 191}
+// {weight: 32, curFood: 340, owners: Array(1), recFood: 376}
+console.log(recFoodSort);
+// {weight: 8, curFood: 200, owners: Array(1), recFood: 133}
+// {weight: 13, curFood: 275, owners: Array(2), recFood: 191}
+// {weight: 22, curFood: 250, owners: Array(2), recFood: 284}
+// {weight: 32, curFood: 340, owners: Array(1), recFood: 376}
+
+///////////////////////////////////////// 028 Coding Challenge #4 - END
 
 
