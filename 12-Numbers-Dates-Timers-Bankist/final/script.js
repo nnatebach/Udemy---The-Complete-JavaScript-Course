@@ -312,55 +312,90 @@ btnSort.addEventListener('click', function (e) {
 
 ////////////////////////////////// 004 Math and Rounding - START
 
-//// Math.sqrt() static method returns the square root of a number.
-console.log(Math.sqrt(25)); // 5
-console.log(25 ** (1/2)); // 5
-console.log(8 ** (1/3)); // 2
+// //// Math.sqrt() static method returns the square root of a number.
+// console.log(Math.sqrt(25)); // 5
+// console.log(25 ** (1/2)); // 5
+// console.log(8 ** (1/3)); // 2
 
-//// Math.max() static method returns
-// - the largest of the numbers given as input parameters,
-// - or -Infinity if there are no parameters.
-console.log(Math.max(5,18,23,11,2)); // 23
-console.log(Math.max(5,18,'23',11,2)); // 23
-console.log(Math.max(5,18,'23px',11,2)); // NaN
+// //// Math.max() static method returns
+// // - the largest of the numbers given as input parameters,
+// // - or -Infinity if there are no parameters.
+// console.log(Math.max(5,18,23,11,2)); // 23
+// console.log(Math.max(5,18,'23',11,2)); // 23
+// console.log(Math.max(5,18,'23px',11,2)); // NaN
 
-console.log(Math.min(5,18,23,11,2)); // 2
+// console.log(Math.min(5,18,23,11,2)); // 2
 
-console.log(Math.PI); // 3.141592653589793
+// console.log(Math.PI); // 3.141592653589793
 
-// Calculate the area of a circle with the radius of 10px
-console.log(Math.PI * Number.parseFloat('10px') ** 2); // 314.1592653589793
+// // Calculate the area of a circle with the radius of 10px
+// console.log(Math.PI * Number.parseFloat('10px') ** 2); // 314.1592653589793
 
-//// Generate 6 different random numbers - The Dice example
-// - Math.trunc - returns the integer part of a number by removing any fractional digits.
-// - Plus 1 ( + 1) at the end because we want to have 6 numbers from 1 - 6
-console.log(Math.trunc(Math.random() * 6) + 1);
+// //// Generate 6 different random numbers - The Dice example
+// // - Math.trunc - returns the integer part of a number by removing any fractional digits.
+// // - Plus 1 ( + 1) at the end because we want to have 6 numbers from 1 - 6
+// console.log(Math.trunc(Math.random() * 6) + 1);
 
-//// Generate random numbers given the range of min and max
-const randomInt = (min, max) => Math.trunc(Math.random() * (max - min) + 1) + min
-// 0...1 -> 0...(max - min) -> min...max
-console.log(randomInt(10, 20)); // min value being 10 + 1 and max value is 20
+// //// Generate random numbers given the range of min and max
+// const randomInt = (min, max) => Math.trunc(Math.random() * (max - min) + 1) + min
+// // 0...1 -> 0...(max - min) -> min...max
+// console.log(randomInt(10, 20)); // min value being 10 + 1 and max value is 20
 
-// Rounding integers
-console.log(Math.round(23.3)); // 23
-console.log(Math.round(23.9)); // 24
+// // Rounding integers
+// console.log(Math.round(23.3)); // 23
+// console.log(Math.round(23.9)); // 24
 
-console.log(Math.ceil(23.3)); // 24
-console.log(Math.ceil(23.9)); // 24
+// console.log(Math.ceil(23.3)); // 24
+// console.log(Math.ceil(23.9)); // 24
 
-console.log(Math.floor(23.3)); // 23
-console.log(Math.floor('23.9')); // 23
+// console.log(Math.floor(23.3)); // 23
+// console.log(Math.floor('23.9')); // 23
 
-console.log(Math.trunc(23.3)); // 23
+// console.log(Math.trunc(23.3)); // 23
 
-console.log(Math.trunc(-23.3)); // -23
-console.log(Math.floor(-23.3)); // -24
+// console.log(Math.trunc(-23.3)); // -23
+// console.log(Math.floor(-23.3)); // -24
 
-// Rounding decimals - The toFixed() method of Number values formats this number using fixed-point notation.
-console.log((2.7).toFixed(0)); // 3
-console.log((2.7).toFixed(3)); // 2.700
-console.log((2.345).toFixed(2)); // 2.35
-console.log(+(2.345).toFixed(2)); // 2.35 => number - the plus '+' sign converts a string to a number
+// // Rounding decimals - The toFixed() method of Number values formats this number using fixed-point notation.
+// console.log((2.7).toFixed(0)); // 3
+// console.log((2.7).toFixed(3)); // 2.700
+// console.log((2.345).toFixed(2)); // 2.35
+// console.log(+(2.345).toFixed(2)); // 2.35 => number - the plus '+' sign converts a string to a number
 
 ////////////////////////////////// 004 Math and Rounding - END
+
+
+////////////////////////////////// 005 The Remainder Operator - START
+
+console.log(5 % 2); // 1
+console.log(5 / 2); // 2.5
+
+console.log(8 % 3); // 2
+console.log(8 / 3); // 2.6666666666666665
+
+console.log(6 % 2); // 0
+console.log(6 / 2); // 3
+
+console.log(7 % 2); // 1
+console.log(7 / 2); // 3.5
+
+// Check even numbers
+const isEven = n => n % 2 === 0
+console.log(isEven(8)); // true
+console.log(isEven(11)); // false
+console.log(isEven(5)); // false
+console.log(isEven(4)); // true
+
+{/* <div class="movements__row"> */}
+// const labelBalance = document.querySelector('.balance__value');
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
+    // 0, 2, 4, 6
+    if (i % 2 === 0) row.style.backgroundColor = 'orangered'
+    // 0, 3, 6, 9
+    if (i % 3 === 0) row.style.backgroundColor = 'blue'
+  })
+})
+
+////////////////////////////////// 005 The Remainder Operator - END
 
