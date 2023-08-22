@@ -367,24 +367,24 @@ btnSort.addEventListener('click', function (e) {
 
 ////////////////////////////////// 005 The Remainder Operator - START
 
-console.log(5 % 2); // 1
-console.log(5 / 2); // 2.5
+// console.log(5 % 2); // 1
+// console.log(5 / 2); // 2.5
 
-console.log(8 % 3); // 2
-console.log(8 / 3); // 2.6666666666666665
+// console.log(8 % 3); // 2
+// console.log(8 / 3); // 2.6666666666666665
 
-console.log(6 % 2); // 0
-console.log(6 / 2); // 3
+// console.log(6 % 2); // 0
+// console.log(6 / 2); // 3
 
-console.log(7 % 2); // 1
-console.log(7 / 2); // 3.5
+// console.log(7 % 2); // 1
+// console.log(7 / 2); // 3.5
 
-// Check even numbers
-const isEven = n => n % 2 === 0
-console.log(isEven(8)); // true
-console.log(isEven(11)); // false
-console.log(isEven(5)); // false
-console.log(isEven(4)); // true
+// // Check even numbers
+// const isEven = n => n % 2 === 0
+// console.log(isEven(8)); // true
+// console.log(isEven(11)); // false
+// console.log(isEven(5)); // false
+// console.log(isEven(4)); // true
 
 {/* <div class="movements__row"> */}
 // const labelBalance = document.querySelector('.balance__value');
@@ -398,4 +398,28 @@ labelBalance.addEventListener('click', function () {
 })
 
 ////////////////////////////////// 005 The Remainder Operator - END
+
+
+////////////////////////////////// 006 Numeric Separators - START
+
+// 287, 460, 000, 000
+const diameter = 287_460_000_000
+console.log(diameter); // 287460000000
+
+const price = 345_99
+console.log(price); // 34599
+
+const transferFee1 = 15_00
+const transferFee2 = 1_500
+
+const PI = 3.14_15
+// const PI1 = 3_.1415 // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
+// const PI2 = _3.1415 // Uncaught SyntaxError: Unexpected number
+// const PI3 = 3.1415_ // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
+console.log(PI); // 3.1415
+
+console.log(Number('230_000')); // NaN
+console.log(parseInt('230_000')); // 230
+
+////////////////////////////////// 006 Numeric Separators - END
 
