@@ -402,24 +402,73 @@ labelBalance.addEventListener('click', function () {
 
 ////////////////////////////////// 006 Numeric Separators - START
 
-// 287, 460, 000, 000
-const diameter = 287_460_000_000
-console.log(diameter); // 287460000000
+// // 287, 460, 000, 000
+// const diameter = 287_460_000_000
+// console.log(diameter); // 287460000000
 
-const price = 345_99
-console.log(price); // 34599
+// const price = 345_99
+// console.log(price); // 34599
 
-const transferFee1 = 15_00
-const transferFee2 = 1_500
+// const transferFee1 = 15_00
+// const transferFee2 = 1_500
 
-const PI = 3.14_15
-// const PI1 = 3_.1415 // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
-// const PI2 = _3.1415 // Uncaught SyntaxError: Unexpected number
-// const PI3 = 3.1415_ // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
-console.log(PI); // 3.1415
+// const PI = 3.14_15
+// // const PI1 = 3_.1415 // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
+// // const PI2 = _3.1415 // Uncaught SyntaxError: Unexpected number
+// // const PI3 = 3.1415_ // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
+// console.log(PI); // 3.1415
 
-console.log(Number('230_000')); // NaN
-console.log(parseInt('230_000')); // 230
+// console.log(Number('230_000')); // NaN
+// console.log(parseInt('230_000')); // 230
 
 ////////////////////////////////// 006 Numeric Separators - END
+
+
+////////////////////////////////// 007 Working with BigInt - START
+
+console.log(2 ** 53 - 1); // 9007199254740991 - The largest number that JavaScript can safely represent (2^53 – 1)
+// '2' stands for base 2 which includes 0 and 1 as this is what we are working with
+
+// The Number.MAX_SAFE_INTEGER static data property represents the maximum safe integer in JavaScript (2^53 – 1).
+// For larger integers, consider using BigInt.
+console.log(Number.MAX_SAFE_INTEGER); // 9007199254740991 => 2 ** 53 - 1 === (2^53 – 1)
+
+// Any numbers that are greater than '2 ** 53 - 1' will lose precision!
+console.log(2 ** 53 + 0); // 9007199254740992
+console.log(2 ** 53 + 1); // 9007199254740992
+console.log(2 ** 53 + 2); // 9007199254740994
+console.log(2 ** 53 + 3); // 9007199254740996
+console.log(2 ** 53 + 4); // 9007199254740996
+
+console.log(2938745928375982375948n); // 2938745928375982375948n => bigint
+console.log(BigInt(823765)); // 823765n
+
+// Operations
+console.log(10000n + 10000n); // 20000n
+console.log(9283745982375n * 10000n); // 92837459823750000n
+// console.log(Math.sqrt(16n)); // Uncaught TypeError: Cannot convert a BigInt value to a number => Math.sqrt does NOT work with BigInt
+
+// CANNOT mix BigInt and other types => Use explicit conversions
+const huge = 1239587238945n
+const num = 23
+// console.log(huge * num); // Uncaught TypeError: Cannot mix BigInt and other types, use explicit conversions
+// => Convert 'num' to BigInt explicitly!
+console.log(1239587238945n * BigInt(num)); // 28510506495735n
+
+// Exceptions
+console.log(20n > 15); // true
+console.log(20n === 20); // false.
+// Reason:
+// - The '===' will compare the types between the two variables. In here we are having '20n' as BigInt type and '20' as a regular variable
+// - The '===' will NOT do type coercion
+console.log(20n == 20); // true. Reason: '==' DOES type coercion
+console.log(20n == '20'); // true
+
+console.log(huge + ' is REALLY big!'); // 1239587238945 is REALLY big!
+
+// Divisions
+console.log(10n / 3n); // 3n - The closest BigInt, decimals are cut off
+console.log(10 / 3); // 3.3333333333333335
+
+////////////////////////////////// 007 Working with BigInt - END
 
