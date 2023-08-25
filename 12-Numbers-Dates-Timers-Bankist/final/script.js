@@ -426,6 +426,7 @@ labelBalance.addEventListener('click', function () {
 
 ////////////////////////////////// 007 Working with BigInt - START
 
+/*
 console.log(2 ** 53 - 1); // 9007199254740991 - The largest number that JavaScript can safely represent (2^53 – 1)
 // '2' stands for base 2 which includes 0 and 1 as this is what we are working with
 
@@ -469,6 +470,74 @@ console.log(huge + ' is REALLY big!'); // 1239587238945 is REALLY big!
 // Divisions
 console.log(10n / 3n); // 3n - The closest BigInt, decimals are cut off
 console.log(10 / 3); // 3.3333333333333335
+*/
 
 ////////////////////////////////// 007 Working with BigInt - END
+
+
+////////////////////////////////// 008 Creating Dates - START
+
+//// The Date() constructor
+// - creates Date objects.
+// - it returns a string representing the current time when called as a function.
+
+// Syntax
+// new Date(year, monthIndex, day, hours, minutes, seconds, milliseconds)
+
+/*
+// Create a date
+const now = new Date()
+console.log(now); // Tue Aug 22 2023 15:10:26 GMT+0700 (Indochina Time)
+
+console.log(new Date('Aug 22 2023 3:12:40')); // Tue Aug 22 2023 03:12:40 GMT+0700 (Indochina Time)
+console.log(new Date(account1.movementsDates[0])); // Tue Nov 19 2019 04:31:17 GMT+0700 (Indochina Time)
+console.log(new Date(account1.movementsDates[4])); // Fri May 08 2020 21:11:59 GMT+0700 (Indochina Time)
+
+////// data
+// const account1 = {
+//   movementsDates: [
+//     '2019-11-18T21:31:17.178Z',
+//     '2019-12-23T07:42:02.383Z',
+//     '2020-01-28T09:15:04.904Z',
+//     '2020-04-01T10:17:24.185Z',
+//     '2020-05-08T14:11:59.604Z',
+//     '2020-05-27T17:01:17.194Z',
+//     '2020-07-11T23:36:17.929Z',
+//     '2020-07-12T10:51:36.790Z',
+//   ],
+// }
+////// data
+
+console.log(new Date(2037, 10, 19, 15, 23, 5)); // Thu Nov 19 2037 15:23:05 GMT+0700 (Indochina Time)
+
+console.log(new Date(2037, 10, 31)); // Tue Dec 01 2037 00:00:00 GMT+0700 (Indochina Time)
+
+console.log(new Date(0)); // Thu Jan 01 1970 08:00:00 GMT+0800 (Indochina Time)
+
+console.log(new Date(3 * 24 * 60 * 60 * 1000)); // Sun Jan 04 1970 08:00:00 GMT+0800 (Indochina Time)
+// console.log(3 * 24 * 60 * 60 * 1000); // 259200000
+*/
+
+// Working with dates
+const future = new Date(2037, 10, 19, 15, 23)
+console.log(future); // Thu Nov 19 2037 15:23:00 GMT+0700 (Indochina Time)
+console.log(future.getFullYear()); // 2037
+console.log(future.getMonth()); // 10
+console.log(future.getDate()); // 19
+console.log(future.getDay()); // 4
+console.log(future.getHours()); // 15
+console.log(future.getMinutes()); // 23
+console.log(future.getSeconds()); // 0
+console.log(future.toISOString()); // 2037-11-19T08:23:00.000Z
+console.log(future.getTime()); // 2142231780000
+
+console.log(new Date(2142231780000)); // Thu Nov 19 2037 15:23:00 GMT+0700 (Indochina Time)
+
+console.log(Date.now()); // 1692946043922 - at the time of console logging this
+
+// "setFullYear" changes the Date object in place, and returns its new timestamp
+future.setFullYear(2040)
+console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0700 (Indochina Time)
+
+////////////////////////////////// 008 Creating Dates - END
 
