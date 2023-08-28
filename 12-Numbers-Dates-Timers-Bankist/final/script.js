@@ -16,14 +16,14 @@ const account1 = {
   pin: 1111,
 
   movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2022-11-18T21:31:17.178Z',
+    '2022-12-23T07:42:02.383Z',
+    '2022-01-28T09:15:04.904Z',
+    '2023-04-01T10:17:24.185Z',
+    '2023-08-23T14:11:59.604Z',
+    '2023-08-22T17:01:17.194Z',
+    '2023-08-22T23:36:17.929Z',
+    '2023-08-26T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -39,11 +39,11 @@ const account2 = {
     '2019-11-01T13:15:33.035Z',
     '2019-11-30T09:48:16.867Z',
     '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    '2023-08-25T14:18:46.235Z',
+    '2023-08-27T16:33:06.386Z',
+    '2023-08-24T14:43:26.374Z',
+    '2023-08-26T18:49:59.371Z',
+    '2023-08-26T12:01:20.894Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -81,6 +81,27 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+////////////////////////////////// 010 Operations With Dates - START
+
+const formatMovementDate = function (date) {
+  // The Math.abs() static method returns the absolute value of a number - POSITIVE NUMBERS ONLY
+  const calcDayPassed = (date1, date2) => Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24))
+  const dayPassed = calcDayPassed(new Date(), date)
+  // console.log(dayPassed);
+
+  if (dayPassed === 0) return "Today"
+  if (dayPassed === 1) return "Yesterday"
+  if (dayPassed <= 7) return `${dayPassed} days ago`
+  // else {
+    const year = date.getFullYear()
+    const month = `${date.getMonth() + 1}`.padStart(2, 0)
+    const day = `${date.getDate()}`.padStart(2, 0)
+    return `${day}/${month}/${year}`
+  // }
+}
+
+////////////////////////////////// 010 Operations With Dates - END
+
 ////////////////////////////////// 009 Adding Dates to Bankist App - START
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
@@ -97,12 +118,8 @@ const displayMovements = function (acc, sort = false) {
     // Reason: We need the access to the 'day', 'month', and 'year'
     // Problem: "acc.movementsDates[i]" is a time formatted string
     // Solution: We need to create a new "Date" object in order to call the methods from the "Date" object
-    const day = new Date(acc.movementsDates[i])
-
-    const year = day.getFullYear()
-    const month = `${day.getMonth() + 1}`.padStart(2, 0)
-    const date = `${day.getDate()}`.padStart(2, 0)
-    const displayDate = `${date}/${month}/${year}`
+    const date = new Date(acc.movementsDates[i])
+    const displayDate = formatMovementDate(date)
 
   ////////////////////////////////// 009 Adding Dates to Bankist App - END
 
@@ -202,18 +219,18 @@ btnLogin.addEventListener('click', function (e) {
     const year = now.getFullYear()
 
     // const month = now.getMonth() + 1 // 8
-    // const date = now.getDate() // 26
+    // const day = now.getDate() // 26
 
     // Add "0" before "month" and "date": 8 => 08
     const month = `${now.getMonth() + 1}`.padStart(2, 0)
-    const date = `${now.getDate()}`.padStart(2, 0)
+    const day = `${now.getDate()}`.padStart(2, 0)
 
     const hours = `${now.getHours()}`.padStart(2, 0)
     const minutes = `${now.getMinutes()}`.padStart(2, 0)
 
     // const labelDate = document.querySelector('.date');
     // This is now a static time
-    labelDate.textContent = `${date}/${month}/${year}, ${hours}:${minutes}`
+    labelDate.textContent = `${day}/${month}/${year}, ${hours}:${minutes}`
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
@@ -608,4 +625,24 @@ console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0700 (Indochina Time)
 */
 
 ////////////////////////////////// 008 Creating Dates - END
+
+
+////////////////////////////////// 010 Operations With Dates - START
+
+// const future = new Date(2037, 10, 19, 15, 23)
+// console.log(future); // Thu Nov 19 2037 15:23:00 GMT+0700 (Indochina Time) => object
+// console.log(+future); // 2142231780000 => number
+
+// const calcDayPassed = (date1, date2) => (date2 - date1) / (1000 * 60 * 60 * 24)
+// milliseconds => seconds (divided by 1000)
+// seconds => minutes (multiplied by 60)
+// seconds => hours (multiplied by 60)
+// seconds => days (multiplied by 24)
+
+// const day1 = calcDayPassed(new Date(2037, 3, 14), new Date(2037, 3, 24))
+// 2037, 3, 14 - March 14th, 2023
+// 2037, 3, 24 - March 24th, 2023
+// console.log(day1); // 10 days = 864000000 milliseconds (original unit)
+
+////////////////////////////////// 010 Operations With Dates - END
 
