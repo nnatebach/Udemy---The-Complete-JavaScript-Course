@@ -103,6 +103,17 @@ const formatMovementDate = function (date, locale) {
 
 ////////////////////////////////// 010 Operations With Dates - END
 
+
+////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency
+  }).format(value)
+}
+////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
+
+
 ////////////////////////////////// 009 Adding Dates to Bankist App - START
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
@@ -126,6 +137,11 @@ const displayMovements = function (acc, sort = false) {
     const displayDate = formatMovementDate(date, acc.locale)
     ////////////////////////////////// 011 Internationalizing Dates (Intl) - END
 
+    ////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
+    const formattedMov = formatCur(mov, acc.locale, acc.currency)
+    ////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
+
+
   ////////////////////////////////// 009 Adding Dates to Bankist App - END
 
     const html = `
@@ -134,7 +150,7 @@ const displayMovements = function (acc, sort = false) {
       i + 1
     } ${type}</div>
         <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${formattedMov}</div>
       </div>
     `;
 
@@ -144,19 +160,27 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
+  labelBalance.textContent = formatCur(acc.balance, acc.locale, acc.currency)
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
+
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
+  labelSumIn.textContent = formatCur(incomes, acc.locale, acc.currency)
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out.toFixed(2))}€`;
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency)
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -166,7 +190,9 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency)
+  ////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
 };
 
 const createUsernames = function (accs) {
@@ -684,4 +710,24 @@ console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0700 (Indochina Time)
 // console.log(day1); // 10 days = 864000000 milliseconds (original unit)
 
 ////////////////////////////////// 010 Operations With Dates - END
+
+
+////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
+
+const num = 3452324.43
+
+const options = {
+  style: 'unit',
+  unit: 'mile-per-hour',
+  // useGrouping: false // US: 3,452,324.43 => US: 3452324.43
+}
+
+console.log('US:', new Intl.NumberFormat('en-US', options).format(num)); // US: 3,452,324.43
+console.log('Germany:', new Intl.NumberFormat('de-DE', options).format(num)); // Germany: 3.452.324,43
+console.log('France:', new Intl.NumberFormat('fr-FR', options).format(num)); // France: 3 452 324,43
+
+// User's browser
+console.log(navigator.language, new Intl.NumberFormat(navigator.language, options).format(num)); // en-US 3,452,324.43
+
+////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
 
