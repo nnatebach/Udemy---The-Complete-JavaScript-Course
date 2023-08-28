@@ -81,19 +81,37 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+////////////////////////////////// 009 Adding Dates to Bankist App - START
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
-
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  
+  const movs = sort ? acc.movements.slice().sort((a, b) => a - b) : acc.movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    // Looping over 2 arrays at the same time
+    // "i" is the current index in the "movements" array. And the same index is going to point to the equivalent date in this "movementsDates" array.
+    // Same index => same position
+
+    // Reason: We need the access to the 'day', 'month', and 'year'
+    // Problem: "acc.movementsDates[i]" is a time formatted string
+    // Solution: We need to create a new "Date" object in order to call the methods from the "Date" object
+    const day = new Date(acc.movementsDates[i])
+
+    const year = day.getFullYear()
+    const month = `${day.getMonth() + 1}`.padStart(2, 0)
+    const date = `${day.getDate()}`.padStart(2, 0)
+    const displayDate = `${date}/${month}/${year}`
+
+  ////////////////////////////////// 009 Adding Dates to Bankist App - END
 
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+        <div class="movements__date">${displayDate}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -142,7 +160,10 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  // displayMovements(acc.movements);
+  ////////////////////////////////// 009 Adding Dates to Bankist App - START
+  displayMovements(acc);
+  ////////////////////////////////// 009 Adding Dates to Bankist App - END
 
   // Display balance
   calcDisplayBalance(acc);
@@ -155,6 +176,11 @@ const updateUI = function (acc) {
 // Event handlers
 let currentAccount;
 
+// FAKE ALWAYS LOGGED IN
+currentAccount = account1
+updateUI(currentAccount)
+containerApp.style.opacity = 100
+
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -162,7 +188,7 @@ btnLogin.addEventListener('click', function (e) {
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
   );
-  console.log(currentAccount);
+  console.log("currentAccount", currentAccount);
 
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     // Display UI and message
@@ -170,6 +196,24 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
+
+    //// Create current date and time
+    const now = new Date()
+    const year = now.getFullYear()
+
+    // const month = now.getMonth() + 1 // 8
+    // const date = now.getDate() // 26
+
+    // Add "0" before "month" and "date": 8 => 08
+    const month = `${now.getMonth() + 1}`.padStart(2, 0)
+    const date = `${now.getDate()}`.padStart(2, 0)
+
+    const hours = `${now.getHours()}`.padStart(2, 0)
+    const minutes = `${now.getMinutes()}`.padStart(2, 0)
+
+    // const labelDate = document.querySelector('.date');
+    // This is now a static time
+    labelDate.textContent = `${date}/${month}/${year}, ${hours}:${minutes}`
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
@@ -198,6 +242,20 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    ////////////////////////////////// 009 Adding Dates to Bankist App - START
+    // Problem 1: Date shows "NAN/NAN/NAN" when requesting the new loan (new transfer)
+    // Reason 1: The "movementsDates" does not have any date
+    // - movements: Array(9)
+    // - movementsDates: Array(8)
+    // Solution 1: Whenever there is a new transfer or a new loan, we need to not only push the value into the "movements" array but also into the "movementsDates"
+    // We need to push in the date for both the sender and the receiver
+
+    // Problem 2: "new Date()" returns an object, we need a string
+    // Solution 2: use "toISOString()"
+    currentAccount.movementsDates.push(new Date().toISOString())
+    receiverAcc.movementsDates.push(new Date().toISOString())
+    ////////////////////////////////// 009 Adding Dates to Bankist App - END
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -211,6 +269,14 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
     currentAccount.movements.push(amount);
+
+    ////////////////////////////////// 009 Adding Dates to Bankist App - START
+    // Add loan date
+    // toISOString() method of Date instances returns a string representing this date in the date time string format
+    // currentAccount.movementsDates.push(new Date()) // Mon Aug 28 2023 10:59:47 GMT+0700 (Indochina Time)
+    currentAccount.movementsDates.push(new Date().toISOString()) // "2023-08-28T04:00:38.039Z"
+    // console.log(currentAccount.movementsDates.push(new Date().toISOString()));
+    ////////////////////////////////// 009 Adding Dates to Bankist App - END
 
     // Update UI
     updateUI(currentAccount);
@@ -518,6 +584,7 @@ console.log(new Date(3 * 24 * 60 * 60 * 1000)); // Sun Jan 04 1970 08:00:00 GMT+
 // console.log(3 * 24 * 60 * 60 * 1000); // 259200000
 */
 
+/*
 // Working with dates
 const future = new Date(2037, 10, 19, 15, 23)
 console.log(future); // Thu Nov 19 2037 15:23:00 GMT+0700 (Indochina Time)
@@ -538,6 +605,7 @@ console.log(Date.now()); // 1692946043922 - at the time of console logging this
 // "setFullYear" changes the Date object in place, and returns its new timestamp
 future.setFullYear(2040)
 console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0700 (Indochina Time)
+*/
 
 ////////////////////////////////// 008 Creating Dates - END
 
