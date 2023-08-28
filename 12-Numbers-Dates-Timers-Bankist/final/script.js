@@ -93,10 +93,6 @@ const formatMovementDate = function (date, locale) {
   if (dayPassed === 1) return "Yesterday"
   if (dayPassed <= 7) return `${dayPassed} days ago`
   // else {
-    const year = date.getFullYear()
-    const month = `${date.getMonth() + 1}`.padStart(2, 0)
-    const day = `${date.getDate()}`.padStart(2, 0)
-    // return `${day}/${month}/${year}`
 
     ////////////////////////////////// 011 Internationalizing Dates (Intl) - START
     return new Intl.DateTimeFormat(locale).format(date)
