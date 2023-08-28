@@ -83,7 +83,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 ////////////////////////////////// 010 Operations With Dates - START
 
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date, locale) {
   // The Math.abs() static method returns the absolute value of a number - POSITIVE NUMBERS ONLY
   const calcDayPassed = (date1, date2) => Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24))
   const dayPassed = calcDayPassed(new Date(), date)
@@ -96,7 +96,12 @@ const formatMovementDate = function (date) {
     const year = date.getFullYear()
     const month = `${date.getMonth() + 1}`.padStart(2, 0)
     const day = `${date.getDate()}`.padStart(2, 0)
-    return `${day}/${month}/${year}`
+    // return `${day}/${month}/${year}`
+
+    ////////////////////////////////// 011 Internationalizing Dates (Intl) - START
+    return new Intl.DateTimeFormat(locale).format(date)
+    ////////////////////////////////// 011 Internationalizing Dates (Intl) - END
+
   // }
 }
 
@@ -119,7 +124,11 @@ const displayMovements = function (acc, sort = false) {
     // Problem: "acc.movementsDates[i]" is a time formatted string
     // Solution: We need to create a new "Date" object in order to call the methods from the "Date" object
     const date = new Date(acc.movementsDates[i])
-    const displayDate = formatMovementDate(date)
+    // const displayDate = formatMovementDate(date)
+
+    ////////////////////////////////// 011 Internationalizing Dates (Intl) - START
+    const displayDate = formatMovementDate(date, acc.locale)
+    ////////////////////////////////// 011 Internationalizing Dates (Intl) - END
 
   ////////////////////////////////// 009 Adding Dates to Bankist App - END
 
@@ -215,22 +224,56 @@ btnLogin.addEventListener('click', function (e) {
     containerApp.style.opacity = 100;
 
     //// Create current date and time
+
+    ////////////////////////////////// 011 Internationalizing Dates (Intl) - START
+
     const now = new Date()
-    const year = now.getFullYear()
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric"
+    }
 
-    // const month = now.getMonth() + 1 // 8
-    // const day = now.getDate() // 26
-
-    // Add "0" before "month" and "date": 8 => 08
-    const month = `${now.getMonth() + 1}`.padStart(2, 0)
-    const day = `${now.getDate()}`.padStart(2, 0)
-
-    const hours = `${now.getHours()}`.padStart(2, 0)
-    const minutes = `${now.getMinutes()}`.padStart(2, 0)
+    // Getting the locale from the user's browser
+    // const locale = navigator.language
+    // console.log(locale);
 
     // const labelDate = document.querySelector('.date');
-    // This is now a static time
-    labelDate.textContent = `${day}/${month}/${year}, ${hours}:${minutes}`
+
+    // setting the locale manually
+    // labelDate.textContent = new Intl.DateTimeFormat("en-CA", options).format(now)
+
+    // setting the locale based on the user's browser
+    // labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(now)
+
+    // setting the locale based on the user's preference
+    // Data
+    // const account1 = {
+    //   owner: 'Jonas Schmedtmann',
+    //   locale: 'pt-PT', // de-DE
+    // };
+    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale, options).format(now)
+
+    ////////////////////////////////// 011 Internationalizing Dates (Intl) - END
+
+    // const now = new Date()
+    // const year = now.getFullYear()
+
+    // // const month = now.getMonth() + 1 // 8
+    // // const day = now.getDate() // 26
+
+    // // Add "0" before "month" and "date": 8 => 08
+    // const month = `${now.getMonth() + 1}`.padStart(2, 0)
+    // const day = `${now.getDate()}`.padStart(2, 0)
+
+    // const hours = `${now.getHours()}`.padStart(2, 0)
+    // const minutes = `${now.getMinutes()}`.padStart(2, 0)
+
+    // // const labelDate = document.querySelector('.date');
+    // // This is now a static time
+    // labelDate.textContent = `${day}/${month}/${year}, ${hours}:${minutes}`
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
