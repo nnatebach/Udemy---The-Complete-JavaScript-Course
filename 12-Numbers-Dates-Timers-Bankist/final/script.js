@@ -349,19 +349,24 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
 
-    ////////////////////////////////// 009 Adding Dates to Bankist App - START
-    // Add loan date
-    // toISOString() method of Date instances returns a string representing this date in the date time string format
-    // currentAccount.movementsDates.push(new Date()) // Mon Aug 28 2023 10:59:47 GMT+0700 (Indochina Time)
-    currentAccount.movementsDates.push(new Date().toISOString()) // "2023-08-28T04:00:38.039Z"
-    // console.log(currentAccount.movementsDates.push(new Date().toISOString()));
-    ////////////////////////////////// 009 Adding Dates to Bankist App - END
-
-    // Update UI
-    updateUI(currentAccount);
+    ////////////////////////////////// 013 Timers setTimeout and setInterval - START
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
+  
+      ////////////////////////////////// 009 Adding Dates to Bankist App - START
+      // Add loan date
+      // toISOString() method of Date instances returns a string representing this date in the date time string format
+      // currentAccount.movementsDates.push(new Date()) // Mon Aug 28 2023 10:59:47 GMT+0700 (Indochina Time)
+      currentAccount.movementsDates.push(new Date().toISOString()) // "2023-08-28T04:00:38.039Z"
+      // console.log(currentAccount.movementsDates.push(new Date().toISOString()));
+      ////////////////////////////////// 009 Adding Dates to Bankist App - END
+  
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500)
+    ////////////////////////////////// 013 Timers setTimeout and setInterval - END
   }
   inputLoanAmount.value = '';
 });
@@ -714,6 +719,7 @@ console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0700 (Indochina Time)
 
 ////////////////////////////////// 012 Internationalizing Numbers (Intl) - START
 
+/*
 const num = 3452324.43
 
 const options = {
@@ -728,6 +734,37 @@ console.log('France:', new Intl.NumberFormat('fr-FR', options).format(num)); // 
 
 // User's browser
 console.log(navigator.language, new Intl.NumberFormat(navigator.language, options).format(num)); // en-US 3,452,324.43
+*/
 
 ////////////////////////////////// 012 Internationalizing Numbers (Intl) - END
+
+
+////////////////////////////////// 013 Timers setTimeout and setInterval - START
+
+
+////// SetTimeout
+const ingredients = ['olives', 'spinach']
+// The global setTimeout() method sets a timer which executes a function or specified piece of code once the timer expires.
+const pizzaTimer = setTimeout((ing01, ing02) => console.log(`Here is your pizza with ${ing01} and ${ing02}`), 3000, ...ingredients)
+console.log("Waiting....!");
+
+// The global clearTimeout() method cancels a timeout previously established by calling setTimeout().
+if (ingredients.includes('olives')) clearTimeout(pizzaTimer)
+
+
+////// SetTimeout
+setTimeout(function() {
+  const now = new Date()
+  console.log(now);
+}, 2000)
+
+////// setInterval
+// The setInterval() method, offered on the Window and Worker interfaces, repeatedly calls a function or executes a code snippet, with a fixed time delay between each call.
+setInterval(function() {
+  const now = new Date()
+  console.log(now);
+}, 1000)
+
+
+////////////////////////////////// 013 Timers setTimeout and setInterval - END
 
