@@ -198,6 +198,36 @@ btnScrollTo.addEventListener('click', function (e) {
   // The button itself that we click
   console.log(e.target.getBoundingClientRect()); // btnScrollTo
   // DOMRect {x: 96, y: 633.578125, width: 112.46875, height: 29, top: 633.578125, …}
+  // y - from the button (the element) to the top of the page.
+
+  console.log('Current scroll (X/Y) ', window.pageXOffset, pageYOffset);
+  // Current scroll (X/Y)  0 611
+  // pageYOffset - from the top of the viewport to the top of the page
+
+  console.log(
+    'Client height/width ',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+  // Client height/width  810 1387
+
+  ////////// Scrolling
+  // window.scrollTo(
+  //   sec1coords.left + window.pageXOffset,
+  //   sec1coords.top + window.pageYOffset
+  // );
+
+  ////////// Smooth Scrolling
+  // This will support old browser
+  // window.scrollTo({
+  //   left: sec1coords.left + window.pageXOffset,
+  //   top: sec1coords.top + window.pageYOffset,
+  //   behavior: 'smooth'
+  // });
+
+  ////////// Smooth Scrolling
+  // This will support new browser
+  section1.scrollIntoView({ behavior: 'smooth' })
 })
 
 /////////////////////////////////////// 007 Implementing Smooth Scrolling - END
