@@ -223,6 +223,14 @@ const updateUI = function (acc) {
 
 ////////////////////////////////// 014 Implementing a Countdown Timer - START
 
+// Goals
+// - Tracking inactivity from the users => Users should NOT be logged out as they are making transactions.
+// - Timer should be reset after
+//// - The users make a transaction (transfer, loan)
+//// - Different log in/out from different users
+// - Timer should START immediately ON the FIRST second NOT AFTER the first second!
+// - Timer should CONTINUE after the first second until end of the interval.
+
 const startLogoutTimer = function() {
   const tick = function () {
     // padStart()
