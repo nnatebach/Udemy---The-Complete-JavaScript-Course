@@ -220,14 +220,74 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+
+////////////////////////////////// 014 Implementing a Countdown Timer - START
+
+const startLogoutTimer = function() {
+  const tick = function () {
+    // padStart()
+    // - pads this string with another string (multiple times, if needed) until the resulting string reaches the given length.
+    // - The padding is applied from the start of this string.
+
+    // const min = time / 60 // WHY???
+    // const sec = time % 60 // WHY???
+
+    const min = String(Math.trunc(time / 60)).padStart(2, 0)
+    const sec = String(time % 60).padStart(2, 0)
+
+    // In each call, print the remaining time to UI
+    //// const labelTimer = document.querySelector('.timer');
+    // labelTimer.textContent = time // 100-0
+    labelTimer.textContent = `${min}:${sec}` // 1.6333333333333333:38
+
+    // Decrease 1s
+    time--
+    // When 0 second, stop timer and log user out
+    //// Without this, the timer will go down to negative values after it reaches 0 (zero)
+    if (time === 0) {
+      clearInterval(timer) // in order for the "clearInterval(timer)" to work, we will need to give a name to the "setInterval"
+      labelWelcome.textContent = "Log in to get started!"
+      containerApp.style.opacity = 0;
+    }
+  }
+
+  // Set time to 5 minutes - The time format we want is 00:00
+  // let time = 100
+
+  let time = 30
+  // Problem: timer does not work correctly when switching to another user (30s, 22s, 27s, 25s, 26s, ...)
+  // Reason: We are having two timers running at the same time.
+  // Solution: Check whether there is already another timer running as we log in an account => If there is, STOP that timer!!
+
+  // Call the timer every second
+  // setInterval(function () {
+  tick()
+  // Immediately call this function and then after every second.
+  // Problem: Timer starts AFTER 1 second
+  // Reason: "timer" will get called AFTER 1 second
+  // Solution: "tick" function will make sure that the timer will start RIGHT AWAY on the 1st second
+  const timer = setInterval(tick, 1000)
+  return timer // we need to "clearInterval" => we need the "timer" variable for that.
+}
+
+////////////////////////////////// 014 Implementing a Countdown Timer - END
+
+
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+// We need these two persist because we need them for different logins => We make them global
+// We need to make these parent scope for the below function scope as we need to check whether these variables exist for those function scopes
+let currentAccount, timer
+// The goal for the "timer" is to track user's inactivity
+// If the user does some kind of transaction => The timer should be reset => So the user will not be logged out as they are transferring/loaning the money
 
+/*
+// As we finished implemented the "startLogoutTimer", this is no longer needed
 // FAKE ALWAYS LOGGED IN
 currentAccount = account1
 updateUI(currentAccount)
 containerApp.style.opacity = 100
+*/
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -280,26 +340,33 @@ btnLogin.addEventListener('click', function (e) {
 
     ////////////////////////////////// 011 Internationalizing Dates (Intl) - END
 
-    // const now = new Date()
-    // const year = now.getFullYear()
+    /*
+    const now = new Date()
+    const year = now.getFullYear()
 
-    // // const month = now.getMonth() + 1 // 8
-    // // const day = now.getDate() // 26
+    // const month = now.getMonth() + 1 // 8
+    // const day = now.getDate() // 26
 
-    // // Add "0" before "month" and "date": 8 => 08
-    // const month = `${now.getMonth() + 1}`.padStart(2, 0)
-    // const day = `${now.getDate()}`.padStart(2, 0)
+    // Add "0" before "month" and "date": 8 => 08
+    const month = `${now.getMonth() + 1}`.padStart(2, 0)
+    const day = `${now.getDate()}`.padStart(2, 0)
 
-    // const hours = `${now.getHours()}`.padStart(2, 0)
-    // const minutes = `${now.getMinutes()}`.padStart(2, 0)
+    const hours = `${now.getHours()}`.padStart(2, 0)
+    const minutes = `${now.getMinutes()}`.padStart(2, 0)
 
-    // // const labelDate = document.querySelector('.date');
-    // // This is now a static time
-    // labelDate.textContent = `${day}/${month}/${year}, ${hours}:${minutes}`
+    // const labelDate = document.querySelector('.date');
+    // This is now a static time
+    labelDate.textContent = `${day}/${month}/${year}, ${hours}:${minutes}`
+    */
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+
+    ////////////////////////////////// 014 Implementing a Countdown Timer - START
+    // Start the timer count down
+    startLogoutTimer()
+    ////////////////////////////////// 014 Implementing a Countdown Timer - END
 
     // Update UI
     updateUI(currentAccount);
@@ -325,6 +392,7 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAcc.movements.push(amount);
 
     ////////////////////////////////// 009 Adding Dates to Bankist App - START
+
     // Problem 1: Date shows "NAN/NAN/NAN" when requesting the new loan (new transfer)
     // Reason 1: The "movementsDates" does not have any date
     // - movements: Array(9)
@@ -336,10 +404,22 @@ btnTransfer.addEventListener('click', function (e) {
     // Solution 2: use "toISOString()"
     currentAccount.movementsDates.push(new Date().toISOString())
     receiverAcc.movementsDates.push(new Date().toISOString())
+
     ////////////////////////////////// 009 Adding Dates to Bankist App - END
 
     // Update UI
     updateUI(currentAccount);
+
+    ////////////////////////////////// 014 Implementing a Countdown Timer - START
+
+    // Reset timer
+    //// Clear the interval with the "timer" we already have
+    clearInterval(timer)
+    //// Start interval again
+    timer = startLogoutTimer()
+
+    ////////////////////////////////// 014 Implementing a Countdown Timer - END
+
   }
 });
 
@@ -361,10 +441,22 @@ btnLoan.addEventListener('click', function (e) {
       // currentAccount.movementsDates.push(new Date()) // Mon Aug 28 2023 10:59:47 GMT+0700 (Indochina Time)
       currentAccount.movementsDates.push(new Date().toISOString()) // "2023-08-28T04:00:38.039Z"
       // console.log(currentAccount.movementsDates.push(new Date().toISOString()));
+
       ////////////////////////////////// 009 Adding Dates to Bankist App - END
-  
+
       // Update UI
       updateUI(currentAccount);
+
+      ////////////////////////////////// 014 Implementing a Countdown Timer - START
+
+      // Reset timer
+      //// Clear the interval with the "timer" we already have
+      clearInterval(timer)
+      //// Start interval again
+      timer = startLogoutTimer()
+
+      ////////////////////////////////// 014 Implementing a Countdown Timer - END
+
     }, 2500)
     ////////////////////////////////// 013 Timers setTimeout and setInterval - END
   }
@@ -407,113 +499,117 @@ btnSort.addEventListener('click', function (e) {
 
 ////////////////////////////////// 003 Converting and Checking Numbers - START
 
-// console.log(23 === 23.0); // true
+/*
+console.log(23 === 23.0); // true
 
-// // Base 10 - 0 to 9. 1 / 10 = 0.1. 3 / 10 = 3.33333333
-// // Binary base 2 - 0 1
-// console.log(.1 + .2); // 0.30000000000000004
-// console.log(.1 + .2 === .3); // false
+// Base 10 - 0 to 9. 1 / 10 = 0.1. 3 / 10 = 3.33333333
+// Binary base 2 - 0 1
+console.log(.1 + .2); // 0.30000000000000004
+console.log(.1 + .2 === .3); // false
 
-// // Conversion
-// console.log(Number(23)); // 23
-// console.log(+'23'); // 23
+// Conversion
+console.log(Number(23)); // 23
+console.log(+'23'); // 23
 
-// // Parsing
-// console.log(Number.parseInt('30px')); // 30
-// console.log(Number.parseInt('e23')); // NaN
+// Parsing
+console.log(Number.parseInt('30px')); // 30
+console.log(Number.parseInt('e23')); // NaN
 
-// console.log(Number.parseInt('2.5rem')); // 2
-// // This is the GO TO method whenever you need to read a value out of a string
-// console.log(Number.parseFloat('2.5rem')); // 2.5
+console.log(Number.parseInt('2.5rem')); // 2
+// This is the GO TO method whenever you need to read a value out of a string
+console.log(Number.parseFloat('2.5rem')); // 2.5
 
-// // This function here is also a global function => We would not have to call it on 'Number', that would also work.
-// // However, this is the traditional way. In modern JavaScript, it is more encouraged to call the function 'parseFloat' on the 'Number' object.
-// // console.log(parseFloat('2.5rem')); // 2.5
+// This function here is also a global function => We would not have to call it on 'Number', that would also work.
+// However, this is the traditional way. In modern JavaScript, it is more encouraged to call the function 'parseFloat' on the 'Number' object.
+// console.log(parseFloat('2.5rem')); // 2.5
 
-// ////// Check if value is NaN
-// //// The isNaN() function determines whether a value is NaN
-// // - first converting the value to a number if necessary.
-// // - Because coercion inside the isNaN() function can be surprising, you may prefer to use Number.isNaN().
-// console.log(Number.isNaN(20)); // false
-// console.log(Number.isNaN('20')); // false
+////// Check if value is NaN
+//// The isNaN() function determines whether a value is NaN
+// - first converting the value to a number if necessary.
+// - Because coercion inside the isNaN() function can be surprising, you may prefer to use Number.isNaN().
+console.log(Number.isNaN(20)); // false
+console.log(Number.isNaN('20')); // false
 
-// // Converting the '20X' string to a number (by adding the 'plus' sign (+) before it) => Not a number
-// console.log(Number.isNaN(+'20X')); // true
+// Converting the '20X' string to a number (by adding the 'plus' sign (+) before it) => Not a number
+console.log(Number.isNaN(+'20X')); // true
 
-// // Diving a number by zero (0) is NOT allowed in mathematics since that will give infinity
-// console.log(Number.isNaN(23 / 0)); // false
-
-
-// ////// Check if value is finite
-// // isFinite - A better method for testing finite value
-// // The isFinite() function determines whether a value is finite, first converting the value to a number if necessary. A finite number is one that's not NaN or ±Infinity. Because coercion inside the isFinite() function can be surprising, you may prefer to use Number.isFinite().
-// // This is the GO TO method to check whether something is a number or not.
-// console.log(Number.isFinite(20)); // true
-// console.log(Number.isFinite('20')); // false
-// console.log(Number.isFinite(+'20X')); // false
-// console.log(Number.isFinite(23 / 0)); // false
+// Diving a number by zero (0) is NOT allowed in mathematics since that will give infinity
+console.log(Number.isNaN(23 / 0)); // false
 
 
-// ////// Check if value is an Integer
-// // The Number.isInteger() static method determines whether the passed value is an integer.
-// console.log(Number.isInteger(23)); // true
-// console.log(Number.isInteger(23.0)); // true
-// console.log(Number.isInteger(23 / 0)); // false
+////// Check if value is finite
+// isFinite - A better method for testing finite value
+// The isFinite() function determines whether a value is finite, first converting the value to a number if necessary. A finite number is one that's not NaN or ±Infinity. Because coercion inside the isFinite() function can be surprising, you may prefer to use Number.isFinite().
+// This is the GO TO method to check whether something is a number or not.
+console.log(Number.isFinite(20)); // true
+console.log(Number.isFinite('20')); // false
+console.log(Number.isFinite(+'20X')); // false
+console.log(Number.isFinite(23 / 0)); // false
+
+
+////// Check if value is an Integer
+// The Number.isInteger() static method determines whether the passed value is an integer.
+console.log(Number.isInteger(23)); // true
+console.log(Number.isInteger(23.0)); // true
+console.log(Number.isInteger(23 / 0)); // false
+*/
 
 ////////////////////////////////// 003 Converting and Checking Numbers - END
 
 
 ////////////////////////////////// 004 Math and Rounding - START
 
-// //// Math.sqrt() static method returns the square root of a number.
-// console.log(Math.sqrt(25)); // 5
-// console.log(25 ** (1/2)); // 5
-// console.log(8 ** (1/3)); // 2
+/*
+//// Math.sqrt() static method returns the square root of a number.
+console.log(Math.sqrt(25)); // 5
+console.log(25 ** (1/2)); // 5
+console.log(8 ** (1/3)); // 2
 
-// //// Math.max() static method returns
-// // - the largest of the numbers given as input parameters,
-// // - or -Infinity if there are no parameters.
-// console.log(Math.max(5,18,23,11,2)); // 23
-// console.log(Math.max(5,18,'23',11,2)); // 23
-// console.log(Math.max(5,18,'23px',11,2)); // NaN
+//// Math.max() static method returns
+// - the largest of the numbers given as input parameters,
+// - or -Infinity if there are no parameters.
+console.log(Math.max(5,18,23,11,2)); // 23
+console.log(Math.max(5,18,'23',11,2)); // 23
+console.log(Math.max(5,18,'23px',11,2)); // NaN
 
-// console.log(Math.min(5,18,23,11,2)); // 2
+console.log(Math.min(5,18,23,11,2)); // 2
 
-// console.log(Math.PI); // 3.141592653589793
+console.log(Math.PI); // 3.141592653589793
 
-// // Calculate the area of a circle with the radius of 10px
-// console.log(Math.PI * Number.parseFloat('10px') ** 2); // 314.1592653589793
+// Calculate the area of a circle with the radius of 10px
+console.log(Math.PI * Number.parseFloat('10px') ** 2); // 314.1592653589793
 
-// //// Generate 6 different random numbers - The Dice example
-// // - Math.trunc - returns the integer part of a number by removing any fractional digits.
-// // - Plus 1 ( + 1) at the end because we want to have 6 numbers from 1 - 6
-// console.log(Math.trunc(Math.random() * 6) + 1);
+//// Generate 6 different random numbers - The Dice example
+// - Math.trunc - returns the integer part of a number by removing any fractional digits.
+// - Plus 1 ( + 1) at the end because we want to have 6 numbers from 1 - 6
+console.log(Math.trunc(Math.random() * 6) + 1);
 
-// //// Generate random numbers given the range of min and max
-// const randomInt = (min, max) => Math.trunc(Math.random() * (max - min) + 1) + min
-// // 0...1 -> 0...(max - min) -> min...max
-// console.log(randomInt(10, 20)); // min value being 10 + 1 and max value is 20
+//// Generate random numbers given the range of min and max
+const randomInt = (min, max) => Math.trunc(Math.random() * (max - min) + 1) + min
+// 0...1 -> 0...(max - min) -> min...max
+console.log(randomInt(10, 20)); // min value being 10 + 1 and max value is 20
 
-// // Rounding integers
-// console.log(Math.round(23.3)); // 23
-// console.log(Math.round(23.9)); // 24
+// Rounding integers
+console.log(Math.round(23.3)); // 23
+console.log(Math.round(23.9)); // 24
 
-// console.log(Math.ceil(23.3)); // 24
-// console.log(Math.ceil(23.9)); // 24
+console.log(Math.ceil(23.3)); // 24
+console.log(Math.ceil(23.9)); // 24
 
-// console.log(Math.floor(23.3)); // 23
-// console.log(Math.floor('23.9')); // 23
+console.log(Math.floor(23.3)); // 23
+console.log(Math.floor('23.9')); // 23
 
-// console.log(Math.trunc(23.3)); // 23
+console.log(Math.trunc(23.3)); // 23
 
-// console.log(Math.trunc(-23.3)); // -23
-// console.log(Math.floor(-23.3)); // -24
+console.log(Math.trunc(-23.3)); // -23
+console.log(Math.floor(-23.3)); // -24
 
-// // Rounding decimals - The toFixed() method of Number values formats this number using fixed-point notation.
-// console.log((2.7).toFixed(0)); // 3
-// console.log((2.7).toFixed(3)); // 2.700
-// console.log((2.345).toFixed(2)); // 2.35
-// console.log(+(2.345).toFixed(2)); // 2.35 => number - the plus '+' sign converts a string to a number
+// Rounding decimals - The toFixed() method of Number values formats this number using fixed-point notation.
+console.log((2.7).toFixed(0)); // 3
+console.log((2.7).toFixed(3)); // 2.700
+console.log((2.345).toFixed(2)); // 2.35
+console.log(+(2.345).toFixed(2)); // 2.35 => number - the plus '+' sign converts a string to a number
+*/
 
 ////////////////////////////////// 004 Math and Rounding - END
 
@@ -539,40 +635,42 @@ btnSort.addEventListener('click', function (e) {
 // console.log(isEven(5)); // false
 // console.log(isEven(4)); // true
 
-{/* <div class="movements__row"> */}
-// const labelBalance = document.querySelector('.balance__value');
-labelBalance.addEventListener('click', function () {
-  [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
-    // 0, 2, 4, 6
-    if (i % 2 === 0) row.style.backgroundColor = 'orangered'
-    // 0, 3, 6, 9
-    if (i % 3 === 0) row.style.backgroundColor = 'blue'
-  })
-})
+// {/* <div class="movements__row"> */}
+// // const labelBalance = document.querySelector('.balance__value');
+// labelBalance.addEventListener('click', function () {
+//   [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
+//     // 0, 2, 4, 6
+//     if (i % 2 === 0) row.style.backgroundColor = 'orangered'
+//     // 0, 3, 6, 9
+//     if (i % 3 === 0) row.style.backgroundColor = 'blue'
+//   })
+// })
 
 ////////////////////////////////// 005 The Remainder Operator - END
 
 
 ////////////////////////////////// 006 Numeric Separators - START
 
-// // 287, 460, 000, 000
-// const diameter = 287_460_000_000
-// console.log(diameter); // 287460000000
+/*
+// 287, 460, 000, 000
+const diameter = 287_460_000_000
+console.log(diameter); // 287460000000
 
-// const price = 345_99
-// console.log(price); // 34599
+const price = 345_99
+console.log(price); // 34599
 
-// const transferFee1 = 15_00
-// const transferFee2 = 1_500
+const transferFee1 = 15_00
+const transferFee2 = 1_500
 
-// const PI = 3.14_15
-// // const PI1 = 3_.1415 // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
-// // const PI2 = _3.1415 // Uncaught SyntaxError: Unexpected number
-// // const PI3 = 3.1415_ // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
-// console.log(PI); // 3.1415
+const PI = 3.14_15
+// const PI1 = 3_.1415 // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
+// const PI2 = _3.1415 // Uncaught SyntaxError: Unexpected number
+// const PI3 = 3.1415_ // Uncaught SyntaxError: Numeric separators are not allowed at the end of numeric literals
+console.log(PI); // 3.1415
 
-// console.log(Number('230_000')); // NaN
-// console.log(parseInt('230_000')); // 230
+console.log(Number('230_000')); // NaN
+console.log(parseInt('230_000')); // 230
+*/
 
 ////////////////////////////////// 006 Numeric Separators - END
 
@@ -741,7 +839,7 @@ console.log(navigator.language, new Intl.NumberFormat(navigator.language, option
 
 ////////////////////////////////// 013 Timers setTimeout and setInterval - START
 
-
+/*
 ////// SetTimeout
 const ingredients = ['olives', 'spinach']
 // The global setTimeout() method sets a timer which executes a function or specified piece of code once the timer expires.
@@ -764,7 +862,7 @@ setInterval(function() {
   const now = new Date()
   console.log(now);
 }, 1000)
-
+*/
 
 ////////////////////////////////// 013 Timers setTimeout and setInterval - END
 
