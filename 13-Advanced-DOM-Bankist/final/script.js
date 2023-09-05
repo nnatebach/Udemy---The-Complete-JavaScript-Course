@@ -108,3 +108,72 @@ document.querySelector('.btn--close-cookie').addEventListener('click', function 
 })
 
 /////////////////////////////////////// 005 Selecting, Creating, and Deleting Elements - END
+
+
+/////////////////////////////////////// 006 Styles, Attributes and Classes - START
+
+///////////////////// Styles
+// this is meant for 'inline style'
+
+message.style.backgroundColor = '#37383d'
+message.style.width = '120%'
+
+console.log(message.style.height); // none => Reason: This is inline style that we set it manually ourselves.
+
+// getComputedStyle()
+// - returns an object containing the values of all CSS properties of an element, after applying active stylesheets and resolving any basic computation those values may contain.
+// - Individual CSS property values are accessed through APIs provided by the object, or by indexing with CSS property names.
+console.log(getComputedStyle(message).height); // CSSStyleDeclaration
+
+//////////// Adding dimension to an element
+// Why use 'Number' and 'parseFloat'?
+// Reason: message.style.height = getComputedStyle(message).height => 83px (string)
+message.style.height = Number.parseFloat(getComputedStyle(message).height, 10) + 40 + 'px'
+console.log(message.style.height);
+
+document.documentElement.style.setProperty('--color-primary', 'orangered')
+
+///////////////////// Attributes
+
+const logo = document.querySelector('.nav__logo')
+console.log(logo.alt); // Bankist logo
+console.log(logo.src); // http://127.0.0.1:8080/img/logo.png => Absolute path
+console.log(logo.className); // nav__logo
+logo.alt = 'Designed by UX Engineer/Expert @nnatebach'
+console.log(logo.alt); // Designed by UX Engineer/Expert @nnatebach
+
+///// Non-standard
+// getAttribute()
+// - returns the value of a specified attribute on the element.
+// - If the given attribute does not exist, the value returned will either be null or "" (the empty string);
+console.log(logo.designer); // undefined
+console.log(logo.getAttribute('designer')); // nnatebach
+console.log(logo.setAttribute('company', 'BachUX')); // undefined
+console.log(logo.getAttribute('src')); // img/logo.png => Relative path
+
+// const link = document.querySelector('.twitter-link')
+// console.log(link.href); // https://twitter.com/jonasschmedtman
+// console.log(link.getAttribute('href')); // https://twitter.com/jonasschmedtman
+
+const link = document.querySelector('.nav__link--btn')
+console.log(link.href); // http://127.0.0.1:8080/#
+console.log(link.getAttribute('href')); // #
+
+///// Data Attributes
+// NOTE:
+// In HTML: data-version-number="3.0"
+// However, we need to turn that into camelCase => versionNumber
+console.log(logo.dataset.versionNumber); // 3.0
+
+///////////////////// Classes
+
+logo.classList.add('c', 'j')
+logo.classList.remove('c', 'j')
+logo.classList.toggle('c')
+logo.classList.contains('c')
+
+
+// AVOID!
+logo.className = 'nnatebach'
+
+/////////////////////////////////////// 006 Styles, Attributes and Classes - END
