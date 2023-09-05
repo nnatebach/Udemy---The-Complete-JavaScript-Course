@@ -38,26 +38,26 @@ document.addEventListener('keydown', function (e) {
 // HTMLCollection (live-collection): if the DOM changes (an element is added/removed), the collection will IMMEDIATELY automatically be updated! - 'getElementsByTagName', 'getElementsByClassName'
 // NodeList collection: The collection will NOT be automatically updated/changed when an element is removed/added because the collection is created when that element still existed. - 'querySelectorAll'
 
-console.log(document.documentElement); // show all elements in the page
-console.log(document.head); // <head></head> all elements in head
-console.log(document.body); // <body></body> all elements in body
+// console.log(document.documentElement); // show all elements in the page
+// console.log(document.head); // <head></head> all elements in head
+// console.log(document.body); // <body></body> all elements in body
 
 const header = document.querySelector('.header')
-console.log(document.querySelector('.header')) // find the first element the matching class '.header'
+// console.log(document.querySelector('.header')) // find the first element the matching class '.header'
 
 // find all the elements with the matching class 'section' in the page.
 const allSections = document.querySelectorAll('.section') // NodeList(4)
-console.log(allSections);
+// console.log(allSections);
 
 // find the element with the exact id
-console.log(document.getElementById('section-1')); // null => there is none
-console.log(document.getElementById('section--1')); // <section class="section" id="section--1"></section>
+// console.log(document.getElementById('section-1')); // null => there is none
+// console.log(document.getElementById('section--1')); // <section class="section" id="section--1"></section>
 
 // find all the button elements in the page using the tag name
 const button = document.getElementsByTagName('button') // HTMLCollection(9) (live-collection)
 // If you manually/programmatically delete a DOM element, the number of DOM will change (decreased)
-console.log(button);
-console.log(document.getElementsByClassName('btn')); // HTMLCollection(5)
+// console.log(button);
+// console.log(document.getElementsByClassName('btn')); // HTMLCollection(5)
 
 
 ////////////////// Creating and Inserting elements
@@ -112,6 +112,7 @@ document.querySelector('.btn--close-cookie').addEventListener('click', function 
 
 /////////////////////////////////////// 006 Styles, Attributes and Classes - START
 
+/*
 ///////////////////// Styles
 // this is meant for 'inline style'
 
@@ -176,4 +177,27 @@ logo.classList.contains('c')
 // AVOID!
 logo.className = 'nnatebach'
 
+*/
+
 /////////////////////////////////////// 006 Styles, Attributes and Classes - END
+
+
+/////////////////////////////////////// 007 Implementing Smooth Scrolling - START
+
+const btnScrollTo = document.querySelector('.btn--scroll-to')
+const section1 = document.getElementById('section--1')
+
+// Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
+// ...Rect: rectangle
+
+btnScrollTo.addEventListener('click', function (e) {
+  const sec1coords = section1.getBoundingClientRect()
+  console.log(sec1coords);
+  // DOMRect {x: 0, y: 950, width: 1342, height: 1510.96875, top: 950, …}
+
+  // The button itself that we click
+  console.log(e.target.getBoundingClientRect()); // btnScrollTo
+  // DOMRect {x: 96, y: 633.578125, width: 112.46875, height: 29, top: 633.578125, …}
+})
+
+/////////////////////////////////////// 007 Implementing Smooth Scrolling - END
