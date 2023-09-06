@@ -342,6 +342,7 @@ document.querySelector('.nav__link').addEventListener('click', function(e) {
 
   ///// STOP PROPAGATION => NOT a good idea yet this might fix the problem in some complex application with many handlers for the same event.
   // '.nav__links' and '.nav' background color will no longer change as we click on '.nav__link' as the propagation will stop right there.
+  // e.stopPropagation()
 })
 
 document.querySelector('.nav').addEventListener('click', function(e) {
@@ -375,4 +376,11 @@ document.querySelector('.nav').addEventListener('click', function(e) {
 ////////////////// NOTE: DOUBLE CHECK THE SLIDE IN 009 Event Propagation Bubbling and Capturing
 
 /////////////////////////////////////// 010 Event Propagation in Practice - END
+
+
+/////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - START
+
+
+
+/////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
 
