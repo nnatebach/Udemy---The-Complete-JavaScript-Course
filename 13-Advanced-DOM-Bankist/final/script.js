@@ -192,11 +192,11 @@ const section1 = document.getElementById('section--1')
 
 btnScrollTo.addEventListener('click', function (e) {
   const sec1coords = section1.getBoundingClientRect()
-  console.log(sec1coords);
+  console.log('section1 ', sec1coords);
   // DOMRect {x: 0, y: 950, width: 1342, height: 1510.96875, top: 950, …}
 
   // The button itself that we click
-  console.log(e.target.getBoundingClientRect()); // btnScrollTo
+  console.log('btnScrollTo', e.target.getBoundingClientRect()); // btnScrollTo
   // DOMRect {x: 96, y: 633.578125, width: 112.46875, height: 29, top: 633.578125, …}
   // y - from the button (the element) to the top of the page.
 
@@ -205,11 +205,11 @@ btnScrollTo.addEventListener('click', function (e) {
   // pageYOffset - from the top of the viewport to the top of the page
 
   console.log(
-    'Client height/width ',
+    'Client (viewport) height/width ',
     document.documentElement.clientHeight,
     document.documentElement.clientWidth
   );
-  // Client height/width  810 1387
+  // Client (viewport) height/width  810 1387
 
   ////////// Scrolling
   // window.scrollTo(
@@ -219,15 +219,70 @@ btnScrollTo.addEventListener('click', function (e) {
 
   ////////// Smooth Scrolling
   // This will support old browser
-  // window.scrollTo({
-  //   left: sec1coords.left + window.pageXOffset,
-  //   top: sec1coords.top + window.pageYOffset,
-  //   behavior: 'smooth'
-  // });
+  window.scrollTo({
+    left: sec1coords.left + window.pageXOffset,
+    top: sec1coords.top + window.pageYOffset,
+    behavior: 'smooth'
+  });
 
   ////////// Smooth Scrolling
   // This will support new browser
-  section1.scrollIntoView({ behavior: 'smooth' })
+  // section1.scrollIntoView({ behavior: 'smooth' })
 })
 
 /////////////////////////////////////// 007 Implementing Smooth Scrolling - END
+
+
+/////////////////////////////////////// 008 Types of Events and Event Handlers - START
+
+// addEventListener("mouseenter", (event) => {}); => new way
+// vs.
+// onmouseenter = (event) => {}; => old way
+
+// addEventListener
+// - allows us to apply multiple event listeners to the same event at ONCE.
+// - we can remove an event handler in case we don't need it anymore (IMPORTANT feature!!)
+
+// onmouseenter - this is a property
+// - if we add the second function, it will override the first function
+
+const heading01 = document.querySelector('h1')
+
+
+////////// 1st way of handling events - single function
+// heading01.addEventListener('mouseenter', function(e) {
+//   alert('addEventListener: Great you\'re reading the heading')
+// })
+
+// heading01.addEventListener('mouseenter', alertHeading01)
+
+
+////////// 2nd way of handling events - multiple function
+// first step: export a function into a named function
+
+///// adding an event listener and call it once then remove it
+const alertHeading01 = function(e) {
+  alert('addEventListener: Great you\'re reading the heading')
+
+  // removing an event listener
+  // heading01.removeEventListener('mouseenter', alertHeading01)
+}
+
+heading01.addEventListener('mouseenter', alertHeading01)
+
+///// remove an event listener after an amount of time
+// - As soon as the time runs out => the event listener will be removed
+// - As long as the time is still running, it will keep showing the alert as you hover the mouse over the 'heading01'
+// Example: 3 seconds
+setTimeout(() => heading01.removeEventListener('mouseenter', alertHeading01), 3000)
+
+
+////////// 3rd way of handling events - inline 'onclick="alert('HTML alert')"' HTML
+
+
+// mouseenter event is fired at an Element when a pointing device (usually a mouse) is initially moved so that its hotspot is within the element at which the event was fired.
+// heading01.onmouseenter = function(e) {
+//   alert('onmouseenter: Great you\'re reading the heading')
+// }
+
+/////////////////////////////////////// 008 Types of Events and Event Handlers - END
