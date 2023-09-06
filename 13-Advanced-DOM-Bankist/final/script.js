@@ -355,7 +355,8 @@ document.querySelector('.nav').addEventListener('click', function(e) {
 
 
 ////////////////// Capture phase
-// events are captured when they come down from the document's root all the way to the target, however, our handlers are not picking up the events during the capture phase.
+// As we learn, events are captured when they come down from the document's root all the way to the target
+// however, our handlers above are not picking up the events during the capture phase.
 // the 'addEventListener' method ONLY listens to the events during the "bubbling" and NOT the 'capture' phase => default behavior of 'addEventListener'
 // Reason: the 'capture' phase is usually irrelevant
 // 'bubbling' phase can be very useful for 'event delegation'
