@@ -235,6 +235,7 @@ btnScrollTo.addEventListener('click', function (e) {
 
 /////////////////////////////////////// 008 Types of Events and Event Handlers - START
 
+/*
 // addEventListener("mouseenter", (event) => {}); => new way
 // vs.
 // onmouseenter = (event) => {}; => old way
@@ -282,5 +283,96 @@ setTimeout(() => heading01.removeEventListener('mouseenter', alertHeading01), 30
 // heading01.onmouseenter = function(e) {
 //   alert('onmouseenter: Great you\'re reading the heading')
 // }
+*/
 
 /////////////////////////////////////// 008 Types of Events and Event Handlers - END
+
+
+/////////////////////////////////////// 009 Event Propagation Bubbling and Capturing - START
+
+/* NOTE LATER */
+
+/////////////////////////////////////// 009 Event Propagation Bubbling and Capturing - END
+
+
+/////////////////////////////////////// 010 Event Propagation in Practice - START
+
+// rbg(255,255,255)
+// Math.random() static method returns a floating-point, pseudo-random number that
+// - is greater than or equal to 0 and less than 1
+// - with approximately uniform distribution over that range — which you can then scale to your desired range
+
+// Math.floor() static method
+// - always rounds down
+// - returns the largest integer less than or equal to a given number.
+const randomInt = (max, min) => Math.floor(Math.random() * (max - min + 1) + min)
+const randomColor = () => `rgb(${randomInt(0 , 255)}, ${randomInt(0 , 255)}, ${randomInt(0 , 255)})`
+console.log(randomColor(0, 255)); // rgb(171, 117, 139)
+
+
+////////////////// target property
+
+// target - a reference to the object onto which the event was dispatched.
+
+// currentTarget
+// - identifies the current target for the event, as the event traverses the DOM.
+// - It always refers to the element to which the event handler has been attached
+
+// target vs. currentTarget - event handler is called during the bubbling or capturing phase of the event.
+
+// Event.target identifies the element on which the event occurred and which may be its descendant.
+
+
+////////////////// Bubbling phase
+
+// The below event handlers receive events from the target elements AND from the bubbling phase (child elements bubbling up)
+
+document.querySelector('.nav__links').addEventListener('click', function(e) {
+  this.style.backgroundColor = randomColor()
+  console.log('CONTAINER', e.target, e.currentTarget);
+})
+
+document.querySelector('.nav__link').addEventListener('click', function(e) {
+  this.style.backgroundColor = randomColor()
+  console.log('LINK', e.target, e.currentTarget);
+  console.log(e.currentTarget === this); // true
+  // the 'currentTarget' is exactly the same as the 'this' keyword
+  // the 'this' keyword is also the one pointing to the element on which the 'eventListener' is attached to.
+  // the 'currentTarget' and the 'this' keyword is going to be exactly the same in any case of event handler
+
+  ///// STOP PROPAGATION => NOT a good idea yet this might fix the problem in some complex application with many handlers for the same event.
+  // '.nav__links' and '.nav' background color will no longer change as we click on '.nav__link' as the propagation will stop right there.
+})
+
+document.querySelector('.nav').addEventListener('click', function(e) {
+  this.style.backgroundColor = randomColor()
+  console.log('NAV', e.target, e.currentTarget);
+})
+// LINK
+// CONTAINER
+// NAV - last one in the console
+
+
+////////////////// Capture phase
+// events are captured when they come down from the document's root all the way to the target, however, our handlers are not picking up the events during the capture phase.
+// the 'addEventListener' method ONLY listens to the events during the "bubbling" and NOT the 'capture' phase => default behavior of 'addEventListener'
+// Reason: the 'capture' phase is usually irrelevant
+// 'bubbling' phase can be very useful for 'event delegation'
+
+
+// Test out 'Capture phase' by setting the 3rd parameter to 'true' in 'addEventListener' function
+// the event handler will be listening to 'Capturing' phase and NO longer to 'Bubbling' phase
+// document.querySelector('.nav').addEventListener('click', function(e) {
+//   this.style.backgroundColor = randomColor()
+//   console.log('NAV', e.target, e.currentTarget);
+// }, true)
+// NAV - first one in the console
+// Reason: 'NAV' element is now listening to the event as it traverses down from the DOM
+// while the other elements ('LINK', 'CONTAINER') are listening to the event as they traverse back up in the DOM
+// LINK
+// CONTAINER
+
+////////////////// NOTE: DOUBLE CHECK THE SLIDE IN 009 Event Propagation Bubbling and Capturing
+
+/////////////////////////////////////// 010 Event Propagation in Practice - END
+
