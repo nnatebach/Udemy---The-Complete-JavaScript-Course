@@ -254,8 +254,6 @@ const heading01 = document.querySelector('h1')
 //   alert('addEventListener: Great you\'re reading the heading')
 // })
 
-// heading01.addEventListener('mouseenter', alertHeading01)
-
 
 ////////// 2nd way of handling events - multiple function
 // first step: export a function into a named function
