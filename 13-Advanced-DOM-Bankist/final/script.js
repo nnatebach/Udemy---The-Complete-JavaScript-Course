@@ -38,6 +38,7 @@ document.addEventListener('keydown', function (e) {
 });
 
 /////////////////////////////////////// 007 Implementing Smooth Scrolling - START
+////////////////// using the power of event bubbling => Event Delegation
 
 /*
 // Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
@@ -430,12 +431,3 @@ document.querySelector('.nav').addEventListener('click', function(e) {
 */
 
 /////////////////////////////////////// 010 Event Propagation in Practice - END
-
-
-/////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - START
-////////////////// using the power of event bubbling => Event Delegation
-
-
-
-/////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
-
