@@ -39,6 +39,7 @@ document.addEventListener('keydown', function (e) {
 
 /////////////////////////////////////// 007 Implementing Smooth Scrolling - START
 
+/*
 // Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
 // ...Rect: rectangle
 
@@ -82,6 +83,7 @@ btnScrollTo.addEventListener('click', function (e) {
   // This will support new browser
   // section1.scrollIntoView({ behavior: 'smooth' })
 })
+*/
 
 /////////////////////////////////////// 007 Implementing Smooth Scrolling - END
 
