@@ -1,5 +1,12 @@
 'use strict';
 
+/////////////////////////////////////// 007 Implementing Smooth Scrolling - START
+
+const btnScrollTo = document.querySelector('.btn--scroll-to')
+const section1 = document.getElementById('section--1')
+
+/////////////////////////////////////// 007 Implementing Smooth Scrolling - END
+
 ///////////////////////////////////////
 // Modal window
 
@@ -29,6 +36,99 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+/////////////////////////////////////// 007 Implementing Smooth Scrolling - START
+
+// Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
+// ...Rect: rectangle
+
+// Button scrolling
+btnScrollTo.addEventListener('click', function (e) {
+  const sec1coords = section1.getBoundingClientRect()
+  console.log('section1 ', sec1coords);
+  // DOMRect {x: 0, y: 950, width: 1342, height: 1510.96875, top: 950, …}
+
+  // The button itself that we click
+  console.log('btnScrollTo', e.target.getBoundingClientRect()); // btnScrollTo
+  // DOMRect {x: 96, y: 633.578125, width: 112.46875, height: 29, top: 633.578125, …}
+  // y - from the button (the element) to the top of the page.
+
+  console.log('Current scroll (X/Y) ', window.pageXOffset, pageYOffset);
+  // Current scroll (X/Y)  0 611
+  // pageYOffset - from the top of the viewport to the top of the page
+
+  console.log(
+    'Client (viewport) height/width ',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+  // Client (viewport) height/width  810 1387
+
+  ////////// Scrolling
+  // window.scrollTo(
+  //   sec1coords.left + window.pageXOffset,
+  //   sec1coords.top + window.pageYOffset
+  // );
+
+  ////////// Smooth Scrolling
+  // This will support old browser
+  window.scrollTo({
+    left: sec1coords.left + window.pageXOffset,
+    top: sec1coords.top + window.pageYOffset,
+    behavior: 'smooth'
+  });
+
+  ////////// Smooth Scrolling
+  // This will support new browser
+  // section1.scrollIntoView({ behavior: 'smooth' })
+})
+
+/////////////////////////////////////// 007 Implementing Smooth Scrolling - END
+
+
+/////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - START
+
+////////////////////// Page navigation - using the 'power' of 'bubbling phase'
+
+//////////// FIRST SOLUTION
+
+// preventDefault() tells the user agent that if the event does not get explicitly handled, its default action should NOT be taken as it normally would be.
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function(e) {
+//     e.preventDefault()
+
+//     // get href of the nav__link
+//     const id = this.getAttribute('href')
+//     console.log(id);
+
+//     // apply smooth scroll for the nav__link using the href
+//     // scrollIntoView - element.scrollIntoView({ behavior: "smooth"
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' })
+//   })
+// })
+
+//////////// SECOND SOLUTION
+
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  // console.log(e.target); // <a class="nav__link" href="#section--1">Features</a>
+  e.preventDefault()
+
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    // const id = this.getAttribute('href')
+    // console.log(this); // <ul class="nav__links">
+
+    const id = e.target.getAttribute('href')
+    console.log(id); // #section--1, #section--2, #section--3
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' })
+  }
+})
+
+/////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
+
 
 /////////////////////////////////////// 005 Selecting, Creating, and Deleting Elements - START
 
@@ -182,57 +282,6 @@ logo.className = 'nnatebach'
 /////////////////////////////////////// 006 Styles, Attributes and Classes - END
 
 
-/////////////////////////////////////// 007 Implementing Smooth Scrolling - START
-
-const btnScrollTo = document.querySelector('.btn--scroll-to')
-const section1 = document.getElementById('section--1')
-
-// Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
-// ...Rect: rectangle
-
-btnScrollTo.addEventListener('click', function (e) {
-  const sec1coords = section1.getBoundingClientRect()
-  console.log('section1 ', sec1coords);
-  // DOMRect {x: 0, y: 950, width: 1342, height: 1510.96875, top: 950, …}
-
-  // The button itself that we click
-  console.log('btnScrollTo', e.target.getBoundingClientRect()); // btnScrollTo
-  // DOMRect {x: 96, y: 633.578125, width: 112.46875, height: 29, top: 633.578125, …}
-  // y - from the button (the element) to the top of the page.
-
-  console.log('Current scroll (X/Y) ', window.pageXOffset, pageYOffset);
-  // Current scroll (X/Y)  0 611
-  // pageYOffset - from the top of the viewport to the top of the page
-
-  console.log(
-    'Client (viewport) height/width ',
-    document.documentElement.clientHeight,
-    document.documentElement.clientWidth
-  );
-  // Client (viewport) height/width  810 1387
-
-  ////////// Scrolling
-  // window.scrollTo(
-  //   sec1coords.left + window.pageXOffset,
-  //   sec1coords.top + window.pageYOffset
-  // );
-
-  ////////// Smooth Scrolling
-  // This will support old browser
-  window.scrollTo({
-    left: sec1coords.left + window.pageXOffset,
-    top: sec1coords.top + window.pageYOffset,
-    behavior: 'smooth'
-  });
-
-  ////////// Smooth Scrolling
-  // This will support new browser
-  // section1.scrollIntoView({ behavior: 'smooth' })
-})
-
-/////////////////////////////////////// 007 Implementing Smooth Scrolling - END
-
-
 /////////////////////////////////////// 008 Types of Events and Event Handlers - START
 
 /*
@@ -297,6 +346,7 @@ setTimeout(() => heading01.removeEventListener('mouseenter', alertHeading01), 30
 
 /////////////////////////////////////// 010 Event Propagation in Practice - START
 
+/*
 // rbg(255,255,255)
 // Math.random() static method returns a floating-point, pseudo-random number that
 // - is greater than or equal to 0 and less than 1
@@ -375,11 +425,13 @@ document.querySelector('.nav').addEventListener('click', function(e) {
 // CONTAINER
 
 ////////////////// NOTE: DOUBLE CHECK THE SLIDE IN 009 Event Propagation Bubbling and Capturing
+*/
 
 /////////////////////////////////////// 010 Event Propagation in Practice - END
 
 
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - START
+////////////////// using the power of event bubbling => Event Delegation
 
 
 
