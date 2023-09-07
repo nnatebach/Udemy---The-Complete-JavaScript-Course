@@ -431,3 +431,49 @@ document.querySelector('.nav').addEventListener('click', function(e) {
 */
 
 /////////////////////////////////////// 010 Event Propagation in Practice - END
+
+
+/////////////////////////////////////// 012 DOM Traversing - START
+
+// DOM Traversing - "move through" - the act of selecting an element from another element
+// "find" (or select) HTML elements based on their relation to other elements.
+
+const h1 = document.querySelector('h1')
+
+///////////////////// Going DOWNWARDS: Child
+
+console.log(h1.querySelectorAll('.highlight')); // NodeList(2) [span.highlight, span.highlight]
+console.log(h1.childNodes); // NodeList(9) [text, comment, text, span.highlight, text, br, text, span.highlight, text]
+console.log(h1.children); // HTMLCollection(3) [span.highlight, br, span.highlight]
+
+// Additional CSS style
+h1.firstElementChild.style.color = 'white'
+h1.lastElementChild.style.color = 'orangered'
+
+///////////////////// Going UPWARDS: Parents
+
+console.log(h1.parentNode); // <div class="header__title">
+console.log(h1.parentElement); // <div class="header__title">
+
+/////////// closest() method - traverses THE ELEMENT AND ITS PARENTS (heading toward the document root) until it finds a node that matches the specified CSS selector.
+// color: --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
+h1.closest('.header').style.background = 'var(--gradient-secondary)'
+h1.closest('h1').style.background = 'var(--gradient-primary)'
+
+///////////////////// Going SIDEWAY: Siblings
+
+console.log(h1.previousElementSibling); // null
+console.log(h1.nextElementSibling); // <h4>A simpler banking experience for a simpler life.</h4>
+
+console.log(h1.previousSibling); // #text
+console.log(h1.nextSibling); // #text
+
+console.log(h1.parentElement.children); // HTMLCollection(4) [h1, h4, button.btn--text.btn--scroll-to, img.header__img]
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(.5)'
+})
+
+const arrayh1 = [...h1.parentElement.children] // the copy of the array 'h1.parentElement.children' containing elements that are the children of the 'parentElement' of 'h1' => the array containing 'h1' and its siblings
+console.log(arrayh1);
+
+/////////////////////////////////////// 012 DOM Traversing - END
