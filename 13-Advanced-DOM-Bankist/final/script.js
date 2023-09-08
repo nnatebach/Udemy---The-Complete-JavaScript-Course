@@ -186,35 +186,33 @@ tabsContainer.addEventListener('click', function (e) {
 
 //////////////// Menu fade animation
 
-///////// mouseover
 
-nav.addEventListener('mouseover', function(e) {
+///////// handleHover
+// It is NOT possible to pass another 'argument' into an event handler function
+// An event handler function can ONLY EVER have ONE REAL argument (ONLY ONE REAL parameter => the event (e))
+// For additional value for the event handler function => use 'this' keyword
+// const handleHover = function(e, opacity) {
+const handleHover = function(e) {
   if (e.target.classList.contains('nav__link')) {
     const link = e.target
     const siblings = link.closest('.nav').querySelectorAll('.nav__link')
     const logo = link.closest('.nav').querySelector('img')
 
     siblings.forEach(el => {
-      if (el !== link) el.style.opacity = .5
+      if (el !== link) el.style.opacity = this
     })
-    logo.style.opacity = .5
+    logo.style.opacity = this
   }
-})
+}
 
-///////// mouseout
+///////// Passing 'argument' into handler
+// However, this is NOT actually an 'argument'
+nav.addEventListener('mouseover', handleHover.bind(.5))
+nav.addEventListener('mouseout', handleHover.bind(1))
 
-nav.addEventListener('mouseout', function(e) {
-  if (e.target.classList.contains('nav__link')) {
-    const link = e.target
-    const siblings = link.closest('.nav').querySelectorAll('.nav__link')
-    const logo = link.closest('.nav').querySelector('img')
+///// NOTE: For multiple values purpose, pass an array or object inside 'bind'
+// E.g. nav.addEventListener('mouseover', handleHover.bind([1,2,3,4,5,6]))
 
-    siblings.forEach(el => {
-      if (el !== link) el.style.opacity = 1
-    })
-    logo.style.opacity = 1
-  }
-})
 
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
 
