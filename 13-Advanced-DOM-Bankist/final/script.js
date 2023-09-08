@@ -531,10 +531,3 @@ console.log(arrayh1);
 */
 
 /////////////////////////////////////// 012 DOM Traversing - END
-
-
-/////////////////////////////////////// 013 Building a Tabbed Component - START
-
-
-
-/////////////////////////////////////// 013 Building a Tabbed Component - END
