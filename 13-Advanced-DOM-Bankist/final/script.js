@@ -46,7 +46,9 @@ document.addEventListener('keydown', function (e) {
 ////////////////// using the power of event bubbling => Event Delegation
 
 /*
-// Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
+// Element.getBoundingClientRect() method returns a DOMRect object providing information about
+// - the size of an element
+// - its position relative to the viewport.
 // ...Rect: rectangle
 
 // Button scrolling
@@ -214,11 +216,25 @@ nav.addEventListener('mouseout', handleHover.bind(1))
 // E.g. nav.addEventListener('mouseover', handleHover.bind([1,2,3,4,5,6]))
 
 
+//////////////// Sticky navigation
+
+
+const initialCoords = section1.getBoundingClientRect()
+// console.log(initialCoords);
+
+window.addEventListener('scroll', function () {
+  // console.log(scrollY);
+  if (window.screenY > initialCoords.top) nav.classList.add('sticky')
+  else nav.classList.remove('sticky')
+})
+
+
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
 
 
 /////////////////////////////////////// 005 Selecting, Creating, and Deleting Elements - START
 
+/*
 ////////////////// Selecting
 
 // HTMLCollection vs. NodeList
@@ -293,6 +309,7 @@ header.before(message)
 document.querySelector('.btn--close-cookie').addEventListener('click', function () {
   message.parentElement.removeChild(message)
 })
+*/
 
 /////////////////////////////////////// 005 Selecting, Creating, and Deleting Elements - END
 
