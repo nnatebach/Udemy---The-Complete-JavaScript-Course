@@ -5,6 +5,11 @@
 const btnScrollTo = document.querySelector('.btn--scroll-to')
 const section1 = document.getElementById('section--1')
 
+const nav = document.querySelector('.nav')
+const tabs = document.querySelectorAll('.operations__tab')
+const tabsContent = document.querySelectorAll('.operations__content')
+const tabsContainer = document.querySelector('.operations__tab-container')
+
 /////////////////////////////////////// 007 Implementing Smooth Scrolling - END
 
 ///////////////////////////////////////
@@ -131,9 +136,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 })
 
 //////////////// Tabbed component
-const tabs = document.querySelectorAll('.operations__tab')
-const tabsContent = document.querySelectorAll('.operations__content')
-const tabsContainer = document.querySelector('.operations__tab-container')
 
 tabsContainer.addEventListener('click', function (e) {
   ///////// Storing the variable of the button as we click on it
@@ -181,6 +183,38 @@ tabsContainer.addEventListener('click', function (e) {
 // - querySelector returns the FIRST element in the document that matches the string we provided as an argument.
 // - 'querySelectorAll' DOES NOT work with 'addEventListener' => check out 'btnCloseModal', 'btnsOpenModal'
 
+
+//////////////// Menu fade animation
+
+///////// mouseover
+
+nav.addEventListener('mouseover', function(e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link')
+    const logo = link.closest('.nav').querySelector('img')
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = .5
+    })
+    logo.style.opacity = .5
+  }
+})
+
+///////// mouseout
+
+nav.addEventListener('mouseout', function(e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link')
+    const logo = link.closest('.nav').querySelector('img')
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = 1
+    })
+    logo.style.opacity = 1
+  }
+})
 
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
 
