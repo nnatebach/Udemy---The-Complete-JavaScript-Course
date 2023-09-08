@@ -130,6 +130,58 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 })
 
+//////////////// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab')
+const tabsContent = document.querySelectorAll('.operations__content')
+const tabsContainer = document.querySelector('.operations__tab-container')
+
+tabsContainer.addEventListener('click', function (e) {
+  ///////// Storing the variable of the button as we click on it
+  // We want to get the 'data-tab' value by clicking on the button AND the span 'number' within the button
+  // This is what the button looks like
+  // <button class="btn operations__tab operations__tab--1 operations__tab--active" data-tab="1">
+  //   <span>01</span>Instant Transfers
+  // </button>
+  const clicked = e.target.closest('.operations__tab')
+  console.log(clicked);
+
+  ///////// Guard clause - What if we click on the area outside the button?
+  // a 'click' that happens outside the area of 'clicked' will result in 'null' => we want to ignore the 'null' result
+  // 'return' the function => the next line of code will NOT be executed
+  if (!clicked) return;
+
+  ///////// Active tab
+  // Remove 'operations__tab--active' for all the tabs before we click them
+  // As we click on the next button, 'operations__tab--active' will be removed on the previous button
+  tabs.forEach(t => t.classList.remove('operations__tab--active'))
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'))
+
+  ///////// Activate tab
+  // Adding 'operations__tab--active' class to the tab as we click it
+  clicked.classList.add('operations__tab--active')
+
+  ///////// Activate content area
+  console.log(clicked.dataset.tab); // 1 2 3
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active')
+})
+
+// QUESTION: Why use 'querySelector' for ONLY 'tabsContainer'?
+
+// REASON:
+// - In the index.html-file. There are several elements with the operations__tab-class, and the operations__content-class, but ONLY ONE element with the operations__tab-container-class.
+// - We'll want access to all the tabs, so we want a list of them, and we want access to all the contents of the tabs, so we want a list of them too. We only have one tab-container, so why would we want a list of one? :)
+
+// SOLUTION:
+// - Use 'querySelectorAll' for element's class that has many instances.
+// - Use 'querySelector' for element's class that has ONLY one matching instance.
+
+
+// NOTES:
+// - querySelectorAll returns a NodeList, a list of ALL the elements in that document that matches the string we provided as an argument.
+// - querySelector returns the FIRST element in the document that matches the string we provided as an argument.
+// - 'querySelectorAll' DOES NOT work with 'addEventListener' => check out 'btnCloseModal', 'btnsOpenModal'
+
+
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
 
 
@@ -435,6 +487,7 @@ document.querySelector('.nav').addEventListener('click', function(e) {
 
 /////////////////////////////////////// 012 DOM Traversing - START
 
+/*
 // DOM Traversing - "move through" - the act of selecting an element from another element
 // "find" (or select) HTML elements based on their relation to other elements.
 
@@ -475,5 +528,13 @@ console.log(h1.parentElement.children); // HTMLCollection(4) [h1, h4, button.bt
 
 const arrayh1 = [...h1.parentElement.children] // the copy of the array 'h1.parentElement.children' containing elements that are the children of the 'parentElement' of 'h1' => the array containing 'h1' and its siblings
 console.log(arrayh1);
+*/
 
 /////////////////////////////////////// 012 DOM Traversing - END
+
+
+/////////////////////////////////////// 013 Building a Tabbed Component - START
+
+
+
+/////////////////////////////////////// 013 Building a Tabbed Component - END
