@@ -271,13 +271,13 @@ observer.observe(section1)
 
 const header = document.querySelector('.header')
 const navHeight = nav.getBoundingClientRect().height
-console.log(navHeight); // 90
+// console.log(navHeight); // 90
 
 const stickyNav = function (entries) {
   // There is only one threshold (threshold: 0) here => we don't need to loop over the 'entries'
   // const [entry] = entries[0] // getting the first element (entry) out of 'entries' using 'destructuring'
   const [entry] = entries
-  console.log(entry);
+  // console.log(entry);
 
   // add 'sticky' to 'nav' when there is NO intersecting
   if (!entry.isIntersecting) nav.classList.add('sticky');
@@ -291,6 +291,51 @@ const headerObserver = new IntersectionObserver(stickyNav, {
   rootMargin: `-${navHeight}px`
 })
 headerObserver.observe(header)
+
+//////////////// Reveal sections
+///////// 1. Create the observer
+///////// 2. OBSERVE the sections (sectionObserver.observe(section))
+///////// 3. HIDE the section at the beginning (section.classList.add('section--hidden'))
+///////// 4. SHOW the section (entry.target.classList.remove('section--hidden'))
+///////// 5. If the section has NOT already INTERSECTED with the viewport => Keep it hidden (Do NOT remove 'section--hidden'). Otherwise, remove the class 'section--hidden' AND do NOT add it again!
+///////// 6. As the section is SHOWN (entry.target.classList.remove('section--hidden')) => UNOBSERVE the section!
+
+
+const allSections = document.querySelectorAll('.section')
+
+// the logic
+const revealSections = function (entries, observer) {
+  // There is only one threshold here
+  // getting the first element (entry) out of 'entries' using 'destructuring'
+  const [entry] = entries
+  console.log(entry);
+
+  // Guard clause
+  // We want to make sure that when we reload (NOT hard refresh) the page, all the sections will be hidden with '.section--hidden' as the first stage of the page.
+  if (!entry.isIntersecting) return;
+
+  // As the section has already intersected with the viewport => remove the class 'section--hidden'
+  // use the 'target' property in the 'IntersectionObserverEntry'
+  entry.target.classList.remove('section--hidden')
+
+  // As we keep scrolling the page up and down, the page is still being observed => not necessary
+  // stop the observer from observing the page
+  sectionObserver.unobserve(entry.target)
+}
+
+// Use the same observer for all 4 sections
+const sectionObserver = new IntersectionObserver(revealSections, {
+  // options
+  root: null, // viewport
+  threshold: .15 // 15% => the section will only be revealed when it is 15% visible inside the viewport
+})
+
+// Use 'forEach' when we don't want to create a new array
+allSections.forEach(function(section) {
+  sectionObserver.observe(section)
+  section.classList.add('section--hidden')
+})
+
 
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
 
