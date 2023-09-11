@@ -236,7 +236,7 @@ window.addEventListener('scroll', function () {
 // threshold:
 // - Either a single number or an array of numbers
 // - indicate at what percentage of the target's visibility the observer's callback should be executed.
-// - If you only want to detect when visibility passes the 50% mark, you can use a value of 0.5. 
+// - If you only want to detect when visibility passes the 50% mark, you can use a value of 0.5.
 // - If you want the callback to run every time visibility passes another 25%, you would specify the array [0, 0.25, 0.5, 0.75, 1].
 // - The default is 0
 // - A value of 1.0 means that the threshold isn't considered passed until every pixel is visible.
@@ -271,9 +271,11 @@ observer.observe(section1)
 
 const header = document.querySelector('.header')
 const navHeight = nav.getBoundingClientRect().height
-console.log(navHeight);
+console.log(navHeight); // 90
 
 const stickyNav = function (entries) {
+  // There is only one threshold (threshold: 0) here => we don't need to loop over the 'entries'
+  // const [entry] = entries[0] // getting the first element (entry) out of 'entries' using 'destructuring'
   const [entry] = entries
   console.log(entry);
 
