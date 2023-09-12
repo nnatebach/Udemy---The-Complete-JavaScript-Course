@@ -292,6 +292,7 @@ const headerObserver = new IntersectionObserver(stickyNav, {
 })
 headerObserver.observe(header)
 
+
 //////////////// Reveal sections
 ///////// 1. Create the observer
 ///////// 2. OBSERVE the sections (sectionObserver.observe(section))
@@ -308,7 +309,7 @@ const revealSections = function (entries, observer) {
   // There is only one threshold here
   // getting the first element (entry) out of 'entries' using 'destructuring'
   const [entry] = entries
-  console.log(entry);
+  // console.log(entry);
 
   // Guard clause
   // We want to make sure that when we reload (NOT hard refresh) the page, all the sections will be hidden with '.section--hidden' as the first stage of the page.
@@ -335,6 +336,42 @@ allSections.forEach(function(section) {
   sectionObserver.observe(section)
   section.classList.add('section--hidden')
 })
+
+
+//////////////// Lazy loading images
+
+const imgTargets = document.querySelectorAll('img[data-src]')
+// console.log(imgTargets);
+// NodeList(3) [img.features__img.lazy-img, img.features__img.lazy-img, img.features__img.lazy-img]
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries
+  // console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  // Replace src with data-src
+  entry.target.src = entry.target.dataset.src
+
+  entry.target.addEventListener('load', function () {
+    // Only remove the 'blurry' effect of the image when the 'load' event (image finishes loading) finishes.
+    entry.target.classList.remove('lazy-img')
+    // .lazy-img {
+    //   filter: blur(20px);
+    // }
+  })
+  imgObserver.unobserve(entry.target)
+}
+
+// Intersection observer
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  // make the images finish loading earlier so the user will think the images are always already there!
+  rootMargin: '200px'
+})
+
+imgTargets.forEach(img => imgObserver.observe(img))
 
 
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
