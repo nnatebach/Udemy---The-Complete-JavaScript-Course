@@ -387,98 +387,104 @@ imgTargets.forEach(img => imgObserver.observe(img))
 //////////////// CSS
 // Moving the slide with transform: translateX
 
-const slides = document.querySelectorAll('.slide')
-const btnLeft = document.querySelector('.slider__btn--left')
-const btnRight = document.querySelector('.slider__btn--right')
-const dotContainer = document.querySelector('.dots')
 
-let curSlide = 0
-const maxSlide = slides.length
+const slider = function () {
+  const slides = document.querySelectorAll('.slide')
+  const btnLeft = document.querySelector('.slider__btn--left')
+  const btnRight = document.querySelector('.slider__btn--right')
+  const dotContainer = document.querySelector('.dots')
 
-// creating dots
-// We want to create each dot for each slide.
-// We can loop over the 'slides', use the id of each slide in order to make the dot for each slide
-const createDots = function () {
-  // this function needs two arguments
-  // we only need to use the id of the slide here
-  // we use the 'throw away' convention (_) for the argument that we do not need
-  slides.forEach(function(_, i) {
-    dotContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot dots__dot--active" data-slide="${i}"></button>`)
+  let curSlide = 0
+  const maxSlide = slides.length
+
+  //////////////// Functions
+
+  // creating dots
+  // We want to create each dot for each slide.
+  // We can loop over the 'slides', use the id of each slide in order to make the dot for each slide
+  const createDots = function () {
+    // we use the 'throw away' convention (_) for the argument that we do not need
+    slides.forEach(function(_, i) {
+      dotContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot dots__dot--active" data-slide="${i}"></button>`)
+    })
+  }
+
+
+  // Just like what we did in the 'Tabbed component'
+  // Now we want to see which dot (slide) in the 'dotContainer' is active as we move between the slides
+  const activeDot = function(slide) {
+    // 1. remove 'dots__dot--active' on all dots
+    document.querySelectorAll('.dots__dot').forEach(dot => dot.classList.remove('dots__dot--active'))
+    // 2. ONLY add 'dots__dot--active' on the dot we want
+    // add on the dot based on 'data-slide' attribute
+    document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active')
+  }
+
+
+
+  // Refactor the duplicated code into a separate function
+  const goToSlide = function(slide) {
+    // the number of the slide where we want to go to
+    slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)) // change the 'curSlide' to the 'slide' that we are indicating
+    activeDot(curSlide)
+  }
+
+
+  //////// Next slide
+  const nextSlide = function() {
+    // if the index of the current slide has matched with the total number of the slides (slides.length - 1) => return current slide to the first slide
+    if (curSlide === maxSlide - 1) {
+      curSlide = 0
+    } else {
+      curSlide++
+    }
+    goToSlide(curSlide)
+    activeDot(curSlide)
+  }
+
+  //////// Prev slide
+  const prevSlide = function() {
+    // if the index of the current slide is 0 then 'prev' button will move to the last slide in the slider
+    if (curSlide === 0) {
+      curSlide = maxSlide - 1
+    } else {
+      curSlide--
+    }
+    goToSlide(curSlide)
+    activeDot(curSlide)
+  }
+
+  //////// Initializing slider
+
+  const init = function() {
+    createDots()
+    activeDot(0) // is this necessary?
+    goToSlide(0) // Once the application starts, the slider will immediately go to slide 0
+  }
+  init()
+
+
+  //////////////// Event handlers
+  btnRight.addEventListener('click', nextSlide)
+  btnLeft.addEventListener('click', prevSlide)
+
+  document.addEventListener('keydown', function(e) {
+    // Below are two different versions yet they do the same thing
+    if (e.key === 'ArrowRight') nextSlide();
+    // short-circuiting
+    e.key === 'ArrowLeft' && prevSlide();
+  })
+
+  // Moving between between the slides by clicking on the dot
+  dotContainer.addEventListener('click', function(e) {
+    if (e.target.classList.contains('dots__dot')) {
+      const { slide } = e.target.dataset
+      goToSlide(slide)
+      activeDot(slide)
+    }
   })
 }
-createDots()
-
-// Just like what we did in the 'Tabbed component'
-// Now we want to see which dot (slide) in the 'dotContainer' is active
-// As we move between the slides (by using the next/prev buttons, by using the left/right button or by clicking on the dot) we want to see which dot (which slide) is currently active.
-const activeDot = function(slide) {
-  // 1. remove 'dots__dot--active' on all dots
-  document.querySelectorAll('.dots__dot').forEach(dot => dot.classList.remove('dots__dot--active'))
-  // 2. ONLY add 'dots__dot--active' on the dot we want
-  // add on the dot based on 'data-slide' attribute
-  // check whether the dot has the value of slide
-  // for example, if we pass in the slide number 2, we can select the dot with the data-slide set to '2'
-  document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active')
-}
-activeDot(0) // is this necessary?
-
-
-// Refactor the duplicated code into a separate function
-const goToSlide = function(slide) {
-  // the number of the slide where we want to go to
-  slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)) // change the 'curSlide' to the 'slide' that we are indicating
-  activeDot(curSlide)
-}
-// Once the application starts, the slider will immediately go to slide 0
-goToSlide(0)
-
-//////////////// Next slide
-const nextSlide = function() {
-  // if the index of the current slide has matched with the total number of the slides (slides.length - 1) => return current slide to the first slide
-  if (curSlide === maxSlide - 1) {
-    curSlide = 0
-  } else {
-    curSlide++
-  }
-  goToSlide(curSlide)
-  activeDot(curSlide)
-}
-
-//////////////// Prev slide
-const prevSlide = function() {
-  // if the index of the current slide is 0 then 'prev' button will move to the last slide in the slider
-  if (curSlide === 0) {
-    curSlide = maxSlide - 1
-  } else {
-    curSlide--
-  }
-  goToSlide(curSlide)
-  activeDot(curSlide)
-}
-
-btnRight.addEventListener('click', nextSlide)
-btnLeft.addEventListener('click', prevSlide)
-
-document.addEventListener('keydown', function(e) {
-  // console.log(e);
-  // KeyboardEvent {isTrusted: true, key: 'ArrowRight', code: 'ArrowRight', location: 0, ctrlKey: false, …}
-  // KeyboardEvent {isTrusted: true, key: 'ArrowLeft', code: 'ArrowLeft', location: 0, ctrlKey: false, …}
-
-  // Below are two different versions yet they do the same thing
-  if (e.key === 'ArrowRight') nextSlide();
-  e.key === 'ArrowLeft' && prevSlide();
-  // short-circuiting - logical AND (&&) (logical conjunction) operator for a set of boolean operands will be true if and only if all the operands are true. Otherwise it will be false.
-})
-
-// Moving between between the slides by clicking on the dot
-dotContainer.addEventListener('click', function(e) {
-  if (e.target.classList.contains('dots__dot')) {
-    // console.log('DOT');
-    const slide = e.target.dataset.slide
-    goToSlide(slide)
-  }
-})
-
+slider()
 
 /////////////////////////////////////// 019 Building a Slider Component - END
 
