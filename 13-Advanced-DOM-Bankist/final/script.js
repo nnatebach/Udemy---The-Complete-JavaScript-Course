@@ -386,7 +386,6 @@ imgTargets.forEach(img => imgObserver.observe(img))
 
 //////////////// CSS
 // Moving the slide with transform: translateX
-// Hide the overflown slides on the two sides with 'overflow: hidden'
 
 const slides = document.querySelectorAll('.slide')
 const btnLeft = document.querySelector('.slider__btn--left')
@@ -395,17 +394,9 @@ const btnRight = document.querySelector('.slider__btn--right')
 let curSlide = 0
 const maxSlide = slides.length
 
-// const slider = document.querySelector('.slider')
-// slider.style.transform = 'scale(.4) translateX(-800px)'
-// slider.style.overflow = 'visible'
-
-// slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`))
-// 0, 100%, 200%, 300%
-
 // Refactor the duplicated code into a separate function
 const goToSlide = function(slide) {
   // the number of the slide where we want to go to
-  // slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`))
   slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)) // change the 'curSlide' to the 'slide' that we are indicating
 }
 // Once the application starts, the slider will immediately go to slide 0
@@ -436,8 +427,6 @@ const prevSlide = function() {
 btnRight.addEventListener('click', nextSlide)
 btnLeft.addEventListener('click', prevSlide)
 
-// slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`))
-// 0, 100%, 200%, 300%
 
 /////////////////////////////////////// 019 Building a Slider Component - END
 
