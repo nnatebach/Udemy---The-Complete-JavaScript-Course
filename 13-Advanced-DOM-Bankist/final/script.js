@@ -837,3 +837,45 @@ console.log(arrayh1);
 */
 
 /////////////////////////////////////// 012 DOM Traversing - END
+
+
+/////////////////////////////////////// 021 Lifecycle DOM Events - START
+
+// Life cycle - When the page is FIRST accessed UNTIL the user leaves the page
+
+///////////////////// DOMContentLoaded event
+//////////// it fires when
+// - the HTML document has been completely parsed
+// - all deferred scripts (<script defer src="…"> and <script type="module">) have downloaded and executed.
+//////////// the event
+// - does not wait for other things like images, subframes, and async scripts to finish loading.
+// - does not wait for stylesheets to load.
+// - is queued after deferred scripts YET deferred scripts do wait for stylesheets. Also, scripts which aren't deferred or async (e.g. <script>) will wait for already-parsed stylesheets to load.
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('HTML parsed and DOM tree built!', e);
+})
+
+// document.ready (jQuery) is equivalent to DOMContentLoaded (Vanilla JS)
+
+///////////////////// 'load' event starts when the HTML is parsed AND all other resources (img, style) are loaded. 'load' fires when the complete page has finished loading
+
+window.addEventListener('load', function (e) {
+  console.log('Page fully loaded', e);
+})
+
+///////////////////// The beforeunload event
+// - it is fired when the window, the document and its resources are about to be unloaded.
+// - The document is still visible and the event is still cancelable at this point.
+
+// This event is created immediately BEFORE the user is about to leave the page
+// We can use this event to ask the user whether they are 100% sure they want to leave the page
+
+// NOTE: Do NOT abuse this feature, it should ONLY be used when necessary!!
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault() // some browser require this
+//   console.log(e);
+//   e.returnValue = '' // historical reason
+// })
+
+/////////////////////////////////////// 021 Lifecycle DOM Events - END
