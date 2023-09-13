@@ -395,9 +395,9 @@ const btnRight = document.querySelector('.slider__btn--right')
 let curSlide = 0
 const maxSlide = slides.length
 
-const slider = document.querySelector('.slider')
-slider.style.transform = 'scale(.4) translateX(-800px)'
-slider.style.overflow = 'visible'
+// const slider = document.querySelector('.slider')
+// slider.style.transform = 'scale(.4) translateX(-800px)'
+// slider.style.overflow = 'visible'
 
 // slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`))
 // 0, 100%, 200%, 300%
@@ -412,7 +412,7 @@ const goToSlide = function(slide) {
 goToSlide(0)
 
 //////////////// Next slide
-btnRight.addEventListener('click', function() {
+const nextSlide = function() {
   // if the index of the current slide has matched with the total number of the slides (slides.length - 1) => return current slide to the first slide
   if (curSlide === maxSlide - 1) {
     curSlide = 0
@@ -420,7 +420,21 @@ btnRight.addEventListener('click', function() {
     curSlide++
   }
   goToSlide(curSlide)
-})
+}
+
+//////////////// Prev slide
+const prevSlide = function() {
+  // if the index of the current slide is 0 then 'prev' button will move to the last slide in the slider
+  if (curSlide === 0) {
+    curSlide = maxSlide - 1
+  } else {
+    curSlide--
+  }
+  goToSlide(curSlide)
+}
+
+btnRight.addEventListener('click', nextSlide)
+btnLeft.addEventListener('click', prevSlide)
 
 // slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`))
 // 0, 100%, 200%, 300%
