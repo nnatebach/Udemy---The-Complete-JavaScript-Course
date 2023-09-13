@@ -334,7 +334,7 @@ const sectionObserver = new IntersectionObserver(revealSections, {
 // Use 'forEach' when we don't want to create a new array
 allSections.forEach(function(section) {
   sectionObserver.observe(section)
-  section.classList.add('section--hidden')
+  // section.classList.add('section--hidden')
 })
 
 
@@ -375,6 +375,57 @@ imgTargets.forEach(img => imgObserver.observe(img))
 
 
 /////////////////////////////////////// 011 Event Delegation Implementing Page Navigation - END
+
+
+/////////////////////////////////////// 019 Building a Slider Component - START
+
+//////////////// Specs
+// We can navigate/move between the slides with the 'next/prev' button icons. As we move between the slides, the pagination dot will also change in accordance with the slide.
+// We can ALSO navigate between the slides by clicking on the pagination dots.
+// On the last slide, as we click the 'right' arrow button to go to the next slide, it will go back to the first slide.
+
+//////////////// CSS
+// Moving the slide with transform: translateX
+// Hide the overflown slides on the two sides with 'overflow: hidden'
+
+const slides = document.querySelectorAll('.slide')
+const btnLeft = document.querySelector('.slider__btn--left')
+const btnRight = document.querySelector('.slider__btn--right')
+
+let curSlide = 0
+const maxSlide = slides.length
+
+const slider = document.querySelector('.slider')
+slider.style.transform = 'scale(.4) translateX(-800px)'
+slider.style.overflow = 'visible'
+
+// slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`))
+// 0, 100%, 200%, 300%
+
+// Refactor the duplicated code into a separate function
+const goToSlide = function(slide) {
+  // the number of the slide where we want to go to
+  // slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`))
+  slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)) // change the 'curSlide' to the 'slide' that we are indicating
+}
+// Once the application starts, the slider will immediately go to slide 0
+goToSlide(0)
+
+//////////////// Next slide
+btnRight.addEventListener('click', function() {
+  // if the index of the current slide has matched with the total number of the slides (slides.length - 1) => return current slide to the first slide
+  if (curSlide === maxSlide - 1) {
+    curSlide = 0
+  } else {
+    curSlide++
+  }
+  goToSlide(curSlide)
+})
+
+// slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`))
+// 0, 100%, 200%, 300%
+
+/////////////////////////////////////// 019 Building a Slider Component - END
 
 
 /////////////////////////////////////// 005 Selecting, Creating, and Deleting Elements - START
