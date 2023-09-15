@@ -122,7 +122,7 @@ const getCountryAndNeighbor = function (country) {
 
   request.addEventListener('load', function () {
     const [data] = JSON.parse(this.responseText)
-    console.log(data);
+    // console.log('AJAX - returns object', data);
 
     //////////////// Render country 1
     renderCountry(data)
@@ -174,7 +174,7 @@ getCountryAndNeighbor('vietnam')
 
 /////////////////////////////////////// 008 Promises and the Fetch API - START
 
-
+/*
 //////////// The Promise object
 /////// a container for a future value => Example: Response from AJAX call
 
@@ -191,7 +191,47 @@ getCountryAndNeighbor('vietnam')
 // Storing the Promise
 const request = fetch('https://restcountries.com/v2/name/portugal')
 console.log(request); // Promise {<pending>}
-
+*/
 
 /////////////////////////////////////// 008 Promises and the Fetch API - END
+
+
+/////////////////////////////////////// 009 Consuming Promises - START
+
+//////////// Full Version
+/*
+const getCountry = function (country) {
+  fetch(`https://restcountries.com/v2/name/${country}`) // 'fetch' returns a Promise
+    .then(function (response) { // using 'then' method to handle 'Promise'
+      // console.log(response);
+      // body: ReadableStream => canNOT access body => call JSON method
+      // response.json()
+      // 'json' method is available on all 'response' objects that come from 'fetch' function (all result values)
+      // 'response' is a result value => it DOES have the 'json' method
+      // 'json' method is an asynchronous function => it returns a Promise
+
+      // we need to return a Promise
+      return response.json(); // the returned Promise, again, returns a new Promise
+    })
+    .then(function (data) {
+      // handling the new Promise with 'then'
+      console.log('Promise - returns array object', data);
+      renderCountry(data[0])
+    });
+};
+getCountry('portugal')
+*/
+
+
+//////////// Simplified Version - using arrow function
+
+const getCountry = function (country) {
+  fetch(`https://restcountries.com/v2/name/${country}`)
+    .then(response => response.json())
+    .then(data => renderCountry(data[0]));
+};
+getCountry('portugal')
+
+
+/////////////////////////////////////// 009 Consuming Promises - END
 
