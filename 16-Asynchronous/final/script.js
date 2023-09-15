@@ -176,27 +176,21 @@ getCountryAndNeighbor('vietnam')
 
 
 //////////// The Promise object
-// represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
-// another definition: A container for an asynchronously delivered value
-// as also known as a container for a future value => Example: Response from AJAX call
-
-// Storing the Promise in the 'request' variable
-const request = fetch('https://restcountries.com/v2/name/portugal')
-console.log(request); // Promise {<pending>}
+/////// a container for a future value => Example: Response from AJAX call
 
 // Example of a Promise: Buying a lottery ticket
-// You buy a Promise that you will get some money if the outcome is correct
-// Lottery draws determine whether you would get the money or not happen asynchronously
-// You don't have to stop or drop everything before the lottery draws happen
-// If you get the correct outcome => you will get the money as the lottery is the Promise you bought
+// correct outcome => you will get the money
 
+/////// Advantages of Promise:
+// handling asynchronous results - NO need to use event and callback function
+// escape callback hell by changing Promises for a sequence of asynchronous operations
 
-// Advantages of Promise:
-// There is NO need to use event and callback function for handling asynchronous results, they often cause unpredictable results.
-// We can change Promises for a sequence of asynchronous operations instead of nesting => Escape callback hell
+/////// The Promise lifecycle:
+// They are time sensitive, they change over time in different stages. (asynchronous operations)
 
-// The Promise lifecycle:
-// Promises work with asynchronous operations => They are time sensitive, they change over time. Promises can be in different stages.
+// Storing the Promise
+const request = fetch('https://restcountries.com/v2/name/portugal')
+console.log(request); // Promise {<pending>}
 
 
 /////////////////////////////////////// 008 Promises and the Fetch API - END
