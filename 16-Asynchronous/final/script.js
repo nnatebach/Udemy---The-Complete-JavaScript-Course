@@ -260,14 +260,19 @@ const getCountry = function (country) {
   // Country 1
   fetch(`https://restcountries.com/v2/name/${country}`)
     // Step 1
-    .then(
-      response => response.json(),
-      // err => alert(err) // In case of no internet => TypeError: Failed to fetch
-    )
+    .then(response => {
+      console.log(response)
+
+      if (!response.ok) throw new Error(`Country not found ${response.status}`)
+
+      return response.json()
+    })
     .then(data => {
       // Step 2
       renderCountry(data[0]);
-      const neighborCountry = data[0].borders[0];
+      // const neighborCountry = data[0].borders[0];
+
+      const neighborCountry = 'kajshf'
 
       if (!neighborCountry) return;
 
@@ -277,8 +282,10 @@ const getCountry = function (country) {
     // handling the Promise outside of the coding block
     // Step 3
     .then(
-      response => response.json(),
-      // err => alert(err)
+      response => {
+        if (!response.ok) throw new Error(`Country not found ${response.status}`)
+        return response.json()
+      }
     )
     .then(data => renderCountry(data, 'neighbour')) // Step 4
     .catch(err => {
@@ -294,11 +301,17 @@ const getCountry = function (country) {
 
 btn.addEventListener('click', function () {
   getCountry('germany')
+  // getCountry('ajskhdf')
 })
 
-////// NOTE: Do NOT call 'then' right after 'fetch' like this
+
+//////////// NOTES:
+/////// Do NOT call 'then' right after 'fetch' like this
 // fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`).then(response => response.json());
 // Reason: It will create another callback => BIG PROBLEM!!
+
+/////// It is a bad practice to leave the errors hanging
+// We need to create (the rejections) and handle the errors with 'catch' and possibly using 'finally' in order to handle the errors as well
 
 
 /////////////////////////////////////// 009 Consuming Promises - END
