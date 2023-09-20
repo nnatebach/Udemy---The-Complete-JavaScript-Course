@@ -226,23 +226,35 @@ getCountry('portugal')
 
 //////////// Simplified Version - using arrow function
 
+
+////// Chaining Promises
+// Step 1 - Create the Promise
+// Step 2 - Return the Promise
+// Step 3 - Handling the Promise OUTSIDE of the Promise block
+
 const getCountry = function (country) {
   // Country 1
   fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(response => response.json())
-    .then(data => {
+    .then(response => response.json()) // Step 1
+    .then(data => { // Step 2
       renderCountry(data[0]);
       const neighborCountry = data[0].borders[0]
 
       if (!neighborCountry) return
 
       // Country 2
-      // fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`);
-      return 23;
+      return fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`);
+
+      // this would be a nested callback => AVOID this!!
+      // we already have the first callback at Step 2, if we use 'then' right after 'fetch' like this then we are actually creating another callback.
+      // The purpose of Promise is to prevent callback hell but in here we are using Promise to create callback hell => BIG MISTAKE!!
+      // fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`).then(response => response.json());
     })
-    .then(data => alert(data)) // 23
+    // handling the Promise outside of the coding block
+    .then(response => response.json()) // Step 3
+    .then(data => renderCountry(data, 'neighbour')) // Step 4
 };
-getCountry('portugal')
+getCountry('germany')
 
 
 /////////////////////////////////////// 009 Consuming Promises - END
