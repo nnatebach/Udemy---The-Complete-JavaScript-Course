@@ -112,6 +112,7 @@ const renderCountry = function (data, className="") { // attach className to a n
   countriesContainer.computedStyleMap.opacity = 1
 }
 
+/*
 const getCountryAndNeighbor = function (country) {
 
   //////////////// AJAX call country 1
@@ -167,7 +168,7 @@ getCountryAndNeighbor('vietnam')
 //     }, 1000)
 //   }, 1000)
 // }, 1000)
-
+*/
 
 /////////////////////////////////////// 007 Welcome to Callback Hell - END
 
@@ -226,9 +227,20 @@ getCountry('portugal')
 //////////// Simplified Version - using arrow function
 
 const getCountry = function (country) {
+  // Country 1
   fetch(`https://restcountries.com/v2/name/${country}`)
     .then(response => response.json())
-    .then(data => renderCountry(data[0]));
+    .then(data => {
+      renderCountry(data[0]);
+      const neighborCountry = data[0].borders[0]
+
+      if (!neighborCountry) return
+
+      // Country 2
+      // fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`);
+      return 23;
+    })
+    .then(data => alert(data)) // 23
 };
 getCountry('portugal')
 
