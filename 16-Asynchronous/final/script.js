@@ -244,11 +244,6 @@ const getCountry = function (country) {
 
       // Country 2
       return fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`);
-
-      // this would be a nested callback => AVOID this!!
-      // we already have the first callback at Step 2, if we use 'then' right after 'fetch' like this then we are actually creating another callback.
-      // The purpose of Promise is to prevent callback hell but in here we are using Promise to create callback hell => BIG MISTAKE!!
-      // fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`).then(response => response.json());
     })
     // handling the Promise outside of the coding block
     .then(response => response.json()) // Step 3
@@ -256,7 +251,9 @@ const getCountry = function (country) {
 };
 getCountry('germany')
 
+////// NOTE: Do NOT call 'then' right after 'fetch' like this
+// fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`).then(response => response.json());
+// Reason: It will create another callback => BIG PROBLEM!!
+
 
 /////////////////////////////////////// 009 Consuming Promises - END
-
-
