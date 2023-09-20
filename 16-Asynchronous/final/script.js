@@ -285,7 +285,9 @@ const getCountry = function (country) {
       console.error(`${err} 💥 💥 💥`); // TypeError: Failed to fetch 💥 💥 💥
       renderError(`Something went wrong 💥 💥 ${err.message}. Try again!`)
     })
-    .finally(() => { // this will only work in Promise and if 'catch' itself also returns a 'Promise'
+    // this will only work in Promise
+    // since 'catch' itself also returns a 'Promise' => 'finally' will work
+    .finally(() => {
       countriesContainer.style.opacity = 1 // this will happen no matter what the outcome of the Promise would be
     })
 };
