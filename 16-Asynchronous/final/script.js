@@ -3,6 +3,28 @@
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
+const renderCountry = function (data, className="") { // attach className to a neighbor country
+  const html = `
+  <article class="country ${className}">
+      <img class="country__img" src="${data.flag}" />
+      <div class="country__data">
+        <h3 class="country__name">${data.name}</h3>
+        <h4 class="country__region">${data.region}</h4>
+        <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)}</p>
+        <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+        <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+      </div>
+    </article>
+  `;
+  countriesContainer.insertAdjacentHTML('beforeend', html)
+  // countriesContainer.style.opacity = 1
+}
+
+const renderError = function (msg) {
+  countriesContainer.insertAdjacentText('beforeend', msg)
+  // countriesContainer.style.opacity = 1
+}
+
 ///////////////////////////////////////
 
 
@@ -95,23 +117,6 @@ getCountry('canada')
 /////////////////////////////////////// 007 Welcome to Callback Hell - START
 
 
-const renderCountry = function (data, className="") { // attach className to a neighbor country
-  const html = `
-  <article class="country ${className}">
-      <img class="country__img" src="${data.flag}" />
-      <div class="country__data">
-        <h3 class="country__name">${data.name}</h3>
-        <h4 class="country__region">${data.region}</h4>
-        <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)}</p>
-        <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
-        <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
-      </div>
-    </article>
-  `;
-  countriesContainer.insertAdjacentHTML('beforeend', html)
-  countriesContainer.computedStyleMap.opacity = 1
-}
-
 /*
 const getCountryAndNeighbor = function (country) {
 
@@ -199,6 +204,25 @@ console.log(request); // Promise {<pending>}
 
 /////////////////////////////////////// 009 Consuming Promises - START
 
+
+////// then(), catch(), finally()
+// immediately returns an equivalent Promise object, allowing you to chain calls to other promise methods.
+
+
+////// then() - this will be called when the Promise is FULFILLED
+// takes up to two arguments: callback functions for the fulfilled and rejected cases of the Promise.
+
+
+////// catch() - this will be called when the Promise is REJECTED
+// - schedules a function to be called when the promise is rejected.
+// - It is a shortcut for Promise.prototype.then(undefined, onRejected).
+
+
+////// finally() - this is ALWAYS going to be called no matter what the result of the Promise will be
+// schedules a function to be called when the promise is settled (either fulfilled or rejected).
+// e.g. SHOW the loading spinner when the asynchronous operation is taking place and HIDE it when the operation is finished.
+
+
 //////////// Full Version
 /*
 const getCountry = function (country) {
@@ -235,21 +259,40 @@ getCountry('portugal')
 const getCountry = function (country) {
   // Country 1
   fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(response => response.json()) // Step 1
-    .then(data => { // Step 2
+    // Step 1
+    .then(
+      response => response.json(),
+      // err => alert(err) // In case of no internet => TypeError: Failed to fetch
+    )
+    .then(data => {
+      // Step 2
       renderCountry(data[0]);
-      const neighborCountry = data[0].borders[0]
+      const neighborCountry = data[0].borders[0];
 
-      if (!neighborCountry) return
+      if (!neighborCountry) return;
 
       // Country 2
       return fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`);
     })
     // handling the Promise outside of the coding block
-    .then(response => response.json()) // Step 3
+    // Step 3
+    .then(
+      response => response.json(),
+      // err => alert(err)
+    )
     .then(data => renderCountry(data, 'neighbour')) // Step 4
+    .catch(err => {
+      console.error(`${err} 💥 💥 💥`); // TypeError: Failed to fetch 💥 💥 💥
+      renderError(`Something went wrong 💥 💥 ${err.message}. Try again!`)
+    })
+    .finally(() => { // this will only work in Promise and if 'catch' itself also returns a 'Promise'
+      countriesContainer.style.opacity = 1 // this will happen no matter what the outcome of the Promise would be
+    })
 };
-getCountry('germany')
+
+btn.addEventListener('click', function () {
+  getCountry('germany')
+})
 
 ////// NOTE: Do NOT call 'then' right after 'fetch' like this
 // fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`).then(response => response.json());
