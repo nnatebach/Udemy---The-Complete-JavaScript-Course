@@ -388,6 +388,7 @@ GOOD LUCK 😀
 */
 
 const whereAmI = function(lat, lng) {
+  // API changed https://www.udemy.com/course/the-complete-javascript-course/learn/lecture/28841478#questions/20404652
   fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
   .then(res => {
     // console.log(res); // body: ReadableStream => NOT accessible => use 'json()' method
