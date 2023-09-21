@@ -256,53 +256,90 @@ getCountry('portugal')
 // Step 2 - Return the Promise
 // Step 3 - Handling the Promise OUTSIDE of the Promise block
 
+const getJSON = function(url, errorMessage='Something went wrong') {
+  return fetch(url).then(response => {
+    if (!response.ok) throw new Error(`${errorMessage} (${response.status})`)
+
+    return response.json()
+  })
+}
+
+// const getCountry = function (country) {
+//   // Country 1
+//   fetch(`https://restcountries.com/v2/name/${country}`)
+//     // Step 1
+//     .then(response => {
+//       console.log(response)
+
+//       if (!response.ok) throw new Error(`Country not found ${response.status}`)
+
+//       return response.json()
+//     })
+//     .then(data => {
+//       // Step 2
+//       renderCountry(data[0]);
+//       // const neighborCountry = data[0].borders[0];
+
+//       const neighborCountry = 'kajshf'
+
+//       if (!neighborCountry) return;
+
+//       // Country 2
+//       return fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`);
+//     })
+//     // handling the Promise outside of the coding block
+//     // Step 3
+//     .then(
+//       response => {
+//         if (!response.ok) throw new Error(`Country not found ${response.status}`)
+//         return response.json()
+//       }
+//     )
+//     .then(data => renderCountry(data, 'neighbour')) // Step 4
+//     .catch(err => {
+//       console.error(`${err} 💥 💥 💥`); // TypeError: Failed to fetch 💥 💥 💥
+//       renderError(`Something went wrong 💥 💥 ${err.message}. Try again!`)
+//     })
+//     // this will only work in Promise
+//     // since 'catch' itself also returns a 'Promise' => 'finally' will work
+//     .finally(() => {
+//       countriesContainer.style.opacity = 1 // this will happen no matter what the outcome of the Promise would be
+//     })
+// };
+
 const getCountry = function (country) {
   // Country 1
-  fetch(`https://restcountries.com/v2/name/${country}`)
-    // Step 1
-    .then(response => {
-      console.log(response)
-
-      if (!response.ok) throw new Error(`Country not found ${response.status}`)
-
-      return response.json()
-    })
+  getJSON(`https://restcountries.com/v2/name/${country}`, 'Country not found!')
     .then(data => {
       // Step 2
       renderCountry(data[0]);
-      // const neighborCountry = data[0].borders[0];
+      const neighborCountry = data[0].borders[0];
 
-      const neighborCountry = 'kajshf'
-
-      if (!neighborCountry) return;
+      if (!neighborCountry) throw new Error('No neighbor found!');
 
       // Country 2
-      return fetch(`https://restcountries.com/v2/alpha/${neighborCountry}`);
+      return getJSON(
+        `https://restcountries.com/v2/alpha/${neighborCountry}`,
+        'Country not found!'
+      );
     })
     // handling the Promise outside of the coding block
-    // Step 3
-    .then(
-      response => {
-        if (!response.ok) throw new Error(`Country not found ${response.status}`)
-        return response.json()
-      }
-    )
     .then(data => renderCountry(data, 'neighbour')) // Step 4
     .catch(err => {
       console.error(`${err} 💥 💥 💥`); // TypeError: Failed to fetch 💥 💥 💥
-      renderError(`Something went wrong 💥 💥 ${err.message}. Try again!`)
+      renderError(`Something went wrong 💥 💥 ${err.message}. Try again!`);
     })
     // this will only work in Promise
     // since 'catch' itself also returns a 'Promise' => 'finally' will work
     .finally(() => {
-      countriesContainer.style.opacity = 1 // this will happen no matter what the outcome of the Promise would be
-    })
+      countriesContainer.style.opacity = 1; // this will happen no matter what the outcome of the Promise would be
+    });
 };
 
 btn.addEventListener('click', function () {
-  getCountry('germany')
-  // getCountry('ajskhdf')
+  getCountry('portugal')
 })
+getCountry('australia') // test country that does not have any neighbors
 
 
 //////////// NOTES:
