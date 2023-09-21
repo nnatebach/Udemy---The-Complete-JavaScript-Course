@@ -17,12 +17,12 @@ const renderCountry = function (data, className="") { // attach className to a n
     </article>
   `;
   countriesContainer.insertAdjacentHTML('beforeend', html)
-  // countriesContainer.style.opacity = 1
+  countriesContainer.style.opacity = 1
 }
 
 const renderError = function (msg) {
   countriesContainer.insertAdjacentText('beforeend', msg)
-  // countriesContainer.style.opacity = 1
+  countriesContainer.style.opacity = 1
 }
 
 ///////////////////////////////////////
@@ -408,10 +408,12 @@ const whereAmI = function(lat, lng) {
       return res.json()
     }
   )
-  .then(data => renderCountry(data)) // Cannot read properties of undefined (reading '0')
+  .then(data => renderCountry(data[0]))
   .catch(err => console.error(`${err.message}`))
 }
 whereAmI(52.508, 13.381)
+whereAmI(19.037, 72.873)
+whereAmI(14.0583, 108.2772)
 
 
 /////////////////////////////////////// Coding Challenge #1 - END
