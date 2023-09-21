@@ -313,9 +313,10 @@ const getCountry = function (country) {
     .then(data => {
       // Step 2
       renderCountry(data[0]);
-      const neighborCountry = data[0].borders[0];
 
-      if (!neighborCountry) throw new Error('No neighbor found!');
+      // https://www.udemy.com/course/the-complete-javascript-course/learn/lecture/22648673#questions/16169550
+      if (!('borders' in data[0])) throw new Error('No neighbour found');
+      const neighborCountry = data[0].borders[0];
 
       // Country 2
       return getJSON(
