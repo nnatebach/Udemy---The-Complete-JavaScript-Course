@@ -431,6 +431,7 @@ whereAmI(14.0583, 108.2772)
 /////////////////////////////////////// 015 The Event Loop in Practice - START
 
 
+/*
 // Orders in console
 
 //// 1 - Why? => Synchronous; top-level code: code outside of any callback
@@ -458,6 +459,54 @@ Promise.resolve('Resolved Promise 2').then(res => {
 })
 
 // NOTE: You canNOT use timer in JS for high precision task
+*/
 
 
 /////////////////////////////////////// 015 The Event Loop in Practice - END
+
+
+/////////////////////////////////////// 016 Building a Simple Promise - START
+
+const lotteryPromise = new Promise (function(resolve, reject) {
+  console.log('Lottery draw is happening 🔮');
+  setTimeout(function () {
+    if (Math.random() >= .5) {
+      resolve('You WON 💰 💰 💰')
+    } else {
+      reject(new Error('You LOST 💩 💩 💩'))
+    }
+  }, 2000)
+})
+lotteryPromise.then(res => console.log(res)).catch(err => console.error(err))
+
+const wait = function (seconds) {
+  return new Promise (function (resolve) {
+    setTimeout(resolve, seconds * 1000)
+  })
+}
+wait(2)
+  .then(() => {
+    console.log('I waited 2 seconds');
+    return wait(1);
+  })
+  .then(() => console.log('I waited for 1 second'));
+
+// Callback Hell => Bad Code
+// Solution for Callback Hell: Promises
+// setTimeout(() => {
+//   console.log('1 second has passed!');
+//   setTimeout(() => {
+//     console.log('2 seconds has passed!');
+//     setTimeout(() => {
+//       console.log('3 seconds has passed!');
+//       setTimeout(() => {
+//         console.log('4 seconds has passed!');
+//         setTimeout(() => {
+//           console.log('5 seconds has passed!');
+//         }, 1000)
+//       }, 1000)
+//     }, 1000)
+//   }, 1000)
+// }, 1000)
+
+/////////////////////////////////////// 016 Building a Simple Promise - END
