@@ -387,6 +387,7 @@ TEST COORDINATES 2: -33.933, 18.474
 GOOD LUCK 😀
 */
 
+/*
 const whereAmI = function(lat, lng) {
   // API changed https://www.udemy.com/course/the-complete-javascript-course/learn/lecture/28841478#questions/20404652
   fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
@@ -415,7 +416,7 @@ const whereAmI = function(lat, lng) {
 whereAmI(52.508, 13.381)
 whereAmI(19.037, 72.873)
 whereAmI(14.0583, 108.2772)
-
+*/
 
 /////////////////////////////////////// Coding Challenge #1 - END
 
@@ -425,3 +426,38 @@ whereAmI(14.0583, 108.2772)
 /****************** NOTE LATER ******************/
 
 /////////////////////////////////////// 014 Asynchronous Behind the Scenes The Event Loop - END
+
+
+/////////////////////////////////////// 015 The Event Loop in Practice - START
+
+
+// Orders in console
+
+//// 1 - Why? => Synchronous; top-level code: code outside of any callback
+console.log('Test start');
+
+////// Both the 'setTimeout' and 'Promise' will finish at the exact same time
+// HOWEVER
+//// 4
+// - callback queue has low priority
+setTimeout(() => console.log('0 sec timer'), 0) // - We told it to finish after 0 second
+//// 3
+// - the callback of the resolve Promise => microtasks' queue => it is prioritized over the callback queue in No. 4
+Promise.resolve('Resolved Promise 1').then(res => console.log(res)) // create a Promise that is immediately resolved => immediately has the success value
+
+//// 2 - Why? => Synchronous; top-level code: code outside of any callback
+console.log('Test end');
+
+////// Microtasks callback have priority over regular callback implication
+// If one of the Microtasks takes a long time to run then the timer will be delayed and not run after the 'n' second that we specify. Not until the Microtask is done with its work then the timer will run
+
+// Simulating when a Microtask takes a long time to run
+Promise.resolve('Resolved Promise 2').then(res => {
+  for(let i =0; i < 1000000000;i++) {}
+  console.log(res);
+})
+
+// NOTE: You canNOT use timer in JS for high precision task
+
+
+/////////////////////////////////////// 015 The Event Loop in Practice - END
