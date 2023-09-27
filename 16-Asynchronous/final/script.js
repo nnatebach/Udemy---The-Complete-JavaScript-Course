@@ -467,8 +467,9 @@ Promise.resolve('Resolved Promise 2').then(res => {
 
 /////////////////////////////////////// 016 Building a Simple Promise - START
 
+
 const lotteryPromise = new Promise (function(resolve, reject) {
-  console.log('Lottery draw is happening 🔮');
+  console.log('Lottery draw is happening 🔮'); // this is the very first Microtask so it is going to be executed first
   setTimeout(function () {
     if (Math.random() >= .5) {
       resolve('You WON 💰 💰 💰')
@@ -479,18 +480,30 @@ const lotteryPromise = new Promise (function(resolve, reject) {
 })
 lotteryPromise.then(res => console.log(res)).catch(err => console.error(err))
 
+
+//////////////////// Promisifying setTimeout => Replace callback hell
+
 const wait = function (seconds) {
   return new Promise (function (resolve) {
     setTimeout(resolve, seconds * 1000)
   })
 }
-wait(2)
+wait(1)
   .then(() => {
-    console.log('I waited 2 seconds');
+    console.log('1 second has passed!');
     return wait(1);
   })
-  .then(() => console.log('I waited for 1 second'));
+  .then(() => {
+    console.log('2 second has passed!');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('3 second has passed!');
+    return wait(1);
+  })
+  .then(() => console.log('4 second has passed!'));
 
+// Reference
 // Callback Hell => Bad Code
 // Solution for Callback Hell: Promises
 // setTimeout(() => {
@@ -508,5 +521,13 @@ wait(2)
 //     }, 1000)
 //   }, 1000)
 // }, 1000)
+
+//////////////////// Promisifying setTimeout
+
+//////// Create a fulfilled or rejected promise IMMEDIATELY
+Promise.resolve('abc').then(x => console.log(x))
+// There is no resolve value anyway => catch()
+Promise.reject(new Error('Problem!')).catch(x => console.log(x))
+
 
 /////////////////////////////////////// 016 Building a Simple Promise - END
