@@ -550,15 +550,10 @@ navigator.geolocation.getCurrentPosition(
 // console.log('Getting position');
 */
 
+
 ////////// Promisify a callback-based API to a Promise-based API
 const getPosition = function() {
   return new Promise (function(resolve, reject) { // the 'resolve' and 'reject' functions which we can use to mark the Promise as either 'fulfilled' or 'reject'
-
-    // navigator.geolocation.getCurrentPosition(
-    //   position => console.log(position), // this will be the "fulfilled" Promise => use "resolve" instead of "console.log"
-    //   err => console.error(err) // this will be the "rejected" Promise => use "reject" instead of "console.log"
-    // );
-
     navigator.geolocation.getCurrentPosition(resolve, reject)
   })
 }
@@ -567,11 +562,8 @@ const getPosition = function() {
 // GeolocationPosition {coords: GeolocationCoordinates, timestamp: 1695873438065}
 
 const whereAmI = function() {
-  // getPosition().then(pos => {console.log(pos.coords)}) // script.js:573 Uncaught ReferenceError: lat is not defined at HTMLButtonElement.whereAmI
+
   getPosition().then(pos => {
-    // const {lat = latitude, lng = longitude} = pos.coords
-    // Problem: latitude is not defined
-    // Reason: The equal sign when 'destruturing' is used for setting default value
 
     ////////// 1. Getting the 'coordinates'
     const {latitude: lat, longitude: lng} = pos.coords
@@ -580,10 +572,7 @@ const whereAmI = function() {
     return fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
   })
   .then(res => {
-    // console.log(res); // body: ReadableStream => NOT accessible => use 'json()' method
-    // ok: true => ok: false - 403 error
     if (!res.ok) throw new Error(`Problem with geocoding ${res.status}`)
-    // console.log(res.json()); // Promise {<pending>} => body now is accessible
     return res.json()
   })
   .then(data => {
