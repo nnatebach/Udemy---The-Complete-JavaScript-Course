@@ -468,6 +468,7 @@ Promise.resolve('Resolved Promise 2').then(res => {
 /////////////////////////////////////// 016 Building a Simple Promise - START
 
 
+/*
 const lotteryPromise = new Promise (function(resolve, reject) {
   console.log('Lottery draw is happening 🔮'); // this is the very first Microtask so it is going to be executed first
   setTimeout(function () {
@@ -528,6 +529,80 @@ wait(1)
 Promise.resolve('abc').then(x => console.log(x))
 // There is no resolve value anyway => catch()
 Promise.reject(new Error('Problem!')).catch(x => console.log(x))
+*/
 
 
 /////////////////////////////////////// 016 Building a Simple Promise - END
+
+
+/////////////////////////////////////// 017 Promisifying the Geolocation API - START
+
+
+/*
+// navigator.geolocation.getCurrentPosition offloads its work to the web API environment in the browser and then IMMEDIATELY moves on to the next line right after 'console.log('Getting position');'
+// this is a callback-based API
+navigator.geolocation.getCurrentPosition(
+  position => console.log(position),
+  // GeolocationPosition {coords: GeolocationCoordinates, timestamp: 1695790546565}
+  err => console.error(err)
+  // GeolocationPositionError {code: 1, message: 'User denied Geolocation'}
+);
+// console.log('Getting position');
+*/
+
+////////// Promisify a callback-based API to a Promise-based API
+const getPosition = function() {
+  return new Promise (function(resolve, reject) { // the 'resolve' and 'reject' functions which we can use to mark the Promise as either 'fulfilled' or 'reject'
+
+    // navigator.geolocation.getCurrentPosition(
+    //   position => console.log(position), // this will be the "fulfilled" Promise => use "resolve" instead of "console.log"
+    //   err => console.error(err) // this will be the "rejected" Promise => use "reject" instead of "console.log"
+    // );
+
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  })
+}
+
+// getPosition().then(pos => console.log(pos))
+// GeolocationPosition {coords: GeolocationCoordinates, timestamp: 1695873438065}
+
+const whereAmI = function() {
+  // getPosition().then(pos => {console.log(pos.coords)}) // script.js:573 Uncaught ReferenceError: lat is not defined at HTMLButtonElement.whereAmI
+  getPosition().then(pos => {
+    // const {lat = latitude, lng = longitude} = pos.coords
+    // Problem: latitude is not defined
+    // Reason: The equal sign when 'destruturing' is used for setting default value
+
+    ////////// 1. Getting the 'coordinates'
+    const {latitude: lat, longitude: lng} = pos.coords
+
+    ////////// 2. Using the 'coordinates' to get the location
+    return fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
+  })
+  .then(res => {
+    // console.log(res); // body: ReadableStream => NOT accessible => use 'json()' method
+    // ok: true => ok: false - 403 error
+    if (!res.ok) throw new Error(`Problem with geocoding ${res.status}`)
+    // console.log(res.json()); // Promise {<pending>} => body now is accessible
+    return res.json()
+  })
+  .then(data => {
+    console.log(data);
+    console.log(`You are in ${data.city}, ${data.countryName}`)
+
+    ////////// 3. Getting the data from the country
+    return fetch(`https://restcountries.com/v2/name/${data.countryName}`);
+  })
+  .then(
+    res => {
+      if (!res.ok) throw new Error(`Country not found ${res.status}`)
+      return res.json()
+    }
+  )
+  .then(data => renderCountry(data[0]))
+  .catch(err => console.error(`${err.message}`))
+}
+btn.addEventListener('click', whereAmI)
+
+
+/////////////////////////////////////// 017 Promisifying the Geolocation API - END
