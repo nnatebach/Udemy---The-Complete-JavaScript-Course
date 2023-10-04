@@ -540,6 +540,7 @@ Promise.reject(new Error('Problem!')).catch(x => console.log(x))
 
 /*
 // navigator.geolocation.getCurrentPosition offloads its work to the web API environment in the browser and then IMMEDIATELY moves on to the next line right after 'console.log('Getting position');'
+
 // this is a callback-based API
 navigator.geolocation.getCurrentPosition(
   position => console.log(position),
@@ -551,6 +552,7 @@ navigator.geolocation.getCurrentPosition(
 */
 
 
+/*
 ////////// Promisify a callback-based API to a Promise-based API
 const getPosition = function() {
   return new Promise (function(resolve, reject) { // the 'resolve' and 'reject' functions which we can use to mark the Promise as either 'fulfilled' or 'reject'
@@ -592,6 +594,130 @@ const whereAmI = function() {
   .catch(err => console.error(`${err.message}`))
 }
 btn.addEventListener('click', whereAmI)
+*/
 
 
 /////////////////////////////////////// 017 Promisifying the Geolocation API - END
+
+
+/////////////////////////////////////// 018 Coding Challenge #2 - START
+
+
+/*
+Build the image loading functionality that I just showed you on the screen.
+
+Tasks are not super-descriptive this time, so that you can figure out some stuff on your own. Pretend you're working on your own 😉
+
+PART 1
+1. Create a function 'createImage' which receives imgPath as an input. This function returns a promise which creates a new image (use document.createElement('img')) and sets the .src attribute to the provided image path. When the image is done loading, append it to the DOM element with the 'images' class, and resolve the promise. The fulfilled value should be the image element itself. In case there is an error loading the image ('error' event), reject the promise.
+
+If this part is too tricky for you, just watch the first part of the solution.
+
+PART 2
+2. Comsume the promise using .then and also add an error handler;
+3. After the image has loaded, pause execution for 2 seconds using the wait function we created earlier;
+4. After the 2 seconds have passed, hide the current image (set display to 'none'), and load a second image (HINT: Use the image element returned by the createImage promise to hide the current image. You will need a global variable for that 😉);
+5. After the second image has loaded, pause execution for 2 seconds again;
+6. After the 2 seconds have passed, hide the current image.
+
+TEST DATA: Images in the img folder. Test the error handler by passing a wrong image path. Set the network speed to 'Fast 3G' in the dev tools Network tab, otherwise images load too fast.
+
+GOOD LUCK 😀
+*/
+
+
+////// PART 1
+
+// 1. Step by step - Written by Nathan
+// 1.1. Create a function 'createImage' which receives imgPath as an input
+// 1.2. This function returns a promise...
+// 1.3. which creates a new image (use document.createElement('img')) and...
+// 1.4. sets the .src attribute to the provided image path.
+// 1.5. When the image is done loading....
+// 1.6. append it to the DOM element with the 'images' class => DOM element in index.html
+// 1.7. and resolve the promise.
+// 1.8. In case there is an error loading the image ('error' event)
+// 1.9. reject the promise.
+
+
+// 2.3 - Use the Promisified setTimeout() that we created earlier
+const wait = function (seconds) {
+  return new Promise (function (resolve) {
+    setTimeout(resolve, seconds * 1000)
+  })
+}
+
+// 1.6.a - create a new variable for the 'images' class in the DOM
+const imgContainer = document.querySelector('.images')
+
+// 1.1
+const createImage = function (imgPath) {
+  // 1.2
+  return new Promise (function (resolve, reject) {
+    // 1.3
+    const img = document.createElement('img')
+    // 1.4
+    img.src = imgPath
+
+    // 1.5
+    img.addEventListener('load', function () {
+      // 1.6.b
+      imgContainer.append(img)
+      // 1.7
+      resolve(img)
+    })
+    // 1.8
+    img.addEventListener('error', function() {
+      reject(new Error('Image not found!!'))
+    })
+  })
+}
+
+// document.createElement() method creates the HTML element specified by tagName, or an HTMLUnknownElement if tagName isn't recognized.
+
+
+////// PART 2
+// 2.1. Consume the promise using .then and also...
+// 2.2. add an error handler;
+// 2.3. After the image has loaded, pause execution for 2 seconds using the wait function we created earlier;
+// 2.4. After the 2 seconds have passed,
+// 2.4.a. hide the current image (set display to 'none'), and
+// 2.4.b. load a second image (HINT: Use the image element returned by the createImage promise to hide the current image. You will need a global variable for that 😉);
+// 2.5. After the second image has loaded, pause execution for 2 seconds again;
+// 2.6. After the 2 seconds have passed, hide the current image.
+
+// 2.4.a
+let currentImg
+
+// 2.1.
+createImage('img/img-1.jpg')
+.then(img => {
+  // 2.4.a
+  currentImg = img
+  console.log('Image 1 loaded');
+  // 2.3
+  return wait(2)
+})
+.then(() => {
+  // 2.4.a
+  currentImg.style.display = 'none'
+  // 2.4.b
+  return createImage('img/img-2.jpg')
+})
+.then(img => {
+  // 2.4.a
+  currentImg = img
+  console.log('Image 2 loaded');
+  // 2.5
+  return wait(2)
+})
+.then(() => {
+  // 2.6
+  currentImg.style.display = 'none'
+})
+// 2.2.
+.catch(err => console.error(err))
+
+
+
+/////////////////////////////////////// 018 Coding Challenge #2 - END
