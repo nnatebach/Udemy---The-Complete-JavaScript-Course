@@ -626,7 +626,7 @@ GOOD LUCK 😀
 */
 
 
-////// PART 1
+////// PART 1 - Creating the image 'holder' in the DOM
 
 // 1. Step by step - Written by Nathan
 // 1.1. Create a function 'createImage' which receives imgPath as an input
@@ -676,7 +676,7 @@ const createImage = function (imgPath) {
 // document.createElement() method creates the HTML element specified by tagName, or an HTMLUnknownElement if tagName isn't recognized.
 
 
-////// PART 2
+////// PART 2 - 'Send' the image to the DOM structure AND handling the results (resolve or reject / success or failure)
 // 2.1. Consume the promise using .then and also...
 // 2.2. add an error handler;
 // 2.3. After the image has loaded, pause execution for 2 seconds using the wait function we created earlier;
@@ -717,7 +717,6 @@ createImage('img/img-1.jpg')
 })
 // 2.2.
 .catch(err => console.error(err))
-
 
 
 /////////////////////////////////////// 018 Coding Challenge #2 - END
