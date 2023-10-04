@@ -625,7 +625,7 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 GOOD LUCK 😀
 */
 
-
+/*
 ////// PART 1 - Creating the image 'holder' in the DOM
 
 // 1. Step by step - Written by Nathan
@@ -691,32 +691,85 @@ let currentImg
 
 // 2.1.
 createImage('img/img-1.jpg')
-.then(img => {
-  // 2.4.a
-  currentImg = img
-  console.log('Image 1 loaded');
-  // 2.3
-  return wait(2)
-})
-.then(() => {
-  // 2.4.a
-  currentImg.style.display = 'none'
-  // 2.4.b
-  return createImage('img/img-2.jpg')
-})
-.then(img => {
-  // 2.4.a
-  currentImg = img
-  console.log('Image 2 loaded');
-  // 2.5
-  return wait(2)
-})
-.then(() => {
-  // 2.6
-  currentImg.style.display = 'none'
-})
-// 2.2.
-.catch(err => console.error(err))
-
+  .then(img => {
+    // 2.4.a
+    currentImg = img;
+    console.log('Image 1 loaded');
+    // 2.3
+    return wait(2);
+  })
+  .then(() => {
+    // 2.4.a
+    currentImg.style.display = 'none';
+    // 2.4.b
+    return createImage('img/img-2.jpg');
+  })
+  .then(img => {
+    // 2.4.a
+    currentImg = img;
+    console.log('Image 2 loaded');
+    // 2.5
+    return wait(2);
+  })
+  .then(() => {
+    // 2.6
+    currentImg.style.display = 'none';
+  })
+  // 2.2.
+  .catch(err => console.error(err));
+*/
 
 /////////////////////////////////////// 018 Coding Challenge #2 - END
+
+
+/////////////////////////////////////// 019 Consuming Promises with AsyncAwait - END
+
+const getPosition = function() {
+  return new Promise (function(resolve, reject) { // the 'resolve' and 'reject' functions used for marking 'fulfilled' or 'reject' Promise
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  })
+}
+
+const whereAmI = async function () {
+
+  // Equivalent
+  // fetch(`https://restcountries.com/v2/name/${country}`).then(res => {
+  //   console.log(res);
+  // })
+  // Previously:
+  // - get the 'json()' out of the 'res' => res.json()
+  // - res.json() returns a new Promise => 'then' handler
+
+  // Geolocation
+  const pos = await getPosition()
+  const { latitude: lat, longitude: lng } = pos.coords // destructure
+
+  // Reverse geocoding
+  // And again, by using 'await', we can just assign the value of the Promise directly into the variable
+  const resGeo = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
+  const dataGeo = await resGeo.json()
+  console.log(dataGeo);
+
+  // Country
+  const res = await fetch(`https://restcountries.com/v2/name/${dataGeo.countryName}`)
+  console.log(res);
+  // with 'await' we can store the result directly to the variable 'data'
+  const data = await res.json()
+  console.log(data);
+  renderCountry(data[0])
+}
+whereAmI()
+console.log('FIRST');
+
+// pros of using 'await'
+// - No need for callback (Callback Hell).
+// - No need for the use of '.then' when consuming Promise.
+// - We can simply 'await' until the Promise is returned, then we can assign that value to a variable.
+
+////// NOTES:
+// EVEN THOUGH 'whereAmI('portugal')' is called first
+// The 'console.log('FIRST');' will be displayed first
+// Reason: 'whereAmI' is an ASYNC function, when it is called it will be loaded in the background => the 'fetch' will be running in the BACKGROUND without blocking the main thread. The code will move on to the next line for 'console.log('FIRST');'
+
+
+/////////////////////////////////////// 019 Consuming Promises with AsyncAwait - END
