@@ -726,16 +726,17 @@ createImage('img/img-1.jpg')
 
 
 const getPosition = function() {
-  return new Promise (function(resolve, reject) { // the 'resolve' and 'reject' functions used for marking 'fulfilled' or 'reject' Promise
+  return new Promise (function(resolve, reject) {
     navigator.geolocation.getCurrentPosition(resolve, reject)
   })
 }
 
 //// async - creates a binding of a new async function to a given name
 //// await
-// - is permitted within the function body, enabling asynchronous, promise-based behavior WITHOUT explicitly configure promise chains.
-// - is used to wait for a Promise and get its fulfillment value
-// - It can only be used inside an async function or at the top level of a module.
+// - is permitted within the FUNCTION BODY, enabling asynchronous
+// - NO explicitly configure promise chains needed.
+// - WAITS for a Promise and GET its fulfillment value
+// - ONLY works INSIDE an async function or at the top level of a module.
 
 const whereAmI = async function () {
 
@@ -752,8 +753,7 @@ const whereAmI = async function () {
     const pos = await getPosition()
     const { latitude: lat, longitude: lng } = pos.coords // destructure
 
-    //// Reverse geocoding
-    // And again, by using 'await', we can just assign the value of the Promise directly into the variable
+    //// Reverse geocoding - convert coordinates to a meaningful location
     const resGeo = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
     console.log('resGeo', resGeo);
     if (!resGeo.ok) throw new Error('Problem getting location data')
@@ -774,7 +774,6 @@ const whereAmI = async function () {
   }
   catch(err) {
     console.error(`${err} 💥`);
-    // renderCountry(`Something went wrong ${err.message}`)
     renderError(`Something went wrong ${err.message}`)
   }
 }
@@ -783,9 +782,14 @@ whereAmI()
 whereAmI()
 console.log('FIRST');
 
+////// NOTES:
+// EVEN THOUGH 'whereAmI('portugal')' is called first
+// The 'console.log('FIRST');' will be displayed first
+// Reason: 'whereAmI' is an ASYNC function, when it is called it will be loaded in the background => the 'fetch' will be running in the BACKGROUND without blocking the main thread. The code will move on to the next line for 'console.log('FIRST');'
+
 //// try...catch statement
 // - is comprised of a 'try' block and EITHER a 'catch' block, a 'finally' block, OR both.
-// - code in 'try' block is executed first, if exception (invalid) => code in 'catch' block will be executed.
+// - code in 'try' block is executed first, IF exception (invalid) => code in 'catch' block will be executed.
 // - code in 'finally' block will always be executed before control flow exits the entire construct.
 
 //// Example for try...catch
@@ -801,11 +805,6 @@ console.log('FIRST');
 // - No need for callback (Callback Hell).
 // - No need for the use of '.then' when consuming Promise.
 // - We can simply 'await' until the Promise is returned, then we can assign that value to a variable.
-
-////// NOTES:
-// EVEN THOUGH 'whereAmI('portugal')' is called first
-// The 'console.log('FIRST');' will be displayed first
-// Reason: 'whereAmI' is an ASYNC function, when it is called it will be loaded in the background => the 'fetch' will be running in the BACKGROUND without blocking the main thread. The code will move on to the next line for 'console.log('FIRST');'
 
 
 /////////////////////////////////////// 019 Consuming Promises with AsyncAwait - END
