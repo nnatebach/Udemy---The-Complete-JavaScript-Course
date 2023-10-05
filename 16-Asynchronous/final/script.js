@@ -724,11 +724,18 @@ createImage('img/img-1.jpg')
 
 /////////////////////////////////////// 019 Consuming Promises with AsyncAwait - END
 
+
 const getPosition = function() {
   return new Promise (function(resolve, reject) { // the 'resolve' and 'reject' functions used for marking 'fulfilled' or 'reject' Promise
     navigator.geolocation.getCurrentPosition(resolve, reject)
   })
 }
+
+//// async - creates a binding of a new async function to a given name
+//// await
+// - is permitted within the function body, enabling asynchronous, promise-based behavior WITHOUT explicitly configure promise chains.
+// - is used to wait for a Promise and get its fulfillment value
+// - It can only be used inside an async function or at the top level of a module.
 
 const whereAmI = async function () {
 
