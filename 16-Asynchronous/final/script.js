@@ -732,7 +732,7 @@ const getPosition = function() {
 
 const whereAmI = async function () {
 
-  // Equivalent
+  //// Equivalent
   // fetch(`https://restcountries.com/v2/name/${country}`).then(res => {
   //   console.log(res);
   // })
@@ -740,17 +740,17 @@ const whereAmI = async function () {
   // - get the 'json()' out of the 'res' => res.json()
   // - res.json() returns a new Promise => 'then' handler
 
-  // Geolocation
+  //// Geolocation
   const pos = await getPosition()
   const { latitude: lat, longitude: lng } = pos.coords // destructure
 
-  // Reverse geocoding
+  //// Reverse geocoding
   // And again, by using 'await', we can just assign the value of the Promise directly into the variable
   const resGeo = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
   const dataGeo = await resGeo.json()
   console.log(dataGeo);
 
-  // Country
+  //// Country
   const res = await fetch(`https://restcountries.com/v2/name/${dataGeo.countryName}`)
   console.log(res);
   // with 'await' we can store the result directly to the variable 'data'
@@ -761,7 +761,7 @@ const whereAmI = async function () {
 whereAmI()
 console.log('FIRST');
 
-// pros of using 'await'
+//// pros of using 'await'
 // - No need for callback (Callback Hell).
 // - No need for the use of '.then' when consuming Promise.
 // - We can simply 'await' until the Promise is returned, then we can assign that value to a variable.
