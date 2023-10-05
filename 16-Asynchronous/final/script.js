@@ -748,25 +748,54 @@ const whereAmI = async function () {
   // - res.json() returns a new Promise => 'then' handler
 
   //// Geolocation
-  const pos = await getPosition()
-  const { latitude: lat, longitude: lng } = pos.coords // destructure
+  try {
+    const pos = await getPosition()
+    const { latitude: lat, longitude: lng } = pos.coords // destructure
 
-  //// Reverse geocoding
-  // And again, by using 'await', we can just assign the value of the Promise directly into the variable
-  const resGeo = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
-  const dataGeo = await resGeo.json()
-  console.log(dataGeo);
+    //// Reverse geocoding
+    // And again, by using 'await', we can just assign the value of the Promise directly into the variable
+    const resGeo = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`)
+    console.log('resGeo', resGeo);
+    if (!resGeo.ok) throw new Error('Problem getting location data')
 
-  //// Country
-  const res = await fetch(`https://restcountries.com/v2/name/${dataGeo.countryName}`)
-  console.log(res);
-  // with 'await' we can store the result directly to the variable 'data'
-  const data = await res.json()
-  console.log(data);
-  renderCountry(data[0])
+    const dataGeo = await resGeo.json()
+    console.log('dataGeo', dataGeo);
+
+    //// Country
+    const res = await fetch(`https://restcountries.com/v2/name/${dataGeo.countryName}`)
+
+    if (!res.ok) throw new Error('Problem getting location data')
+
+    console.log('res (Country, returned from Promise)', res);
+    // with 'await' we can store the result directly to the variable 'data'
+    const data = await res.json()
+    console.log('res.json(), get json from the Promise', data);
+    renderCountry(data[0]);
+  }
+  catch(err) {
+    console.error(`${err} 💥`);
+    // renderCountry(`Something went wrong ${err.message}`)
+    renderError(`Something went wrong ${err.message}`)
+  }
 }
 whereAmI()
+whereAmI()
+whereAmI()
 console.log('FIRST');
+
+//// try...catch statement
+// - is comprised of a 'try' block and EITHER a 'catch' block, a 'finally' block, OR both.
+// - code in 'try' block is executed first, if exception (invalid) => code in 'catch' block will be executed.
+// - code in 'finally' block will always be executed before control flow exits the entire construct.
+
+//// Example for try...catch
+// try {
+//   let x = 2
+//   const y = 3
+//   y = 3;
+// } catch(err) {
+//   alert(err.message)
+// }
 
 //// pros of using 'await'
 // - No need for callback (Callback Hell).
