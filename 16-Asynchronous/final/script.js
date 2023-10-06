@@ -795,10 +795,25 @@ console.log('1: Will get location');
 //// The returned value of an async function "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" will be the "fulfilled" value of the Promise that is return by the function.
 // For the Promise here "console.log(city);": the "fulfilled" value of that Promise is going to be the string "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" because the string is the returned value from the async function.
 
-whereAmI()
-  .then(city => console.log(`2: ${city}`))
-  .catch(err => console.error(`2: ${err.message}`))
-  .finally(() => console.log('3: Finished getting location'));
+
+// This code here is kind of mixing the philosophy of async/await with handling Promises using "then" and "catch" => We are mixing the old and the new way of working with Promises here => NOT good!!
+// whereAmI()
+//   .then(city => console.log(`2: ${city}`))
+//   .catch(err => console.error(`2: ${err.message}`))
+//   .finally(() => console.log('3: Finished getting location'));
+
+
+// Convert "whereAmI()" to async/await code using IIFE
+(async function () {
+  try {
+    const city = await whereAmI()
+    console.log(`2: ${city}`)
+  } catch(err) {
+    console.error(`2: ${err.message}`)
+  }
+  console.log('3: Finished getting location')
+})()
+
 // You are in Ho Chi Minh City, Viet Nam, Asia
 // When setting "const res = await fetch(`https://restcountries.com/v2/name/${dataGeo.countryyyyyyyName}`)", nothing is returned from this function "whereAmI().then(city => console.log(city))" => we get "undefined"
 // Notice: The log here "whereAmI().then(city => console.log(city))" still works which means the callback function "city => console.log(city)" is still running, which means the ".then" method is called, which means that the Promise "whereAmI()" is fulfilled and NOT rejected
