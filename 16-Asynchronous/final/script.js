@@ -783,25 +783,19 @@ const whereAmI = async function () {
 }
 console.log('1: Will get location');
 
-// const city = whereAmI()
-// console.log(city);
-////// Promise {<pending>}
-// [[Prototype]]: Promise
-// [[PromiseState]]: "fulfilled"
-// [[PromiseResult]]: "You are in Ho Chi Minh City, Viet Nam, Asia"
-//// Case study: We get the Promise here and not the value "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" that we want to get.
-// Reason: At this point of the code "const city = whereAmI()", JS has no way of knowing yet the string "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" that we want because the function is still running but it is also not blocking the code out here.
-// Conclusion: JS has no way to know what will be returned => it returns a Promise
-//// The returned value of an async function "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" will be the "fulfilled" value of the Promise that is return by the function.
-// For the Promise here "console.log(city);": the "fulfilled" value of that Promise is going to be the string "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" because the string is the returned value from the async function.
 
-
-// This code here is kind of mixing the philosophy of async/await with handling Promises using "then" and "catch" => We are mixing the old and the new way of working with Promises here => NOT good!!
+// This code here is a mix of philosophy between async/await WITH "then" and "catch"
+// => NOT good!!
 // whereAmI()
 //   .then(city => console.log(`2: ${city}`))
 //   .catch(err => console.error(`2: ${err.message}`))
 //   .finally(() => console.log('3: Finished getting location'));
 
+// When we add the "catch" block, the error is still "2: undefined" and it is this callback "city => console.log(`2: ${city}`)" that is executed and NOT the "catch" block => This means that even though there was an error in the async function, the Promise that is returned is still fulfilled.
+
+// If we want to catch the error at the "catch" block, we will need to re-throw (throw again) the error at the "renderError()" so that we can propagate it down => We will manually reject the Promise that is returned from the async function.
+
+// add "finally" to fix the problem that the "3: Finished getting location" is printed before the "`2: ${err.message}`"
 
 // Convert "whereAmI()" to async/await code using IIFE
 (async function () {
@@ -813,43 +807,7 @@ console.log('1: Will get location');
   }
   console.log('3: Finished getting location')
 })()
-
 // You are in Ho Chi Minh City, Viet Nam, Asia
-// When setting "const res = await fetch(`https://restcountries.com/v2/name/${dataGeo.countryyyyyyyName}`)", nothing is returned from this function "whereAmI().then(city => console.log(city))" => we get "undefined"
-// Notice: The log here "whereAmI().then(city => console.log(city))" still works which means the callback function "city => console.log(city)" is still running, which means the ".then" method is called, which means that the Promise "whereAmI()" is fulfilled and NOT rejected
-// Even though there was an error in the async function, YET the Promise that the async function returns is fulfilled and NOT rejected.
-
-// When we add the "catch" block, the error is still "2: undefined" and it is this callback "city => console.log(`2: ${city}`)" that is executed and NOT the "catch" block => This means that even though there was an error in the async function, the Promise that is returned is still fulfilled.
-
-// If we want to catch the error at the "catch" block, we will need to re-throw (throw again) the error at the "renderError()" so that we can propagate it down => We will manually reject the Promise that is returned from the async function.
-
-// add "finally" to fix the problem that the "3: Finished getting location" is printed before the "`2: ${err.message}`"
-
-// console.log('3: Finished getting location');
-
-////// NOTES:
-// EVEN THOUGH 'whereAmI('portugal')' is called first
-// The 'console.log('FIRST');' will be displayed first
-// Reason: 'whereAmI' is an ASYNC function, when it is called it will be loaded in the background => the 'fetch' will be running in the BACKGROUND without blocking the main thread. The code will move on to the next line for 'console.log('FIRST');'
-
-//// try...catch statement
-// - is comprised of a 'try' block and EITHER a 'catch' block, a 'finally' block, OR both.
-// - code in 'try' block is executed first, IF exception (invalid) => code in 'catch' block will be executed.
-// - code in 'finally' block will always be executed before control flow exits the entire construct.
-
-//// Example for try...catch
-// try {
-//   let x = 2
-//   const y = 3
-//   y = 3;
-// } catch(err) {
-//   alert(err.message)
-// }
-
-//// pros of using 'await'
-// - No need for callback (Callback Hell).
-// - No need for the use of '.then' when consuming Promise.
-// - We can simply 'await' until the Promise is returned, then we can assign that value to a variable.
 
 
 /////////////////////////////////////// 019 Consuming Promises with AsyncAwait - END
