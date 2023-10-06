@@ -771,16 +771,46 @@ const whereAmI = async function () {
     const data = await res.json()
     console.log('res.json(), get json from the Promise', data);
     renderCountry(data[0]);
+    return `You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}`
   }
   catch(err) {
     console.error(`${err} 💥`);
     renderError(`Something went wrong ${err.message}`)
+
+    // Reject Promise returned from async function
+    throw err; // re-throw the error, take the error and throw it again.
   }
 }
+console.log('1: Will get location');
+
+// const city = whereAmI()
+// console.log(city);
+////// Promise {<pending>}
+// [[Prototype]]: Promise
+// [[PromiseState]]: "fulfilled"
+// [[PromiseResult]]: "You are in Ho Chi Minh City, Viet Nam, Asia"
+//// Case study: We get the Promise here and not the value "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" that we want to get.
+// Reason: At this point of the code "const city = whereAmI()", JS has no way of knowing yet the string "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" that we want because the function is still running but it is also not blocking the code out here.
+// Conclusion: JS has no way to know what will be returned => it returns a Promise
+//// The returned value of an async function "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" will be the "fulfilled" value of the Promise that is return by the function.
+// For the Promise here "console.log(city);": the "fulfilled" value of that Promise is going to be the string "You are in ${dataGeo.city}, ${dataGeo.countryName}, ${dataGeo.continent}" because the string is the returned value from the async function.
+
 whereAmI()
-whereAmI()
-whereAmI()
-console.log('FIRST');
+  .then(city => console.log(`2: ${city}`))
+  .catch(err => console.error(`2: ${err.message}`))
+  .finally(() => console.log('3: Finished getting location'));
+// You are in Ho Chi Minh City, Viet Nam, Asia
+// When setting "const res = await fetch(`https://restcountries.com/v2/name/${dataGeo.countryyyyyyyName}`)", nothing is returned from this function "whereAmI().then(city => console.log(city))" => we get "undefined"
+// Notice: The log here "whereAmI().then(city => console.log(city))" still works which means the callback function "city => console.log(city)" is still running, which means the ".then" method is called, which means that the Promise "whereAmI()" is fulfilled and NOT rejected
+// Even though there was an error in the async function, YET the Promise that the async function returns is fulfilled and NOT rejected.
+
+// When we add the "catch" block, the error is still "2: undefined" and it is this callback "city => console.log(`2: ${city}`)" that is executed and NOT the "catch" block => This means that even though there was an error in the async function, the Promise that is returned is still fulfilled.
+
+// If we want to catch the error at the "catch" block, we will need to re-throw (throw again) the error at the "renderError()" so that we can propagate it down => We will manually reject the Promise that is returned from the async function.
+
+// add "finally" to fix the problem that the "3: Finished getting location" is printed before the "`2: ${err.message}`"
+
+// console.log('3: Finished getting location');
 
 ////// NOTES:
 // EVEN THOUGH 'whereAmI('portugal')' is called first
