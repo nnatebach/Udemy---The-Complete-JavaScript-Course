@@ -740,14 +740,6 @@ const getPosition = function() {
 
 const whereAmI = async function () {
 
-  //// Equivalent
-  // fetch(`https://restcountries.com/v2/name/${country}`).then(res => {
-  //   console.log(res);
-  // })
-  // Previously:
-  // - get the 'json()' out of the 'res' => res.json()
-  // - res.json() returns a new Promise => 'then' handler
-
   //// Geolocation
   try {
     const pos = await getPosition()
@@ -791,11 +783,6 @@ console.log('1: Will get location');
 //   .catch(err => console.error(`2: ${err.message}`))
 //   .finally(() => console.log('3: Finished getting location'));
 
-// When we add the "catch" block, the error is still "2: undefined" and it is this callback "city => console.log(`2: ${city}`)" that is executed and NOT the "catch" block => This means that even though there was an error in the async function, the Promise that is returned is still fulfilled.
-
-// If we want to catch the error at the "catch" block, we will need to re-throw (throw again) the error at the "renderError()" so that we can propagate it down => We will manually reject the Promise that is returned from the async function.
-
-// add "finally" to fix the problem that the "3: Finished getting location" is printed before the "`2: ${err.message}`"
 
 // Convert "whereAmI()" to async/await code using IIFE
 (async function () {
