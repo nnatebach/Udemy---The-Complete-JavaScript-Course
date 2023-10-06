@@ -821,33 +821,19 @@ console.log('1: Will get location');
 // The function will log the capital cities of the 3 countries as an array
 
 const get3Countries = async function (c1, c2, c3) {
-  /*
   // ALWAYS use 'try...catch' inside an async function!!
-  try {
-    // use destructure to take the first element because we know the result of this is going to be an array of ONE object
-    const [data1] = await getJSON(`https://restcountries.com/v2/name/${c1}`)
-    const [data2] = await getJSON(`https://restcountries.com/v2/name/${c2}`)
-    const [data3] = await getJSON(`https://restcountries.com/v2/name/${c3}`)
-    console.log(data1.capital, data2.capital, data3.capital);
-  } catch (err) {
-    console.error(err);
-  }
-  */
-
-  //// NOTE:
-  // The above will work just fine, HOWEVER, the 'await' will make the AJAX calls one after another => NOT what we want!
-  // Solution: Use 'Promise.all()'
+  // Use 'Promise.all()' - a Promise combinator in order to combine multiple Promises
 
   try {
-    // all() - combinator - allows us to combine multiple Promises
     const data = await Promise.all([
       getJSON(`https://restcountries.com/v2/name/${c1}`),
       getJSON(`https://restcountries.com/v2/name/${c2}`),
       getJSON(`https://restcountries.com/v2/name/${c3}`)
     ])
-      // console.log(data); // this will give an array containing all 3 arrays => Loop over them to get all the elements.
+      // console.log(data);
+      // this will give an array containing all 3 arrays => Loop over them to get all the elements.
 
-      // map() - creates a new array populated with the results of calling a provided function on every element in the calling array.
+      // map()
       console.log(data.map(d => d[0].capital));
   } catch(err) {
     console.error(err);
