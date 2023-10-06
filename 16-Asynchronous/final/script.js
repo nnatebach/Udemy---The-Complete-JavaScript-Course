@@ -25,6 +25,14 @@ const renderError = function (msg) {
   countriesContainer.style.opacity = 1
 }
 
+const getJSON = function(url, errorMessage='Something went wrong') {
+  return fetch(url).then(response => {
+    if (!response.ok) throw new Error(`${errorMessage} (${response.status})`)
+
+    return response.json()
+  })
+}
+
 ///////////////////////////////////////
 
 
@@ -724,7 +732,7 @@ createImage('img/img-1.jpg')
 
 /////////////////////////////////////// 019 Consuming Promises with AsyncAwait - END
 
-
+/*
 const getPosition = function() {
   return new Promise (function(resolve, reject) {
     navigator.geolocation.getCurrentPosition(resolve, reject)
@@ -795,6 +803,57 @@ console.log('1: Will get location');
   console.log('3: Finished getting location')
 })()
 // You are in Ho Chi Minh City, Viet Nam, Asia
-
+*/
 
 /////////////////////////////////////// 019 Consuming Promises with AsyncAwait - END
+
+
+/////////////////////////////////////// 022 Running Promises in Parallel - START
+
+// Advantage: This technique will save time!
+
+//// Demonstration:
+// Getting data about 3 countries at the same time
+// YET, the ORDER of arrival for 3 countries does NOT matter at all!
+
+//// Instructions
+// The function will take in 3 countries
+// The function will log the capital cities of the 3 countries as an array
+
+const get3Countries = async function (c1, c2, c3) {
+  /*
+  // ALWAYS use 'try...catch' inside an async function!!
+  try {
+    // use destructure to take the first element because we know the result of this is going to be an array of ONE object
+    const [data1] = await getJSON(`https://restcountries.com/v2/name/${c1}`)
+    const [data2] = await getJSON(`https://restcountries.com/v2/name/${c2}`)
+    const [data3] = await getJSON(`https://restcountries.com/v2/name/${c3}`)
+    console.log(data1.capital, data2.capital, data3.capital);
+  } catch (err) {
+    console.error(err);
+  }
+  */
+
+  //// NOTE:
+  // The above will work just fine, HOWEVER, the 'await' will make the AJAX calls one after another => NOT what we want!
+  // Solution: Use 'Promise.all()'
+
+  try {
+    // all() - combinator - allows us to combine multiple Promises
+    const data = await Promise.all([
+      getJSON(`https://restcountries.com/v2/name/${c1}`),
+      getJSON(`https://restcountries.com/v2/name/${c2}`),
+      getJSON(`https://restcountries.com/v2/name/${c3}`)
+    ])
+      // console.log(data); // this will give an array containing all 3 arrays => Loop over them to get all the elements.
+
+      // map() - creates a new array populated with the results of calling a provided function on every element in the calling array.
+      console.log(data.map(d => d[0].capital));
+  } catch(err) {
+    console.error(err);
+  }
+}
+get3Countries('Vietnam', 'Laos', 'Thai')
+
+
+/////////////////////////////////////// 022 Running Promises in Parallel - END
