@@ -810,6 +810,7 @@ console.log('1: Will get location');
 
 /////////////////////////////////////// 022 Running Promises in Parallel - START
 
+
 // Advantage: This technique will save time!
 
 //// Demonstration:
@@ -833,13 +834,16 @@ const get3Countries = async function (c1, c2, c3) {
       // console.log(data);
       // this will give an array containing all 3 arrays => Loop over them to get all the elements.
 
-      // map()
-      console.log(data.map(d => d[0].capital));
+      // map() - WHY???
+      // console.log(data) // (3) [Array(1), Array(1), Array(1)]
+      // console.log(data[0][0].capital) // Hanoi
+      console.log(data.map(d => d[0].capital)); // (3) ['Hanoi', 'Vientiane', 'Bangkok']
   } catch(err) {
     console.error(err);
   }
 }
 get3Countries('Vietnam', 'Laos', 'Thai')
+// get3Countries('Vietnam', 'Laos', 'Thai') // If one Promise is rejected => The whole Promise.all() will be rejected!
 
 
 /////////////////////////////////////// 022 Running Promises in Parallel - END
