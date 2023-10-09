@@ -31,7 +31,7 @@ const getJSON = function(url, errorMessage='Something went wrong') {
 
     return response.json()
   })
-}
+};
 
 ///////////////////////////////////////
 
@@ -811,6 +811,7 @@ console.log('1: Will get location');
 /////////////////////////////////////// 022 Running Promises in Parallel - START
 
 
+/*
 // Advantage: This technique will save time!
 
 //// Demonstration:
@@ -844,6 +845,105 @@ const get3Countries = async function (c1, c2, c3) {
 }
 get3Countries('Vietnam', 'Laos', 'Thai')
 // get3Countries('Vietnam', 'Laos', 'Thai') // If one Promise is rejected => The whole Promise.all() will be rejected!
+*/
 
 
 /////////////////////////////////////// 022 Running Promises in Parallel - END
+
+
+/////////////////////////////////////// 023 Other Promise Combinators race, allSettled and any - START
+
+
+// NOTE: Keep in mind AT LEAST 'Promise.race()' and 'Promise.all()'
+
+(async function () {
+  const res = await Promise.race([
+    getJSON(`https://restcountries.com/v2/name/france`),
+    getJSON(`https://restcountries.com/v2/name/italy`),
+    getJSON(`https://restcountries.com/v2/name/spain`),
+  ]);
+  console.log(res[0]);
+  // refreshing the page will gives us different results of 'france', 'italy' or 'spain' => depending on which call is faster (the one that takes the least time in the Network tab - check the Tab time or subtract the black BOLD number with the duration)
+  // we only get one result and not an array of the results of all the three.
+  // a promise that gets rejected can actually also win the race => Promise.race short-circuits whenever one of the promises gets settled NO matter if fulfilled or rejected.
+})();
+
+
+////// Example: your user has a very bad internet connection => fetch request takes way too long to actually be useful.
+// Solution: create a special time out Promise, which AUTOMATICALLY REJECTS after a certain TIME has PASSED.
+
+////// Instructions:
+// Create a 'timeout' function
+// Return a new Promise (Promise allows us to setup the option for a reject case), use throw away convention for 'resolve' because we don't need that option in this case
+// Create a timeout function within the returned Promise => add the 'new Error' in the reject method
+
+const timeout = function(sec) {
+  return new Promise (function (_, reject) {
+    setTimeout(function() {
+      reject(new Error('Request took too long!'))
+    }, sec * 1000)
+  })
+}
+
+////// Promise.race()
+// - receives an array of Promise and also returns a Promise
+// - the Promise that is returned by Promise.race() is settled as soon as one of the input Promises settles.
+// - when a Promise is settled => a value is available NO matter if Promise is rejected or fulfilled
+// - the first settled Promise wins the race
+// - in the real world Promise.race is actually very useful to prevent against never ending promises or also very long running promises.
+Promise.race([
+  getJSON(`https://restcountries.com/v2/name/tanzania`),
+  timeout(.5)
+])
+.then(res => console.log(res[0]))
+.catch(err => console.error(err))
+//// Results:
+// - The Promise will show the result if the result takes less than .5 second to show
+// - Otherwise, it will show this error 'Request took too long!'
+
+
+////// Promise.allSettled
+// - it takes in an array of Promise and returns an array of all the settled Promises NO matter if the Promises is rejected or not.
+// - similar to Promise.all, it also returns an array of all the results, YET Promise.all will short-circuit as soon as one Promise rejects.
+// - Promise.allSettled, simply never short circuits => it will simply return all the results of all the Promises.
+Promise.allSettled([
+  Promise.resolve('Success'),
+  Promise.reject('ERROR'),
+  Promise.resolve('Another success')
+])
+// .then(res => console.log(res[0]))
+// {status: 'fulfilled', value: 'Success'}
+.then(res => console.log(res))
+//// 0: {status: 'fulfilled', value: 'Success'}
+//// 1: {status: 'rejected', reason: 'ERROR'}
+//// 2: {status: 'fulfilled', value: 'Another success'}
+
+// NOTE: Even though one of the result is 'rejected' we still get all three results when we do them manually with 'resolve', 'reject' and 'resolve'
+
+
+////// Promise.all() is going to short-circuit
+Promise.all([
+  Promise.resolve('Success'),
+  Promise.reject('ERROR'),
+  Promise.resolve('Another success')
+])
+.then(res => console.log(res))
+.catch(err => console.error(err)) // ERROR
+// If one of the Promise is rejected, the whole thing is going to be 'rejected' => ERROR
+
+
+////// Promise.any() [ES2021]
+// - takes in an array of multiple promises
+// - it will then return the first 'fulfilled' Promise and ignore rejected promises.
+// - it is difference from 'Promise.race()' that 'rejected' Promises are ignored.
+// - the results of Promise.any() is always gonna be a fulfilled Promise, UNLESS all of them are rejected
+Promise.any([
+  Promise.resolve('Success'),
+  Promise.reject('ERROR'),
+  Promise.resolve('Another success')
+])
+.then(res => console.log(res))
+.catch(err => console.error(err))
+
+
+/////////////////////////////////////// 023 Other Promise Combinators race, allSettled and any - END
