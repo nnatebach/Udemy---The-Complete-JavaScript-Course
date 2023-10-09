@@ -862,17 +862,27 @@ get3Countries('Vietnam', 'Laos', 'Thai')
     getJSON(`https://restcountries.com/v2/name/italy`),
     getJSON(`https://restcountries.com/v2/name/spain`),
   ]);
-  console.log(res[0]);
+  console.log(res[0]); // Order in console: 4
   // refreshing the page will gives us different results of 'france', 'italy' or 'spain' => depending on which call is faster (the one that takes the least time in the Network tab - check the Tab time or subtract the black BOLD number with the duration)
   // we only get one result and not an array of the results of all the three.
-  // a promise that gets rejected can actually also win the race => Promise.race short-circuits whenever one of the promises gets settled NO matter if fulfilled or rejected.
+  // a Promise that gets rejected can actually also win the race => Promise.race short-circuits whenever one of the Promises gets settled NO matter if fulfilled or rejected.
 })();
 
 
-////// Example: your user has a very bad internet connection => fetch request takes way too long to actually be useful.
+////// Promise.any() [ES2021] is different from 'Promise.race()' that 'rejected' Promises are ignored - START
+
+
+////// Promise.race() - START
+// - receives an array of Promise and also returns a Promise
+// - the Promise that is returned by Promise.race() is settled as soon as one of the input Promises settles.
+// - when a Promise is settled => a value is available NO matter if Promise is rejected or fulfilled
+// - the first settled Promise wins the race
+// - in the real world Promise.race is actually very useful to prevent against never ending promises or also very long running promises.
+
+//// Example: your user has a very bad internet connection => fetch request takes way too long to actually be useful.
 // Solution: create a special time out Promise, which AUTOMATICALLY REJECTS after a certain TIME has PASSED.
 
-////// Instructions:
+//// Instructions:
 // Create a 'timeout' function
 // Return a new Promise (Promise allows us to setup the option for a reject case), use throw away convention for 'resolve' because we don't need that option in this case
 // Create a timeout function within the returned Promise => add the 'new Error' in the reject method
@@ -885,27 +895,38 @@ const timeout = function(sec) {
   })
 }
 
-////// Promise.race()
-// - receives an array of Promise and also returns a Promise
-// - the Promise that is returned by Promise.race() is settled as soon as one of the input Promises settles.
-// - when a Promise is settled => a value is available NO matter if Promise is rejected or fulfilled
-// - the first settled Promise wins the race
-// - in the real world Promise.race is actually very useful to prevent against never ending promises or also very long running promises.
 Promise.race([
   getJSON(`https://restcountries.com/v2/name/tanzania`),
   timeout(.5)
 ])
-.then(res => console.log(res[0]))
+.then(res => console.log(res[0])) // Order in console: 5
 .catch(err => console.error(err))
 //// Results:
 // - The Promise will show the result if the result takes less than .5 second to show
 // - Otherwise, it will show this error 'Request took too long!'
 
 
-////// Promise.allSettled
-// - it takes in an array of Promise and returns an array of all the settled Promises NO matter if the Promises is rejected or not.
-// - similar to Promise.all, it also returns an array of all the results, YET Promise.all will short-circuit as soon as one Promise rejects.
-// - Promise.allSettled, simply never short circuits => it will simply return all the results of all the Promises.
+//// Promise.any()
+// - takes in an array of multiple promises
+// - it will RETURN the FIRST 'fulfilled' Promise and IGNORE rejected Promises.
+// - the results of Promise.any() is always gonna be a fulfilled Promise, UNLESS all of them are rejected
+Promise.any([
+  Promise.resolve('Success'),
+  Promise.reject('ERROR'),
+  Promise.resolve('Another success')
+])
+.then(res => console.log(res)) // Success - Order in console: 1
+.catch(err => console.error(err))
+
+
+////// Promise.any() [ES2021] is different from 'Promise.race()' - END
+
+
+////// 'Promise.allSettled()' AND 'Promise.all()' BOTH return an array of all the results - START
+
+//// Promise.allSettled()
+// - it takes in an array of Promise and returns an array of ALL the settled Promises NO matter if the Promise is rejected or not.
+// - Promise.allSettled NEVER short circuits => it will return ALL the results of all the Promises.
 Promise.allSettled([
   Promise.resolve('Success'),
   Promise.reject('ERROR'),
@@ -913,37 +934,24 @@ Promise.allSettled([
 ])
 // .then(res => console.log(res[0]))
 // {status: 'fulfilled', value: 'Success'}
-.then(res => console.log(res))
+.then(res => console.log(res)) // Order in console: 2
 //// 0: {status: 'fulfilled', value: 'Success'}
 //// 1: {status: 'rejected', reason: 'ERROR'}
 //// 2: {status: 'fulfilled', value: 'Another success'}
 
 // NOTE: Even though one of the result is 'rejected' we still get all three results when we do them manually with 'resolve', 'reject' and 'resolve'
 
-
-////// Promise.all() is going to short-circuit
+////// Promise.all() is going to short-circuit as soon as one Promise rejects.
 Promise.all([
   Promise.resolve('Success'),
   Promise.reject('ERROR'),
   Promise.resolve('Another success')
 ])
 .then(res => console.log(res))
-.catch(err => console.error(err)) // ERROR
+.catch(err => console.error(err)) // ERROR - Order in console: 3
 // If one of the Promise is rejected, the whole thing is going to be 'rejected' => ERROR
 
-
-////// Promise.any() [ES2021]
-// - takes in an array of multiple promises
-// - it will then return the first 'fulfilled' Promise and ignore rejected promises.
-// - it is difference from 'Promise.race()' that 'rejected' Promises are ignored.
-// - the results of Promise.any() is always gonna be a fulfilled Promise, UNLESS all of them are rejected
-Promise.any([
-  Promise.resolve('Success'),
-  Promise.reject('ERROR'),
-  Promise.resolve('Another success')
-])
-.then(res => console.log(res))
-.catch(err => console.error(err))
+////// 'Promise.allSettled()' AND 'Promise.all() - END
 
 
 /////////////////////////////////////// 023 Other Promise Combinators race, allSettled and any - END
